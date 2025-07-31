@@ -114,7 +114,7 @@ export default async function ({ OPTIONS: { wiki } }) {
 
 <style lang="less">
 .note-history-dialog-vue {
-	max-width: 100vw;
+	width: 60vw;
 	/* 基础样式 */
 	* {
 		margin: 0;
@@ -329,7 +329,8 @@ export default async function ({ OPTIONS: { wiki } }) {
 
 	/* 位置信息样式 */
 	.jsondiffpatch-textdiff-location {
-		display: inline-block;
+		// display: inline-block;
+		display: none;
 		padding: 3px 8px;
 		margin-right: 10px;
 		background-color: #f1f3f5;
@@ -435,6 +436,102 @@ export default async function ({ OPTIONS: { wiki } }) {
 		font-size: 0.8rem;
 		transition: color 0.2s;
 		margin-left: 10px;
+	}
+
+	/* 修改类型容器样式 */
+	.jsondiffpatch-delta.jsondiffpatch-modified {
+		display: flex;
+		gap: 16px;
+		margin: 12px 0;
+		padding: 16px;
+		background-color: #f8f9fa;
+		border-radius: 6px;
+		border: 1px solid #e9ecef;
+		overflow: hidden;
+	}
+
+	/* 左右值容器通用样式 */
+	.jsondiffpatch-value {
+		flex: 1;
+		min-width: 0; /* 解决flex子元素不收缩问题 */
+		padding: 12px;
+		border-radius: 4px;
+		background-color: #fff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		position: relative;
+	}
+
+	/* 左侧（修改前）样式 */
+	.jsondiffpatch-left-value {
+		border-left: 3px solid #ffc107; /* 黄色标识线 */
+
+		&::before {
+			content: "修改前";
+			position: absolute;
+			top: -8px;
+			left: 12px;
+			background-color: #fff3cd;
+			color: #856404;
+			font-size: 12px;
+			padding: 0 6px;
+			border-radius: 3px;
+			border: 1px solid #ffeeba;
+		}
+	}
+
+	/* 右侧（修改后）样式 */
+	.jsondiffpatch-right-value {
+		border-left: 3px solid #28a745; /* 绿色标识线 */
+
+		&::before {
+			content: "修改后";
+			position: absolute;
+			top: -8px;
+			left: 12px;
+			background-color: #d4edda;
+			color: #155724;
+			font-size: 12px;
+			padding: 0 6px;
+			border-radius: 3px;
+			border: 1px solid #c3e6cb;
+		}
+	}
+
+	/* 代码块样式 */
+	.jsondiffpatch-value pre {
+		margin: 0;
+		padding: 10px;
+		font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+		font-size: 13px;
+		line-height: 1.5;
+		color: #333;
+		background-color: #f9f9f9;
+		border-radius: 3px;
+		white-space: pre-wrap; /* 自动换行 */
+		word-break: break-all;
+	}
+
+	/* 图片链接特殊样式 */
+	.jsondiffpatch-value pre img,
+	.jsondiffpatch-value pre a[href*="image.png"] {
+		color: #007bff;
+		text-decoration: underline;
+		padding: 2px 4px;
+		border-radius: 2px;
+		background-color: rgba(0, 123, 255, 0.05);
+	}
+
+	/* 响应式调整 */
+	@media (max-width: 768px) {
+		.jsondiffpatch-delta.jsondiffpatch-modified {
+			flex-direction: column;
+			gap: 12px;
+		}
+
+		.jsondiffpatch-left-value,
+		.jsondiffpatch-right-value {
+			width: 100%;
+		}
 	}
 }
 </style>
