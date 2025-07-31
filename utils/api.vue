@@ -61,7 +61,7 @@ export default async function () {
 					});
 				},
 				wiki_upsert_one(data) {
-					return _.$ajax.post("/api/wiki/upsertOne", {
+					return _.$ajax.post("/api/wiki/upsert_one", {
 						data
 					});
 				},
@@ -215,9 +215,9 @@ export default async function () {
 					});
 				},
 				/* log */
-				getLogList({ typeid, type, page, limit }) {
+				get_log_list({ typeid, type, page, size }) {
 					return _.$ajax.get("/api/log/list", {
-						data: { typeid: Number(typeid), type, page, limit }
+						data: { typeid, type, page, size }
 					});
 				},
 				log_update(data) {

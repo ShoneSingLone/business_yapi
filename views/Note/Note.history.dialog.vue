@@ -1,5 +1,5 @@
 <template>
-	<div class="x-padding flex vertical height100 note-history-dialog-vue" style="width: 50vw">
+	<div class="x-padding flex vertical height100 note-history-dialog-vue">
 		<!-- 搜索框 -->
 		<div class="search-container">
 			<i class="search-icon">🔍</i>
@@ -7,30 +7,56 @@
 		</div>
 		<!-- 历史记录列表 -->
 		<div class="history-list">
-			<div class="history-item">
-				<div class="history-title">
-					<span>修改标题</span>
+			<div class="history-item" v-for="row in configs_log_list.data.list" :key="row._id">
+				<!-- <div class="history-preview" v-html="row.data"></div> -->
+				<div class="history-meta flex">
+					<span>{{ _.$dateFormat(row.add_time) }}</span>
+					<xGap r />
+					<span>{{ row.username }}</span>
+					<xGap r />
+					<button class="restore-btn" @click="toggleCollapse(row._id)">Diff查看</button>
+					<xGap f />
 				</div>
-				<div class="history-preview">
-					这是您当前正在编辑的笔记内容...在这里可以看到您的笔记正文内容。
-				</div>
-				<div class="history-meta">
-					<span>今天 13:20</span>
-					<button class="restore-btn" @click="showDiff">Diff查看</button>
+				<div class="diff-content" v-if="isShow(row._id)">
+					<div class="diff-text" v-html="noteContent(row.data)" />
 				</div>
 			</div>
 		</div>
-		<xPagination :configs="cpt_pagination" />
+		<xPagination :configs="configs_log_list" />
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
+export default async function ({ OPTIONS: { wiki } }) {
+	const typeid = wiki._id;
+
 	return defineComponent({
-		data() {
+		mounted() {
+			this.configs_log_list.onQuery();
+		},
+		data(vm) {
 			return {
-				cpt_pagination: defTable({
-					onQuery(pagination) {
-						debugger;
+				showContent: {},
+				configs_log_list: defTable({
+					async onQuery(pagination) {
+						_.$loading(true);
+						try {
+							const { page, size } = _.$setPagination(
+								vm.configs_log_list,
+								pagination
+							);
+
+							const { data: list_total_data } = await _api.yapi.get_log_list({
+								type: "wiki_doc",
+								typeid,
+								page,
+								size
+							});
+							_.$setTableData(vm.configs_log_list, list_total_data);
+						} catch (error) {
+							_.$msgError(error);
+						} finally {
+							_.$loading(false);
+						}
 					},
 					data: {
 						list: []
@@ -42,11 +68,15 @@ export default async function () {
 		computed: {},
 		watch: {},
 		methods: {
-			showDiff() {
-				_.$openModal({
-					title: "版本变化",
-					url: "@/views/Note/Note.history.diff.dialog.vue"
-				});
+			noteContent(content) {
+				return String(content).split("\\n").join("<br/>");
+			},
+			toggleCollapse(id) {
+				const isShow = !_.$val(this, `showContent.${id}`);
+				_.$val(this, `showContent.${id}`, isShow);
+			},
+			isShow(id) {
+				return this.showContent[id] || false;
 			}
 		}
 	});
@@ -55,7 +85,6 @@ export default async function () {
 <style lang="less">
 .note-history-dialog-vue {
 	/* 基础样式重置 */
-
 	* {
 		margin: 0;
 		padding: 0;
@@ -63,132 +92,7 @@ export default async function () {
 		font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 	}
 
-	body {
-		background-color: #f5f5f5;
-		color: #333;
-		min-height: 100vh;
-		overflow-x: hidden;
-	}
-
-	/* 主内容区样式 */
-
-	.main-container {
-		display: flex;
-		min-height: 100vh;
-		position: relative;
-	}
-
-	.main-content {
-		flex: 1;
-		padding: 2rem;
-		transition: transform 0.3s ease;
-	}
-
-	.main-content.shifted {
-		transform: translateX(-300px);
-	}
-
-	.note-card {
-		max-width: 800px;
-		margin: 0 auto;
-		background: white;
-		padding: 2rem;
-		border-radius: 8px;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	}
-
-	.note-card h1 {
-		font-size: 1.8rem;
-		margin-bottom: 1rem;
-		color: #2c3e50;
-	}
-
-	.note-content {
-		color: #555;
-		line-height: 1.6;
-		margin-bottom: 1.5rem;
-	}
-
-	/* 按钮样式 */
-
-	.btn {
-		background-color: var(--el-color-primary);
-		color: white;
-		border: none;
-		padding: 0.7rem 1.2rem;
-		border-radius: 4px;
-		cursor: pointer;
-		font-size: 0.9rem;
-		display: inline-flex;
-		align-items: center;
-		transition: background-color 0.2s;
-	}
-
-	.btn:hover {
-		background-color: #2980b9;
-	}
-
-	.btn i {
-		margin-right: 0.5rem;
-	}
-
-	/* 抽屉样式 */
-
-	.history-drawer {
-		position: fixed;
-		top: 0;
-		right: 0;
-		width: 300px;
-		height: 100vh;
-		background: white;
-		box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
-		transform: translateX(100%);
-		transition: transform 0.3s ease;
-		z-index: 100;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.history-drawer.open {
-		transform: translateX(0);
-	}
-
-	/* 抽屉头部 */
-
-	.drawer-header {
-		padding: 1rem;
-		border-bottom: 1px solid #eee;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.drawer-header h2 {
-		font-size: 1.2rem;
-		color: #2c3e50;
-	}
-
-	.close-btn {
-		background: none;
-		border: none;
-		font-size: 1.2rem;
-		cursor: pointer;
-		color: #7f8c8d;
-		width: 30px;
-		height: 30px;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: background-color 0.2s;
-	}
-
-	.close-btn:hover {
-		background-color: #f1f1f1;
-	}
-
 	/* 搜索框 */
-
 	.search-container {
 		padding: 1rem;
 		border-bottom: 1px solid #eee;
@@ -217,7 +121,6 @@ export default async function () {
 	}
 
 	/* 历史记录列表 */
-
 	.history-list {
 		flex: 1;
 		overflow-y: auto;
@@ -225,7 +128,6 @@ export default async function () {
 	}
 
 	/* 隐藏滚动条但保留功能 */
-
 	.history-list::-webkit-scrollbar {
 		display: none;
 	}
@@ -236,7 +138,6 @@ export default async function () {
 	}
 
 	/* 历史记录项 */
-
 	.history-item {
 		padding: 1rem;
 		border-radius: 6px;
@@ -244,7 +145,6 @@ export default async function () {
 		background: white;
 		border-left: 3px solid #ddd;
 		transition: all 0.2s;
-		cursor: pointer;
 	}
 
 	.history-item:hover {
@@ -254,32 +154,6 @@ export default async function () {
 
 	.history-item.current {
 		border-left-color: var(--el-color-primary);
-	}
-
-	.history-title {
-		font-weight: 500;
-		margin-bottom: 0.5rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.history-badge {
-		font-size: 0.7rem;
-		background-color: rgba(52, 152, 219, 0.1);
-		color: var(--el-color-primary);
-		padding: 0.1rem 0.5rem;
-		border-radius: 10px;
-	}
-
-	.history-preview {
-		font-size: 0.85rem;
-		color: #666;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		overflow: hidden;
-		margin-bottom: 0.7rem;
 	}
 
 	.history-meta {
@@ -301,6 +175,97 @@ export default async function () {
 
 	.restore-btn:hover {
 		color: #2980b9;
+	}
+	/* 上下文内容 - 保持中性 */
+	.jsondiffpatch-textdiff-context {
+		color: #333;
+		background-color: transparent;
+		padding: 2px 4px;
+		border-radius: 3px;
+	}
+
+	/* 删除内容 - 红色系标识 */
+	.jsondiffpatch-textdiff-deleted {
+		color: #721c24;
+		background-color: #f8d7da;
+		text-decoration: line-through;
+		padding: 2px 4px;
+		border-radius: 3px;
+		font-weight: 500;
+		border-left: 3px solid #dc3545;
+		margin-left: -3px;
+	}
+
+	/* 新增内容 - 绿色系标识 */
+	.jsondiffpatch-textdiff-added {
+		color: #155724;
+		background-color: #d4edda;
+		padding: 2px 4px;
+		border-radius: 3px;
+		font-weight: 500;
+		border-left: 3px solid #28a745;
+		margin-left: -3px;
+	}
+
+	/* 增强差异行的视觉层次 */
+	.jsondiffpatch-textdiff li {
+		margin-bottom: 12px;
+		padding: 8px;
+		border-radius: 4px;
+		transition: background-color 0.2s ease;
+
+		&:has(.jsondiffpatch-textdiff-deleted) {
+			background-color: rgba(248, 215, 218, 0.1);
+		}
+
+		&:has(.jsondiffpatch-textdiff-added) {
+			background-color: rgba(212, 237, 218, 0.1);
+		}
+	}
+
+	.jsondiffpatch-textdiff-location {
+		display: inline-block;
+		padding: 3px 8px;
+		margin-right: 10px;
+		background-color: #f1f3f5;
+		border-radius: 4px;
+		font-size: 12px;
+		color: #495057;
+		white-space: nowrap;
+		border: 1px solid #e9ecef;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	}
+
+	/* 行号样式 */
+	.jsondiffpatch-textdiff-line-number {
+		font-weight: 600;
+		color: #2c3e50;
+		padding-right: 6px;
+		border-right: 1px solid #dee2e6;
+		margin-right: 6px;
+		position: relative;
+
+		&::after {
+			content: "行";
+			font-weight: normal;
+			font-size: 11px;
+			color: #868e96;
+			margin-left: 3px;
+		}
+	}
+
+	/* 字符位置样式 */
+	.jsondiffpatch-textdiff-char {
+		font-weight: 600;
+		color: #795548;
+
+		&::after {
+			content: "位";
+			font-weight: normal;
+			font-size: 11px;
+			color: #868e96;
+			margin-left: 3px;
+		}
 	}
 }
 </style>
