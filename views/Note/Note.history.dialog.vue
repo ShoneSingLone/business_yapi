@@ -1,9 +1,13 @@
 <template>
 	<div class="x-padding flex vertical height100 note-history-dialog-vue">
 		<!-- 搜索框 -->
-		<div class="search-container">
+		<div class="search-container flex middle">
 			<i class="search-icon">🔍</i>
 			<input type="text" class="search-input" placeholder="搜索历史记录..." />
+			<xGap f />
+			<button class="toggle-all-btn" @click="toggleAll">
+				{{ cpt_current_all_expanded ? "全部折叠" : "全部展开" }}
+			</button>
 		</div>
 		<!-- 历史记录列表 -->
 		<div class="history-list">
@@ -19,7 +23,7 @@
 					<xGap f />
 				</div>
 				<div class="diff-content" v-if="isShow(row._id)">
-					<div class="diff-text" v-html="noteContent(row.data)" />
+					<div class="diff-text" v-html="noteContent(row.data)"></div>
 				</div>
 			</div>
 			<!-- 空状态提示 -->
@@ -39,6 +43,12 @@ export default async function ({ OPTIONS: { wiki } }) {
 	return defineComponent({
 		mounted() {
 			this.configs_log_list.onQuery();
+		},
+		computed: {
+			cpt_current_all_expanded() {
+				const current = _.filter(this.showContent, Boolean);
+				return current.length === this.configs_log_list.data.list.length;
+			}
 		},
 		data(vm) {
 			return {
@@ -77,8 +87,22 @@ export default async function ({ OPTIONS: { wiki } }) {
 				return String(content).split("\\n").join("<br/>");
 			},
 			toggleCollapse(id) {
-				const isShow = !_.$val(this, `showContent.${id}`);
+				const isShow = !this.showContent[id];
 				_.$val(this, `showContent.${id}`, isShow);
+			},
+			toggleAll() {
+				if (this.cpt_current_all_expanded) {
+					this.showContent = {};
+				} else {
+					this.showContent = _.reduce(
+						this.configs_log_list.data.list,
+						(showContent, row) => {
+							showContent[row._id] = true;
+							return showContent;
+						},
+						{}
+					);
+				}
 			},
 			isShow(id) {
 				return this.showContent[id] || false;
@@ -90,6 +114,7 @@ export default async function ({ OPTIONS: { wiki } }) {
 
 <style lang="less">
 .note-history-dialog-vue {
+	max-width: 100vw;
 	/* 基础样式 */
 	* {
 		margin: 0;
@@ -400,6 +425,16 @@ export default async function ({ OPTIONS: { wiki } }) {
 			display: block;
 			margin-bottom: 5px;
 		}
+	}
+
+	.toggle-all-btn {
+		color: var(--el-color-primary);
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-size: 0.8rem;
+		transition: color 0.2s;
+		margin-left: 10px;
 	}
 }
 </style>
