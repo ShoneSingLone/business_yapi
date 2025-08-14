@@ -6,10 +6,12 @@
 	}
 
 	background-color: white;
+
 	.tree-wrapper {
 		.aside-tree-item {
 			width: 1px;
 		}
+
 		.is-current {
 			.el-tree-node__content {
 				color: var(--el-color-primary);
@@ -22,6 +24,7 @@
 			.xIcon._add {
 				display: none;
 			}
+
 			&:hover {
 				.xIcon._add {
 					display: block;
@@ -93,7 +96,7 @@ export default async function () {
 					_.map(this.APP.all_user, user =>
 						_.merge(user, {
 							avatar: Vue._common_utils.appendToken(
-								`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${user.uid}&usedBy=user`
+								`${window._AJAX_URL_PREFIX || ""}/api/user/avatar?uid=${user.uid}`
 							)
 						})
 					),
@@ -163,6 +166,7 @@ export default async function () {
 							},
 							[
 								hxIcon({
+									key: data.uid,
 									img: data.avatar,
 									iscache: true,
 									class: "imAside-user-list-avatar mr8"
