@@ -2,6 +2,7 @@
 	<div class="online-users-container">
 		<div
 			v-for="(user, index) in current_online_user"
+			:title="username(user._id)"
 			:key="user._id"
 			class="collab-user"
 			:style="iconStyle(index)">
@@ -21,6 +22,11 @@ export default async function () {
 			return {};
 		},
 		methods: {
+			username(uid) {
+				return (
+					_.find(this.APP.all_user, user => _.$isSame(user.uid, uid))?.username || "匿名"
+				);
+			},
 			userAvatar(user) {
 				return _common_utils.avatar_url(user._id);
 			},
@@ -63,8 +69,9 @@ export default async function () {
 		transition: all 0.2s ease;
 
 		&:hover {
-			transform: translateY(40%);
+			transform: translateY(40%) scale(1.6);
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			z-index: 999 !important; /* 确保悬停时置顶 */
 		}
 
 		.user-avatar-wrapper {
