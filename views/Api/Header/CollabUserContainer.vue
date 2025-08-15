@@ -8,7 +8,7 @@
 			:style="iconStyle(index)">
 			<!-- 用户信息 -->
 			<div class="user-details">
-				<xIcon :img="userAvatar(user)" :iscache="true" class="user-avatar-icon" />
+				<xIcon :img="useravatar(user)" :iscache="true" class="user-avatar-icon" />
 			</div>
 		</div>
 		<xBadge :value="current_online_user.length" class="success online-users-count-badge" />
@@ -27,7 +27,7 @@ export default async function () {
 					_.find(this.APP.all_user, user => _.$isSame(user.uid, uid))?.username || "匿名"
 				);
 			},
-			userAvatar(user) {
+			useravatar(user) {
 				return _common_utils.avatar_url(user._id);
 			},
 			iconStyle(index) {
