@@ -1,248 +1,378 @@
 <style lang="less">
 #ViewExplore {
-  --card-bg: #f5f5f5;
-  --hover-bg: #e8e8e8;
-  --shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-  --border-radius: 8px;
-  background-color: var(--el-color-white);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  
-  .path-bar {
-    height: 35px;
-    width: 100%;
-    display: flex;
-    padding: 4px 10px 0 10px;
-    align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      overflow-x: auto;
-      flex-grow: 1;
-      height: 100%;
-      
-      &::-webkit-scrollbar {
-        height: 2px;
-      }
-      
-      &::-webkit-scrollbar-thumb {
-        background: #7f7f7f70;
-        background-clip: padding-box;
-        border: 0px solid transparent;
-        border-radius: 10px;
-      }
-      
-      .breadcrumb-item {
-        display: block;
-        height: 100%;
-        white-space: nowrap;
-        padding: 2px 5px;
-        height: min-content;
-        border-radius: 5px;
-        font-size: 15px;
-        transition: 50ms;
-        cursor: pointer;
-        
-        &:hover {
-          background-color: var(--hover-bg);
-        }
-      }
-      
-      .separator {
-        opacity: 0.4;
-        font-size: 14px;
-        line-height: 1;
-        height: 14px;
-        margin: 0 4px;
-      }
-    }
-  }
-  
-  .toolbar {
-    height: 42px;
-    width: 100%;
-    display: flex;
-    padding: 0 10px 5px 10px;
-    margin-top: 3px;
-    align-items: center;
-    border-bottom: 1px solid #e0e0e0;
-    
-    .search-box {
-      margin-left: auto;
-      min-width: 170px;
-      width: 26%;
-      max-width: 400px;
-      
-      .input {
-        border-radius: var(--border-radius);
-        border: 1px solid #ddd;
-        padding: 6px 10px;
-        width: 100%;
-        font-size: 14px;
-        
-        &:focus {
-          outline: none;
-          border-color: #4a90e2;
-          box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-        }
-      }
-    }
-  }
-  
-  .resource-list {
-    flex-grow: 1;
-    overflow: auto;
-    padding: 10px;
-    
-    .resource-item {
-      width: 100%;
-      padding: 2px 5px;
-      border-radius: 5px;
-      display: flex;
-      border: 1.5px solid transparent;
-      font-size: 14px;
-      align-items: center;
-      height: 30px;
-      transition: 50ms;
-      cursor: pointer;
-      
-      &:hover {
-        background-color: var(--hover-bg);
-        box-shadow: var(--shadow);
-      }
-      
-      &.file {
-        color: #555;
-      }
-      
-      img {
-        width: 25px;
-        height: 25px;
-        margin-right: 5px;
-      }
-      
-      &.file img {
-        width: 22px;
-        height: 22px;
-        margin-left: 2px;
-        margin-right: 7px;
-      }
-      
-      .name {
-        flex-grow: 1;
-      }
-      
-      .type {
-        font-size: 12px;
-        color: #888;
-        margin-right: 10px;
-      }
-    }
-  }
-  
-  .player-opr {
-    background-color: var(--card-bg);
-    padding: 10px;
-    border-top: 1px solid #e0e0e0;
-    display: flex;
-    align-items: center;
-    
-    &.hidden {
-      display: none;
-    }
-    
-    .player-info {
-      display: flex;
-      align-items: center;
-      margin-right: 15px;
-      
-      .song-name {
-        font-size: 14px;
-        font-weight: 500;
-        margin-right: 5px;
-      }
-    }
-    
-    .player-controls {
-      display: flex;
-      align-items: center;
-      flex-grow: 1;
-      
-      .volume-control {
-        display: flex;
-        align-items: center;
-        margin-right: 15px;
-      }
-      
-      .play-model {
-        margin-right: 15px;
-      }
-      
-      .operation {
-        display: flex;
-        align-items: center;
-      }
-    }
-  }
+	--card-bg: #f5f5f5;
+	--hover-bg: #e8e8e8;
+	--shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+	--border-radius: 8px;
+	background-color: var(--el-color-white);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.path-bar {
+		height: 35px;
+		width: 100%;
+		display: flex;
+		padding: 4px 10px 0 10px;
+		align-items: center;
+		border-bottom: 1px solid #e0e0e0;
+
+		.breadcrumb {
+			display: flex;
+			align-items: center;
+			overflow-x: auto;
+			flex-grow: 1;
+			height: 100%;
+
+			.toolbar-toggle {
+				border-radius: 4px;
+				border: 1px solid transparent;
+				padding: 4px 8px;
+				font-size: 12px;
+				background-color: transparent;
+				color: #666;
+				cursor: pointer;
+				transition: all 100ms ease;
+				margin-right: 5px;
+				height: 26px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				&:hover {
+					background-color: rgba(0, 0, 0, 0.05);
+					border-color: rgba(0, 0, 0, 0.1);
+				}
+
+				&:focus {
+					outline: none;
+					background-color: rgba(74, 144, 226, 0.1);
+					border-color: rgba(74, 144, 226, 0.3);
+				}
+			}
+
+			&::-webkit-scrollbar {
+				height: 2px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background: #7f7f7f70;
+				background-clip: padding-box;
+				border: 0px solid transparent;
+				border-radius: 10px;
+			}
+
+			.breadcrumb-item {
+				display: block;
+				height: 100%;
+				white-space: nowrap;
+				padding: 2px 5px;
+				height: min-content;
+				border-radius: 5px;
+				font-size: 15px;
+				transition: 50ms;
+				cursor: pointer;
+
+				&:hover {
+					background-color: var(--hover-bg);
+				}
+			}
+
+			.separator {
+				opacity: 0.4;
+				font-size: 14px;
+				line-height: 1;
+				height: 14px;
+				margin: 0 4px;
+			}
+		}
+	}
+
+	.toolbar {
+		height: auto;
+		width: 100%;
+		display: flex;
+		padding: 0 10px 5px 10px;
+		margin-top: 3px;
+		align-items: center;
+		border-bottom: 1px solid #e0e0e0;
+		transition: all 0.2s ease;
+
+		.toolbar-content {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			transition: all 0.2s ease;
+
+			&.collapsed {
+				display: none;
+			}
+
+			.sort-controls {
+				display: flex;
+				align-items: center;
+				margin-right: 15px;
+				gap: 5px;
+
+				.sort-description {
+					font-size: 13px;
+					color: #666;
+				}
+
+				.sort-btn {
+					border-radius: 4px;
+					border: 1px solid transparent;
+					padding: 5px 8px;
+					font-size: 13px;
+					background-color: transparent;
+					color: #333;
+					cursor: pointer;
+					transition: all 100ms ease;
+					font-weight: 500;
+					display: inline-flex;
+					align-items: center;
+					gap: 3px;
+
+					&:hover {
+						background-color: rgba(0, 0, 0, 0.05);
+						border-color: rgba(0, 0, 0, 0.1);
+					}
+
+					&:focus {
+						outline: none;
+						background-color: rgba(74, 144, 226, 0.1);
+						border-color: rgba(74, 144, 226, 0.3);
+					}
+
+					&.active {
+						background-color: rgba(74, 144, 226, 0.15);
+						border-color: rgba(74, 144, 226, 0.4);
+						color: #4a90e2;
+					}
+
+					&.sort-level-1 {
+						box-shadow: 0 0 0 2px #4a90e2;
+						border-color: #4a90e2;
+						background-color: rgba(74, 144, 226, 0.2);
+					}
+
+					&.sort-level-2 {
+						box-shadow: 0 0 0 2px #5cb85c;
+						border-color: #5cb85c;
+						background-color: rgba(92, 184, 92, 0.2);
+					}
+
+					.sort-order-indicator {
+						font-size: 11px;
+					}
+					.sort-priority-indicator {
+						font-size: 10px;
+						background-color: #4a90e2;
+						color: white;
+						border-radius: 10px;
+						padding: 1px 4px;
+						margin-left: 3px;
+						font-weight: bold;
+					}
+				}
+			}
+
+			.sort-help {
+				margin-right: 15px;
+				color: #666;
+				font-size: 12px;
+			}
+
+			.search-box {
+				margin-left: auto;
+				min-width: 170px;
+				width: 26%;
+				max-width: 400px;
+
+				.input {
+					border-radius: var(--border-radius);
+					border: 1px solid #ddd;
+					padding: 6px 10px;
+					width: 100%;
+					font-size: 14px;
+
+					&:focus {
+						outline: none;
+						border-color: #4a90e2;
+						box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+					}
+				}
+			}
+		}
+	}
+
+	/* 响应式设计 */
+	@media (max-width: 768px) {
+		.toolbar {
+			flex-wrap: wrap;
+			padding-bottom: 10px;
+			height: auto;
+
+			.toolbar-content {
+				flex-wrap: wrap;
+				gap: 10px;
+				margin-top: 5px;
+
+				.sort-controls {
+					width: 100%;
+					margin-right: 0;
+					flex-wrap: wrap;
+					justify-content: space-between;
+
+					.sort-btn {
+						flex: 1;
+						min-width: 70px;
+						text-align: center;
+					}
+				}
+
+				.search-box {
+					width: 100%;
+					min-width: auto;
+					max-width: none;
+				}
+			}
+		}
+	}
+
+	.resource-list {
+		flex-grow: 1;
+		overflow: auto;
+		padding: 10px;
+	}
+
+	.player-opr {
+		background-color: var(--card-bg);
+		padding: 10px;
+		border-top: 1px solid #e0e0e0;
+		display: flex;
+		align-items: center;
+
+		&.hidden {
+			display: none;
+		}
+
+		.player-info {
+			display: flex;
+			align-items: center;
+			margin-right: 15px;
+
+			.song-name {
+				font-size: 14px;
+				font-weight: 500;
+				margin-right: 5px;
+			}
+		}
+
+		.player-controls {
+			display: flex;
+			align-items: center;
+			flex-grow: 1;
+
+			.volume-control {
+				display: flex;
+				align-items: center;
+				margin-right: 15px;
+			}
+
+			.play-model {
+				margin-right: 15px;
+			}
+
+			.operation {
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
 }
 </style>
 <template>
-  <div id="ViewExplore">
-    <!-- 路径栏 -->
-    <div class="path-bar">
-      <div class="breadcrumb">
-        <div class="breadcrumb-item" @click="back(-1)">root</div>
-        <span class="separator">/</span>
-        <div v-for="(item, index) in pathStack" :key="index" class="breadcrumb-item" @click="back(index)">
-          {{ item }}
-        </div>
-      </div>
-    </div>
-    
-    <!-- 工具栏 -->
-    <div class="toolbar">
-      <div class="search-box">
-        <input v-model.lazy="searchKey" placeholder="搜索" clearable class="input" />
-      </div>
-    </div>
-    
-    <!-- 资源列表 -->
-    <div class="resource-list">
-      <div 
-        v-for="(item, index) in cptResource" 
-        :key="index" 
-        class="resource-item" 
-        :class="{ 'file': isShow(item) }" 
-        @click="isShow(item) ? playMedia(item) : getResource(item)"
-      >
-        <img :src="getIcon(item)" alt="icon" />
-        <div class="name">{{ item.name }}</div>
-        <div class="type">{{ item.type }}</div>
-      </div>
-    </div>
-    
-    <!-- 音频播放器 -->
-    <div v-if="stateAudio.songId" class="player-opr">
-      <div class="player-info">
-        <span class="song-name">{{ stateAudio.songId }}</span>
-      </div>
-      <div class="player-controls">
-        <MusicPlayerAudio />
-        <div class="volume-control">
-          <MusicPlayerVolume class="flex1" />
-        </div>
-        <div class="play-model">
-          <MusicPlayerModel />
-        </div>
-        <div class="operation">
-          <MusicPlayerOpration />
-        </div>
-      </div>
-    </div>
-  </div>
+	<div id="ViewExplore">
+		<!-- 路径栏 -->
+		<div class="path-bar">
+			<div class="breadcrumb">
+				<button class="toolbar-toggle" @click="toggleToolbar" title="切换工具栏">
+					{{ toolbarCollapsed ? "▼" : "▲" }}
+				</button>
+				<div class="breadcrumb-item" @click="back(-1)">root</div>
+				<span class="separator">/</span>
+				<div
+					v-for="(item, index) in pathStack"
+					:key="index"
+					class="breadcrumb-item"
+					@click="back(index)">
+					{{ item }}
+				</div>
+			</div>
+		</div>
+
+		<!-- 工具栏 -->
+		<div class="toolbar">
+			<div class="toolbar-content" :class="{ collapsed: toolbarCollapsed }">
+				<div class="sort-controls">
+					<div class="sort-description">排序方式：</div>
+					<div v-for="option in sortOptions" :key="option.value" class="sort-btn-group">
+						<button
+							class="sort-btn"
+							:class="getSortBtnClass(option.value)"
+							@click="toggleSortField(option.value)"
+							:title="getSortBtnTitle(option.value)">
+							{{ option.label }}
+							<span class="sort-order-indicator">{{
+								getSortOrderIndicator(option.value)
+							}}</span>
+							<span class="sort-priority-indicator">{{
+								getSortPriorityIndicator(option.value)
+							}}</span>
+						</button>
+					</div>
+				</div>
+				<div class="sort-help">
+					<small
+						>默认排序：先按类型再按名称排序。点击排序字段可设置优先级，最多支持两个字段组合排序</small
+					>
+				</div>
+				<div class="search-box">
+					<input v-model.lazy="searchKey" placeholder="搜索" clearable class="input" />
+				</div>
+			</div>
+		</div>
+
+		<!-- 资源列表 -->
+		<div class="resource-list">
+			<ResourceItem
+				v-for="(resource, index) in cptResource"
+				:key="index"
+				:resource="resource"
+				@subdir="getResource(resource)"
+				@play-media="playMedia(resource)" />
+		</div>
+
+		<!-- 音频播放器 -->
+		<div v-if="stateAudio.songId" class="player-opr">
+			<div class="player-info">
+				<span class="song-name">{{ stateAudio.songId }}</span>
+			</div>
+			<div class="player-controls">
+				<MusicPlayerAudio />
+				<div class="volume-control">
+					<MusicPlayerVolume class="flex1" />
+				</div>
+				<div class="play-model">
+					<MusicPlayerModel />
+				</div>
+				<div class="operation">
+					<MusicPlayerOpration />
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 <script lang="ts">
 export default async function () {
@@ -607,42 +737,6 @@ export default async function () {
 			this.getResource();
 		},
 		methods: {
-      isShow(item) {
-        return ['audio', 'video'].includes(item.type);
-      },
-      back(index) {
-        if (index === -1) {
-          this.getResource({ path: [] });
-        } else {
-          this.getResource({ path: this.pathStack.slice(0, index + 1) });
-        }
-      },
-      async getResource(item = {}) {
-        this.pathStack = _.isArray(item?.path) ? item.path : [];
-        _.$loading(true);
-        try {
-          const res = await _api.yapi.resourceLs({ path: this.pathStack });
-          if (!res.errcode) {
-            this.resource = _.orderBy(res.data, ['type']);
-          }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          _.$loading(false);
-        }
-      },
-      getIcon(item) {
-        if (item.type === "folder") {
-          return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234a90e2'%3E%3Cpath d='M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z'/%3E%3C/svg%3E";
-        } else if (item.type === "audio") {
-          return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234caf50'%3E%3Cpath d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/%3E%3C/svg%3E";
-        } else if (item.type === "video") {
-          return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff9800'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z'/%3E%3C/svg%3E";
-        } else {
-          return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239e9e9e'%3E%3Cpath d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/%3E%3C/svg%3E";
-        }
-      }
-    },
 			back(index) {
 				if (index === -1) {
 					this.getResource({ path: [] });
