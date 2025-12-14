@@ -413,12 +413,17 @@ export default async function () {
 			const center = "center";
 			return hDiv([
 				hDiv(
-					{ class: "flex middle panel-req-body-json-row panel-req-body-json-row_header" },
+					{
+						class: "flex middle panel-req-body-json-row panel-req-body-json-row_header"
+					},
 					[
 						hDiv({ style: { width: `${16}px` } }, []),
-						hDiv({ style: { "text-align": center, width: `${CELL_WIDTH - 16}px` } }, [
-							"属性名称"
-						]),
+						hDiv(
+							{
+								style: { "text-align": center, width: `${CELL_WIDTH - 16}px` }
+							},
+							["属性名称"]
+						),
 						hDiv({ style: { "text-align": center, width } }, ["类型"]),
 						hDiv({ style: { "text-align": center, width } }, ["格式"]),
 						hDiv({ style: { "text-align": center, width } }, ["描述"]),

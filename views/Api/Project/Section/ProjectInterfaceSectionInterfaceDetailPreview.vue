@@ -323,7 +323,9 @@ export default async function () {
 						value: isProxy || "--",
 						xItemRender: () => {
 							if (isProxy) {
-								const env = _.find(this.APP?.cptProject?.env, { _id: witchEnv });
+								const env = _.find(this.APP?.cptProject?.env, {
+									_id: witchEnv
+								});
 								return hDiv([
 									h("xTag", { class: "mr" }, [env.name]),
 									hSpan([env.domain])

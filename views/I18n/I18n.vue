@@ -85,7 +85,11 @@ export default async function () {
 
 						const { data: params, errcode } = await _api.yapi.i18nTranslate(payload);
 						if (!errcode) {
-							const { trans_result } = await translateByBaidu({ params, to, from });
+							const { trans_result } = await translateByBaidu({
+								params,
+								to,
+								from
+							});
 							const [_res] = trans_result;
 							resolve(_res);
 						} else if (errcode === 408) {

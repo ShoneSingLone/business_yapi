@@ -65,7 +65,11 @@ export default async function ({ categoryInfo, project_id, get_interface_list })
 							}
 						}
 					},
-					title: { value: "", label: i18n("接口名称"), rules: [_rules.required()] },
+					title: {
+						value: "",
+						label: i18n("接口名称"),
+						rules: [_rules.required()]
+					},
 					path: {
 						value: "",
 						label: i18n("接口路径"),

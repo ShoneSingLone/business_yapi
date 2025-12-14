@@ -39,7 +39,9 @@ export default async function () {
 			async call() {
 				console.log("开始呼叫...");
 				//设置ICE Server，使用Google服务器
-				let configuration = { iceServers: [{ url: "stun:stun.l.google.com:19302" }] };
+				let configuration = {
+					iceServers: [{ url: "stun:stun.l.google.com:19302" }]
+				};
 				//创建RTCPeerConnection对象
 				this.localConnection = new RTCPeerConnection(configuration);
 				console.log("创建本地PeerConnection成功:localConnection");

@@ -71,11 +71,15 @@ Swagger自动同步 */
 			});
 
 			const cpt_current_index = computed(() => {
-				return _.findIndex(tabArray, { name: cpt_project_setting_tab_name.value });
+				return _.findIndex(tabArray, {
+					name: cpt_project_setting_tab_name.value
+				});
 			});
 
 			const cpt_item_style = computed(() => {
-				return { transform: "translateX(" + -cpt_current_index.value * 100 + "%)" };
+				return {
+					transform: "translateX(" + -cpt_current_index.value * 100 + "%)"
+				};
 			});
 
 			return {
