@@ -7,39 +7,19 @@
 				<div class="video-container">
 					<video ref="refVideo" controls="true" class="video-element" />
 				</div>
-				<!-- 自定义控制栏 -->
+
 				<div class="custom-controls">
-					<button
-						@click="playPrevious"
-						:disabled="currentIndex === 0"
-						class="control-btn">
-						上一个
-					</button>
-					<button
-						@click="playNext"
-						:disabled="currentIndex === all_video_array.length - 1"
-						class="control-btn">
-						下一个
-					</button>
-					<select
-						v-model="playbackRate"
-						@change="changePlaybackRate"
-						class="speed-select">
-						<option :value="0.5">0.5x</option>
-						<option :value="0.75">0.75x</option>
-						<option :value="1">1x</option>
-						<option :value="1.25">1.25x</option>
-						<option :value="1.5">1.5x</option>
-						<option :value="2">2x</option>
-					</select>
-					<button @click="toggleFullscreen" class="control-btn">
-						{{ isFullscreen ? "退出全屏" : "全屏" }}
-					</button>
+					<xItem :configs="xItemPlaybackRate" style="--xItem-wrapper-width: 120px" />
 				</div>
 			</div>
 			<!-- 播放列表 -->
 			<div class="playlist">
-				<h4>播放列表</h4>
+				<!-- 自定义控制栏 -->
+				<div class="custom-controls">
+					<xBtn :configs="btnPre" />
+					<xBtn :configs="btnNext" />
+					<xBtn :configs="btnFullscreen" />
+				</div>
 				<ul>
 					<li
 						v-for="(video, index) in all_video_array"
@@ -67,7 +47,6 @@ export default async function ({ item, all_video_array, current_index, current_r
 		data() {
 			return {
 				currentIndex: current_index || 0,
-				playbackRate: 1,
 				all_video_array: all_video_array || [],
 				isFullscreen: false
 			};
@@ -80,6 +59,49 @@ export default async function ({ item, all_video_array, current_index, current_r
 				if (all_video_array.length === 0) return "";
 				const video = all_video_array[this.currentIndex];
 				return video?.uri || "";
+			},
+			btnPre() {
+				return {
+					label: () =>
+						h("xIcon", {
+							icon: "_prevsong"
+						}),
+					onClick: this.playPrevious,
+					disabled: this.currentIndex === 0
+				};
+			},
+			btnNext() {
+				return {
+					label: () =>
+						h("xIcon", {
+							icon: "_nextsong"
+						}),
+					onClick: this.playNext,
+					disabled: this.currentIndex === all_video_array.length - 1
+				};
+			},
+			btnFullscreen() {
+				return {
+					label: this.isFullscreen ? "退出全屏" : "全屏",
+					onClick: this.toggleFullscreen
+				};
+			},
+			xItemPlaybackRate() {
+				return {
+					value: 1,
+					itemType: "xItemSelect",
+					options: [
+						{ label: "0.5x", value: 0.5 },
+						{ label: "0.75x", value: 0.75 },
+						{ label: "1x", value: 1 },
+						{ label: "1.25x", value: 1.25 },
+						{ label: "1.5x", value: 1.5 },
+						{ label: "2x", value: 2 }
+					],
+					onEmitValue(val) {
+						this.changePlaybackRate();
+					}
+				};
 			}
 		},
 		watch: {
@@ -130,7 +152,7 @@ export default async function ({ item, all_video_array, current_index, current_r
 			changePlaybackRate() {
 				const video = this.$refs.refVideo;
 				if (video) {
-					video.playbackRate = this.playbackRate;
+					video.playbackRate = this.xItemPlaybackRate.value;
 				}
 			},
 			toggleFullscreen() {

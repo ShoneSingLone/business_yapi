@@ -525,14 +525,17 @@ export default async function () {
 					const uri = encodeURIComponent(JSON.stringify(item.path));
 					return {
 						...item,
-						uri: Vue._common_utils.appendToken(
+						download_uri: Vue._common_utils.appendToken(
 							_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
+						),
+						uri: Vue._common_utils.appendToken(
+							_.$ajax.urlWrapper(`/api/resource/video?uri=${uri}`)
 						)
 					};
 				});
 				const current_index = _.findIndex(all_video_array, { name });
 				return _.$openModal({
-					title: "video player",
+					title: "Player",
 					url: "@/views/explore/execTools/video/VideoPlayerFullscreen.dialog.vue",
 					current_index,
 					current_resource,
