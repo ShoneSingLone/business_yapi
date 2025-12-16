@@ -80,11 +80,13 @@
 			}
 
 			.separator {
-				opacity: 0.4;
-				font-size: 14px;
+				opacity: 0.8;
+				font-size: 16px;
+				font-weight: bold;
 				line-height: 1;
-				height: 14px;
-				margin: 0 4px;
+				height: 16px;
+				margin: 0 8px;
+				color: #4a90e2;
 			}
 		}
 	}
@@ -303,14 +305,12 @@
 				</button>
 				<button class="refresh-btn" @click="refreshResource" title="刷新资源列表">↻</button>
 				<div class="breadcrumb-item" @click="back(-1)">root</div>
-				<span class="separator">/</span>
-				<div
-					v-for="(item, index) in pathStack"
-					:key="index"
-					class="breadcrumb-item"
-					@click="back(index)">
-					{{ item }}
-				</div>
+				<template v-for="(item, index) in pathStack" :key="index">
+					<span class="separator">/</span>
+					<div class="breadcrumb-item" @click="back(index)">
+						{{ item }}
+					</div>
+				</template>
 			</div>
 		</div>
 
