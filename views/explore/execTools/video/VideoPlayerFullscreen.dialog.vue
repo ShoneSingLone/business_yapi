@@ -3,10 +3,10 @@
 		<div class="video-player-container">
 			<!-- 视频播放区域 -->
 			<div class="video-area">
-				<video
-					ref="refVideo"
-					controls="true"
-					style="width: 100%; max-width: 100%; height: auto" />
+				<!-- 固定宽高比的视频容器 -->
+				<div class="video-container">
+					<video ref="refVideo" controls="true" class="video-element" />
+				</div>
 				<!-- 自定义控制栏 -->
 				<div class="custom-controls">
 					<button
@@ -204,17 +204,34 @@ export default async function ({ item, all_video_array, current_index, current_r
 
 .video-area {
 	flex: 1;
-	margin-right: 10px;
-	margin-bottom: 10px;
-	max-width: 80%;
+	margin: 0 auto 10px;
+	width: 100%;
+	max-width: 100%;
 
 	@media (min-width: 768px) {
 		margin-bottom: 0;
-		max-width: 70%;
+		margin-right: 10px;
+		max-width: 800px;
 	}
 
-	video {
-		max-height: 500px;
+	/* 固定宽高比的视频容器，确保视频切换时大小不变 */
+	.video-container {
+		position: relative;
+		width: 100%;
+		padding-top: 56.25%; /* 16:9 宽高比 */
+		background-color: #000;
+		border-radius: 4px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+		overflow: hidden;
+	}
+
+	/* 视频元素充满容器，保持原始宽高比 */
+	.video-element {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 		object-fit: contain;
 	}
 }
