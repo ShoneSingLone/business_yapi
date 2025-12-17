@@ -34,7 +34,12 @@ export default async function () {
 						staticClass: "pointer icon-item-wrapper",
 						onClick: this.followIconClickHandler
 					},
-					[h("xIcon", { icon: `_${this.followIconIcon}`, style: "color: #faad14" })]
+					[
+						h("xIcon", {
+							icon: `_${this.followIconIcon}`,
+							style: "color: #faad14"
+						})
+					]
 				);
 			},
 			copyIcon() {

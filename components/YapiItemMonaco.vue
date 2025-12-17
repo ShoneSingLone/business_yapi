@@ -17,7 +17,9 @@ export default async function () {
 				"//repo.bfw.wiki/bfwrepo/js/monaco-editor/loader.js",
 				"require"
 			);
-			require.config({ paths: { vs: "//repo.bfw.wiki/bfwrepo/js/monaco-editor" } });
+			require.config({
+				paths: { vs: "//repo.bfw.wiki/bfwrepo/js/monaco-editor" }
+			});
 
 			require(["vs/editor/editor.main"], function () {
 				const { monaco } = window;

@@ -322,7 +322,10 @@ export default async function () {
 			return hDiv({ class: "flex1-overflow-auto" }, [
 				/*viewer html*/
 				hDiv(viewerProps, [
-					hDiv({ ref: "refMarkdownViewer", staticClass: "toastui-viewer-contents" })
+					hDiv({
+						ref: "refMarkdownViewer",
+						staticClass: "toastui-viewer-contents"
+					})
 				]),
 				/*tuiEdior*/
 				hDiv({

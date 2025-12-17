@@ -68,7 +68,10 @@ export default async function () {
 				return hDiv({ col: 2 }, [
 					hDiv({ class: "flex middle" }, [this.item.title]),
 					..._.map(this.item.properties, (property, prop) => {
-						return h("YapiApiRequestBodyPreviewer", { item: property, propName: prop });
+						return h("YapiApiRequestBodyPreviewer", {
+							item: property,
+							propName: prop
+						});
 					})
 				]);
 			}
