@@ -184,7 +184,9 @@ export default async function ({ onOk }) {
 							const [atLestOne] = await _.$validateForm(vm.$el);
 							if (atLestOne) return;
 							const { name, basepath, group_id, project_type, desc } = vm.cptFormData;
-							const group = _.find(vm.form.group_id.options, { value: group_id });
+							const group = _.find(vm.form.group_id.options, {
+								value: group_id
+							});
 							const group_name = group.label;
 							const { data } = await _api.yapi.project_add({
 								name,

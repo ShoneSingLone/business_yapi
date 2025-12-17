@@ -160,7 +160,9 @@ export default async function () {
 					return group_view_tab_name;
 				} else {
 					/* 不存在或者不存在当前角色列表，就默认第一个 */
-					this.APP.routerUpsertQuery({ group_view_tab_name: TAB_KEY_MEMBER_LIST });
+					this.APP.routerUpsertQuery({
+						group_view_tab_name: TAB_KEY_MEMBER_LIST
+					});
 					return TAB_KEY_MEMBER_LIST;
 				}
 			}

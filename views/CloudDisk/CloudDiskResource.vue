@@ -181,7 +181,10 @@ export default async function () {
 
 				if (!isLastItem) {
 					target.push(
-						h("xIcon", { icon: "_back_group", style: "transform:rotate(180deg);" })
+						h("xIcon", {
+							icon: "_back_group",
+							style: "transform:rotate(180deg);"
+						})
 					);
 				}
 				return target;
@@ -206,7 +209,10 @@ export default async function () {
 				while (start < file.size) {
 					end = Math.min(start + CHUNK_SIZE, file.size);
 					//slice 截取文件字节
-					chunkAndSizeArray.push({ chunk: file.slice(start, end), size: end - start });
+					chunkAndSizeArray.push({
+						chunk: file.slice(start, end),
+						size: end - start
+					});
 					start = end;
 				}
 				_.$loading(false);
@@ -392,7 +398,9 @@ export default async function () {
 				if (vm.APP.selectedItems.length !== 1) {
 					return _.$msgError("只能选择一个文件");
 				}
-				let item = _.find(vm.APP.resourceList, { _id: vm.APP.selectedItems[0] });
+				let item = _.find(vm.APP.resourceList, {
+					_id: vm.APP.selectedItems[0]
+				});
 				item.type = type;
 				this.APP.playMedia(item, { resource: this.APP.resourceList });
 			},
@@ -439,7 +447,9 @@ export default async function () {
 				if (vm.APP.selectedItems.length !== 1) {
 					return _.$msgError("只能选择一个文件");
 				}
-				let item = _.find(vm.APP.resourceList, { _id: vm.APP.selectedItems[0] });
+				let item = _.find(vm.APP.resourceList, {
+					_id: vm.APP.selectedItems[0]
+				});
 				return _.$ajax.downloadOctetStream({
 					url: `/api/resource/get`,
 					payload: { id: item._id },

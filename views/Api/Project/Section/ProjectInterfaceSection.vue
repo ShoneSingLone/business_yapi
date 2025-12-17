@@ -217,7 +217,11 @@ export default async function ({ PRIVATE_GLOBAL }) {
 					);
 					const hasBackupData = h(
 						"xTag",
-						{ type: "warning", class: "ellipsis mt4", vIf: !rowData.isSetBackupData },
+						{
+							type: "warning",
+							class: "ellipsis mt4",
+							vIf: !rowData.isSetBackupData
+						},
 						[NO_BACKUP]
 					);
 
