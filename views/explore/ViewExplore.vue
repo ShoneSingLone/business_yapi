@@ -305,12 +305,12 @@
 				</button>
 				<button class="refresh-btn" @click="refreshResource" title="刷新资源列表">↻</button>
 				<div class="breadcrumb-item" @click="back(-1)">root</div>
-				<template v-for="(item, index) in pathStack" :key="index">
+				<div v-for="(item, index) in pathStack" :key="index">
 					<span class="separator">/</span>
 					<div class="breadcrumb-item" @click="back(index)">
 						{{ item }}
 					</div>
-				</template>
+				</div>
 			</div>
 		</div>
 
