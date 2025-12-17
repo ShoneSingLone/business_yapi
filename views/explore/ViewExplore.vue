@@ -517,6 +517,8 @@ export default async function () {
 						);
 					}),
 					index
+				},{
+					autoPlay:true
 				});
 			}
 			async function playVideo(current_resource) {
