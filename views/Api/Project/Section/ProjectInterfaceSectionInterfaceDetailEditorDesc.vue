@@ -197,6 +197,7 @@ span[style*="font-weight:700;font-size:18px;"] {
 								:configs="form.newFileConfigs"
 								:value="new_file_name" />
 							<xBtn
+								v-if="!readonly"
 								@click="addNewFile"
 								:disabled="!new_file_name.trim()"
 								class="ml"
@@ -204,7 +205,13 @@ span[style*="font-weight:700;font-size:18px;"] {
 								size="small"
 								>保存</xBtn
 							>
-							<xBtn @click="hide_add_input" preset="default" size="small">取消</xBtn>
+							<xBtn
+								@click="hide_add_input"
+								preset="default"
+								size="small"
+								v-if="!readonly"
+								>取消</xBtn
+							>
 						</div>
 					</div>
 
@@ -218,6 +225,7 @@ span[style*="font-weight:700;font-size:18px;"] {
 								title
 							}}</span>
 							<xBtn
+								v-if="!readonly"
 								preset="text"
 								icon="delete"
 								@click="delete_desc(index)"
@@ -226,12 +234,6 @@ span[style*="font-weight:700;font-size:18px;"] {
 								title="删除文档" />
 						</li>
 					</ul>
-					<!-- 空状态 -->
-					<div
-						v-if="cpt_desc_list.length === 0"
-						class="p-4 text-center text-gray-500 bg-white">
-						请点击顶部的“添加”按钮添加描述
-					</div>
 				</div>
 			</div>
 
@@ -240,7 +242,7 @@ span[style*="font-weight:700;font-size:18px;"] {
 				<div class="flex mb10 middle" style="height: 48px">
 					<xRender :render="vDomTitle" class="flex1" />
 					<xGap l />
-					<xBtn :configs="btnSaveOrModify" />
+					<xBtn :configs="btnSaveOrModify" v-if="!readonly" />
 					<xBtn :configs="btnCancel" />
 				</div>
 				<TuiEditor
@@ -259,6 +261,9 @@ export default async function () {
 	return defineComponent({
 		mixins: [mixins],
 		inject: ["APP"],
+		mounted() {
+			this.load_desc_by_index(0);
+		},
 		data() {
 			const vm = this;
 			return {
