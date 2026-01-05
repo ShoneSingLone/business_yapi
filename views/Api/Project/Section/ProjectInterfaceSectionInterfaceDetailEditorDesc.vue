@@ -16,7 +16,6 @@
 .log-wrapper {
 	flex: 1;
 	height: 1px;
-	overflow: auto;
 	padding: 8px 0;
 	/* 美化滚动条 */
 	&::-webkit-scrollbar {
@@ -54,7 +53,7 @@ ul {
 }
 
 li {
-	padding: 14px 16px;
+	padding: 2px 16px;
 	border-bottom: 1px solid #f5f7fa;
 	transition: all 0.2s ease;
 	cursor: pointer;
@@ -74,6 +73,9 @@ li {
 }
 
 .logHead {
+	display: flex;
+	align-content: center;
+	justify-items: flex-start;
 	font-size: 14px;
 	font-weight: 400;
 	color: #303133;
@@ -183,16 +185,9 @@ span[style*="font-weight:700;font-size:18px;"] {
 	<section
 		class="x-page-view flex1 flash-when"
 		id="ProjectInterfaceSectionInterfaceDetailEditorDesc">
-		<div class="flex height100">
-			<!-- 左侧记录栏 -->
+		<!-- 左侧记录栏 -->
+		<div class="flex flex1 height1px">
 			<div class="log-sidebar" v-if="!isShowEditor">
-				<!-- Sidebar Header -->
-				<div class="p-4 border-bottom bg-white flex justify-between items-center">
-					<h3 class="text-base font-semibold text-gray-800 m-0">文档列表</h3>
-					<xBtn icon="plus" @click="showAddInput" size="small" preset="primary">
-						添加
-					</xBtn>
-				</div>
 				<div class="log-wrapper">
 					<!-- 添加文件输入框 -->
 					<div v-if="isShowAddInput" class="p-4 border-b bg-white">
@@ -213,9 +208,9 @@ span[style*="font-weight:700;font-size:18px;"] {
 						</div>
 					</div>
 
-					<ul>
+					<ul class="flex1 vertical flex">
 						<li
-							class="flex items-center justify-between"
+							class="flex middle overflow-hidden"
 							v-for="({ title }, index) in cpt_desc_list"
 							:key="title"
 							:class="{ active: index === current_desc_index }">
@@ -241,19 +236,18 @@ span[style*="font-weight:700;font-size:18px;"] {
 			</div>
 
 			<!-- 右侧编辑器区域 -->
-			<div class="flex1">
-				<xPageContent>
-					<div class="flex mb10 middle" style="height: 48px">
-						<xRender :render="vDomTitle" class="flex1" />
-						<xGap l />
-						<xBtn :configs="btnSaveOrModify" />
-						<xBtn :configs="btnCancel" />
-					</div>
-					<TuiEditor
-						:value="{ md: markdown }"
-						:asRender="!isShowEditor"
-						@change="onMarkdownChange" />
-				</xPageContent>
+			<div class="flex vertical flex1 x-padding">
+				<div class="flex mb10 middle" style="height: 48px">
+					<xRender :render="vDomTitle" class="flex1" />
+					<xGap l />
+					<xBtn :configs="btnSaveOrModify" />
+					<xBtn :configs="btnCancel" />
+				</div>
+				<TuiEditor
+					class="flex1"
+					:value="{ md: markdown }"
+					:asRender="!isShowEditor"
+					@change="onMarkdownChange" />
 			</div>
 		</div>
 	</section>
@@ -261,6 +255,7 @@ span[style*="font-weight:700;font-size:18px;"] {
 <script lang="ts">
 export default async function () {
 	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
+
 	return defineComponent({
 		mixins: [mixins],
 		inject: ["APP"],
