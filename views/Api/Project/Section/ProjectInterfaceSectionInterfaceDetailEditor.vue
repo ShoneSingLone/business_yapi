@@ -1,7 +1,5 @@
 <style lang="less">
 #ProjectInterfaceSectionInterfaceDetailEditor {
-	height: 1px;
-	overflow: hidden;
 }
 </style>
 <template>
@@ -58,11 +56,7 @@
 			</xCard>
 			<xGap t />
 			<xCard header="描述">
-				<TuiEditor
-					:value="{ md: formData.desc || '' }"
-					:asRender="false"
-					style="height: 400px"
-					@change="onMarkdownChange" />
+				<xItem :configs="form.desc" v-model="formData.desc" style="--xItem-wrapper-width: 100%" />
 			</xCard>
 		</div>
 		<xGap t />
@@ -241,6 +235,10 @@ export default async function () {
 					resBackupJson: {
 						label: i18n("备份数据"),
 						itemType: "xItemMonaco"
+					},
+					desc: {
+						label: i18n(""),
+						itemType: "ProjectInterfaceSectionInterfaceDetailEditorDesc"
 					}
 				})
 			};
