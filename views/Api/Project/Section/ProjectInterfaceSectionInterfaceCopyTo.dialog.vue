@@ -8,49 +8,49 @@
 	</xDialog>
 </template>
 <script lang="ts">
-export default async function ({ row }) {
-	const isUpdate = !!row;
-	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
+	export default async function ({ row }) {
+		const isUpdate = !!row;
+		const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 
-	return defineComponent({
-		props: useDialogProps(),
-		mounted() {},
-		data() {
-			return {
-				form: {
-					name: {
-						value: "",
-						label: i18n("name"),
-						disabled: isUpdate,
-						rules: [_rules.required(), _rules.lessThan(50)]
-					}
-				}
-			};
-		},
-		computed: {
-			isUpdate() {
-				return !!row;
-			},
-			btnOk() {
-				const vm = this;
+		return defineComponent({
+			props: useDialogProps(),
+			mounted() {},
+			data() {
 				return {
-					label: i18n("ok"),
-					preset: "blue",
-					async onClick() {
-						vm.onClickOk();
+					form: {
+						name: {
+							value: "",
+							label: i18n("name"),
+							disabled: isUpdate,
+							rules: [_rules.required(), _rules.lessThan(50)]
+						}
 					}
 				};
-			}
-		},
-		methods: {
-			async onClickOk() {
-				const [error] = await _.$validateForm(this.el);
-				if (error) {
-					return;
+			},
+			computed: {
+				isUpdate() {
+					return !!row;
+				},
+				btnOk() {
+					const vm = this;
+					return {
+						label: i18n("ok"),
+						preset: "blue",
+						async onClick() {
+							vm.onClickOk();
+						}
+					};
 				}
-				this.closeModal();
+			},
+			methods: {
+				async onClickOk() {
+					const [error] = await _.$validateForm(this.el);
+					if (error) {
+						return;
+					}
+					this.closeModal();
+				}
 			}
-		}
-	});
-}
+		});
+	}
 </script>

@@ -1,51 +1,51 @@
 <style lang="less">
-.CloudDiskMine {
-	height: 1px;
-	.audio-title {
-		text-wrap: nowrap;
-	}
-	.player-playlist {
-		background-color: white;
-	}
+	.CloudDiskMine {
+		height: 1px;
+		.audio-title {
+			text-wrap: nowrap;
+		}
+		.player-playlist {
+			background-color: white;
+		}
 
-	.player-opr {
-		position: relative;
-		background-image: var(--opr-background-image);
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-		backdrop-filter: blur(20px);
-		// backdrop-filter: brightness(60%);
-		// backdrop-filter: contrast(40%);
-		// backdrop-filter: drop-shadow(4px 4px 10px blue);
-		// backdrop-filter: grayscale(30%);
-		// backdrop-filter: hue-rotate(120deg);
-		// backdrop-filter: invert(70%);
-		// backdrop-filter: opacity(20%);
-		// backdrop-filter: sepia(90%);
-		// backdrop-filter: saturate(80%);
-
-		> .player-ctrl {
+		.player-opr {
 			position: relative;
-			z-index: 1;
-		}
+			background-image: var(--opr-background-image);
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			backdrop-filter: blur(20px);
+			// backdrop-filter: brightness(60%);
+			// backdrop-filter: contrast(40%);
+			// backdrop-filter: drop-shadow(4px 4px 10px blue);
+			// backdrop-filter: grayscale(30%);
+			// backdrop-filter: hue-rotate(120deg);
+			// backdrop-filter: invert(70%);
+			// backdrop-filter: opacity(20%);
+			// backdrop-filter: sepia(90%);
+			// backdrop-filter: saturate(80%);
 
-		.player-opr_background {
-			display: block;
-			position: absolute;
-			bottom: 0;
-			right: 0;
-			left: 0;
-			z-index: 0;
-			border-bottom: 1rem solid var(--border-color);
-			height: var(--header-height);
-			padding: 0 12rem 0 24rem;
-			top: 0;
-			background-color: rgba(255, 255, 255, 0.664);
-			backdrop-filter: blur(6px);
+			> .player-ctrl {
+				position: relative;
+				z-index: 1;
+			}
+
+			.player-opr_background {
+				display: block;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				z-index: 0;
+				border-bottom: 1rem solid var(--border-color);
+				height: var(--header-height);
+				padding: 0 12rem 0 24rem;
+				top: 0;
+				background-color: rgba(255, 255, 255, 0.664);
+				backdrop-filter: blur(6px);
+			}
 		}
 	}
-}
 </style>
 <template>
 	<div class="CloudDiskMine flex1 flex vertical" :style="cptStylePlayerOpr">
@@ -74,56 +74,56 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		inject: ["APP"],
-		components: {
-			CloudDiskResourceAudioItem: () =>
-				_.$importVue("@/views/CloudDisk/CloudDiskResourceAudioItem.vue"),
-			MusicPlayerModel: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
-			MusicPlayerVolume: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
-			MusicPlayerAudio: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
-			MusicPlayerOpration: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue")
-		},
-		provide() {
-			return { inject_explore: this.APP };
-		},
-		data() {
-			return {
-				activeName: "second"
-			};
-		},
-		computed: {
-			cptStylePlayerOpr() {
-				if (!this.APP.stateAudio.currentAudioImg) {
-					return {};
-				}
+	export default async function () {
+		return defineComponent({
+			inject: ["APP"],
+			components: {
+				CloudDiskResourceAudioItem: () =>
+					_.$importVue("@/views/CloudDisk/CloudDiskResourceAudioItem.vue"),
+				MusicPlayerModel: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
+				MusicPlayerVolume: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
+				MusicPlayerAudio: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
+				MusicPlayerOpration: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue")
+			},
+			provide() {
+				return { inject_explore: this.APP };
+			},
+			data() {
 				return {
-					"--opr-background-image": `url(${this.APP.stateAudio.currentAudioImg})`
+					activeName: "second"
 				};
 			},
-			cloudDiskSizeUsed() {
-				return this.APP.user.cloudDiskSizeUsed || 0;
-			},
-			cloudDiskSizeTotal() {
-				return this.APP.user.cloudDiskSizeTotal || 0;
-			},
-			cptPercent() {
-				if (!this.cloudDiskSizeTotal) {
-					return 0;
+			computed: {
+				cptStylePlayerOpr() {
+					if (!this.APP.stateAudio.currentAudioImg) {
+						return {};
+					}
+					return {
+						"--opr-background-image": `url(${this.APP.stateAudio.currentAudioImg})`
+					};
+				},
+				cloudDiskSizeUsed() {
+					return this.APP.user.cloudDiskSizeUsed || 0;
+				},
+				cloudDiskSizeTotal() {
+					return this.APP.user.cloudDiskSizeTotal || 0;
+				},
+				cptPercent() {
+					if (!this.cloudDiskSizeTotal) {
+						return 0;
+					}
+					return Number(this.cloudDiskSizeUsed / this.cloudDiskSizeTotal).toFixed(2);
 				}
-				return Number(this.cloudDiskSizeUsed / this.cloudDiskSizeTotal).toFixed(2);
+			},
+			methods: {
+				handleClick(tab, event) {
+					console.log(tab, event);
+				}
 			}
-		},
-		methods: {
-			handleClick(tab, event) {
-				console.log(tab, event);
-			}
-		}
-	});
-}
+		});
+	}
 </script>

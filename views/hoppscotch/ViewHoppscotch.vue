@@ -11,18 +11,18 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		components: {
-			HoppSmartSpinner: () =>
-				_.$importVue("@/views/hoppscotch/components/HoppSmartSpinner.vue")
-		},
-		data() {
-			return {
-				isLoadingInitialRoute: false,
-				errorInfo: null
-			};
-		}
-	});
-}
+	export default async function () {
+		return defineComponent({
+			components: {
+				HoppSmartSpinner: () =>
+					_.$importVue("@/views/hoppscotch/components/HoppSmartSpinner.vue")
+			},
+			data() {
+				return {
+					isLoadingInitialRoute: false,
+					errorInfo: null
+				};
+			}
+		});
+	}
 </script>

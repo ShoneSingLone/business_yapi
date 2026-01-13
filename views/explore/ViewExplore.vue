@@ -1,355 +1,355 @@
 <style lang="less">
-#ViewExplore {
-	--card-bg: #f5f5f5;
-	--hover-bg: #e8e8e8;
-	--shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-	--border-radius: 8px;
-	background-color: var(--el-color-white);
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-
-	.path-bar {
-		width: 100%;
-	}
-
-	/* M3 折叠式路径栏容器 */
-	.m3-path-bar-container {
-		position: relative;
-		width: 100%;
-		background-color: #ffffff;
-		border-bottom: 1px solid #e0e0e0;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-		z-index: 100;
-	}
-
-	/* 外部操作按钮组 */
-	.m3-path-bar-actions {
+	#ViewExplore {
+		--card-bg: #f5f5f5;
+		--hover-bg: #e8e8e8;
+		--shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+		--border-radius: 8px;
+		background-color: var(--el-color-white);
 		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		padding: 8px 16px;
-		gap: 8px;
-		background-color: #f8f9fa;
-	}
+		flex-direction: column;
+		height: 100%;
 
-	/* M3 图标按钮 */
-	.m3-icon-btn {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 36px;
-		height: 36px;
-		border: none;
-		border-radius: 50%;
-		background-color: transparent;
-		color: #5f6368;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		font-size: 16px;
-		padding: 0;
-	}
-
-	.m3-icon-btn:hover {
-		background-color: rgba(66, 133, 244, 0.08);
-	}
-
-	.m3-icon-btn:focus {
-		outline: none;
-		background-color: rgba(66, 133, 244, 0.12);
-	}
-
-	/* 折叠式路径抽屉 */
-	.m3-path-drawer {
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height 0.3s ease;
-		background-color: #ffffff;
-		border-bottom: 1px solid #e0e0e0;
-		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-	}
-
-	.m3-path-drawer.is-open {
-		max-height: 200px;
-		overflow: auto;
-	}
-
-	/* 路径抽屉头部 */
-	.m3-path-drawer-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 12px 16px;
-		background-color: #f1f3f4;
-		border-bottom: 1px solid #e0e0e0;
-	}
-
-	.m3-path-drawer-title {
-		font-size: 14px;
-		font-weight: 600;
-		color: #202124;
-		text-transform: uppercase;
-		letter-spacing: 0.0125em;
-	}
-
-	/* 路径抽屉内容 */
-	.m3-path-drawer-content {
-		padding: 16px;
-	}
-
-	/* 面包屑样式 */
-	.m3-breadcrumb {
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-		gap: 4px;
-		font-size: 14px;
-	}
-
-	.m3-breadcrumb-item {
-		display: flex;
-		align-items: center;
-		padding: 6px 12px;
-		background-color: #e8f0fe;
-		color: #1967d2;
-		border-radius: 16px;
-		cursor: pointer;
-		transition: all 0.2s ease;
-		font-weight: 500;
-		gap: 6px;
-	}
-
-	.m3-breadcrumb-item:hover {
-		background-color: #d0e3ff;
-	}
-
-	.m3-breadcrumb-separator {
-		color: #5f6368;
-		font-weight: 600;
-		margin: 0 4px;
-	}
-
-	/* 响应式设计 */
-	@media (max-width: 768px) {
-		.m3-path-bar-actions {
-			padding: 6px 12px;
+		.path-bar {
+			width: 100%;
 		}
 
+		/* M3 折叠式路径栏容器 */
+		.m3-path-bar-container {
+			position: relative;
+			width: 100%;
+			background-color: #ffffff;
+			border-bottom: 1px solid #e0e0e0;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+			z-index: 100;
+		}
+
+		/* 外部操作按钮组 */
+		.m3-path-bar-actions {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			padding: 8px 16px;
+			gap: 8px;
+			background-color: #f8f9fa;
+		}
+
+		/* M3 图标按钮 */
 		.m3-icon-btn {
-			width: 32px;
-			height: 32px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 36px;
+			height: 36px;
+			border: none;
+			border-radius: 50%;
+			background-color: transparent;
+			color: #5f6368;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			font-size: 16px;
+			padding: 0;
+		}
+
+		.m3-icon-btn:hover {
+			background-color: rgba(66, 133, 244, 0.08);
+		}
+
+		.m3-icon-btn:focus {
+			outline: none;
+			background-color: rgba(66, 133, 244, 0.12);
+		}
+
+		/* 折叠式路径抽屉 */
+		.m3-path-drawer {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height 0.3s ease;
+			background-color: #ffffff;
+			border-bottom: 1px solid #e0e0e0;
+			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+		}
+
+		.m3-path-drawer.is-open {
+			max-height: 200px;
+			overflow: auto;
+		}
+
+		/* 路径抽屉头部 */
+		.m3-path-drawer-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 12px 16px;
+			background-color: #f1f3f4;
+			border-bottom: 1px solid #e0e0e0;
+		}
+
+		.m3-path-drawer-title {
+			font-size: 14px;
+			font-weight: 600;
+			color: #202124;
+			text-transform: uppercase;
+			letter-spacing: 0.0125em;
+		}
+
+		/* 路径抽屉内容 */
+		.m3-path-drawer-content {
+			padding: 16px;
+		}
+
+		/* 面包屑样式 */
+		.m3-breadcrumb {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 4px;
 			font-size: 14px;
 		}
 
-		.m3-path-drawer-header,
-		.m3-path-drawer-content {
-			padding: 10px 12px;
-		}
-	}
-
-	.toolbar {
-		height: auto;
-		width: 100%;
-		display: flex;
-		padding: 0 10px 5px 10px;
-		margin-top: 3px;
-		align-items: center;
-		border-bottom: 1px solid #e0e0e0;
-		transition: all 0.2s ease;
-
-		.toolbar-content {
+		.m3-breadcrumb-item {
 			display: flex;
 			align-items: center;
-			width: 100%;
+			padding: 6px 12px;
+			background-color: #e8f0fe;
+			color: #1967d2;
+			border-radius: 16px;
+			cursor: pointer;
 			transition: all 0.2s ease;
+			font-weight: 500;
+			gap: 6px;
+		}
 
-			&.collapsed {
-				display: none;
+		.m3-breadcrumb-item:hover {
+			background-color: #d0e3ff;
+		}
+
+		.m3-breadcrumb-separator {
+			color: #5f6368;
+			font-weight: 600;
+			margin: 0 4px;
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 768px) {
+			.m3-path-bar-actions {
+				padding: 6px 12px;
 			}
 
-			.sort-controls {
-				display: flex;
-				align-items: center;
-				margin-right: 15px;
-				gap: 5px;
-
-				.sort-description {
-					font-size: 13px;
-					color: #666;
-				}
-
-				.sort-btn {
-					border-radius: 4px;
-					border: 1px solid transparent;
-					padding: 5px 8px;
-					font-size: 13px;
-					background-color: transparent;
-					color: #333;
-					cursor: pointer;
-					transition: all 100ms ease;
-					font-weight: 500;
-					display: inline-flex;
-					align-items: center;
-					gap: 3px;
-
-					&:hover {
-						background-color: rgba(0, 0, 0, 0.05);
-						border-color: rgba(0, 0, 0, 0.1);
-					}
-
-					&:focus {
-						outline: none;
-						background-color: rgba(74, 144, 226, 0.1);
-						border-color: rgba(74, 144, 226, 0.3);
-					}
-
-					&.active {
-						background-color: rgba(74, 144, 226, 0.15);
-						border-color: rgba(74, 144, 226, 0.4);
-						color: #4a90e2;
-					}
-
-					&.sort-level-1 {
-						box-shadow: 0 0 0 2px #4a90e2;
-						border-color: #4a90e2;
-						background-color: rgba(74, 144, 226, 0.2);
-					}
-
-					&.sort-level-2 {
-						box-shadow: 0 0 0 2px #5cb85c;
-						border-color: #5cb85c;
-						background-color: rgba(92, 184, 92, 0.2);
-					}
-
-					.sort-order-indicator {
-						font-size: 11px;
-					}
-					.sort-priority-indicator {
-						font-size: 10px;
-						background-color: #4a90e2;
-						color: white;
-						border-radius: 10px;
-						padding: 1px 4px;
-						margin-left: 3px;
-						font-weight: bold;
-					}
-				}
+			.m3-icon-btn {
+				width: 32px;
+				height: 32px;
+				font-size: 14px;
 			}
 
-			.sort-help {
-				margin-right: 15px;
-				color: #666;
-				font-size: 12px;
-			}
-
-			.search-box {
-				margin-left: auto;
-				min-width: 170px;
-				width: 26%;
-				max-width: 400px;
-
-				.input {
-					border-radius: var(--border-radius);
-					border: 1px solid #ddd;
-					padding: 6px 10px;
-					width: 100%;
-					font-size: 14px;
-
-					&:focus {
-						outline: none;
-						border-color: #4a90e2;
-						box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-					}
-				}
+			.m3-path-drawer-header,
+			.m3-path-drawer-content {
+				padding: 10px 12px;
 			}
 		}
-	}
 
-	/* 响应式设计 */
-	@media (max-width: 768px) {
 		.toolbar {
-			flex-wrap: wrap;
-			padding-bottom: 10px;
 			height: auto;
+			width: 100%;
+			display: flex;
+			padding: 0 10px 5px 10px;
+			margin-top: 3px;
+			align-items: center;
+			border-bottom: 1px solid #e0e0e0;
+			transition: all 0.2s ease;
 
 			.toolbar-content {
-				flex-wrap: wrap;
-				gap: 10px;
-				margin-top: 5px;
+				display: flex;
+				align-items: center;
+				width: 100%;
+				transition: all 0.2s ease;
+
+				&.collapsed {
+					display: none;
+				}
 
 				.sort-controls {
-					width: 100%;
-					margin-right: 0;
-					flex-wrap: wrap;
-					justify-content: space-between;
+					display: flex;
+					align-items: center;
+					margin-right: 15px;
+					gap: 5px;
+
+					.sort-description {
+						font-size: 13px;
+						color: #666;
+					}
 
 					.sort-btn {
-						flex: 1;
-						min-width: 70px;
-						text-align: center;
+						border-radius: 4px;
+						border: 1px solid transparent;
+						padding: 5px 8px;
+						font-size: 13px;
+						background-color: transparent;
+						color: #333;
+						cursor: pointer;
+						transition: all 100ms ease;
+						font-weight: 500;
+						display: inline-flex;
+						align-items: center;
+						gap: 3px;
+
+						&:hover {
+							background-color: rgba(0, 0, 0, 0.05);
+							border-color: rgba(0, 0, 0, 0.1);
+						}
+
+						&:focus {
+							outline: none;
+							background-color: rgba(74, 144, 226, 0.1);
+							border-color: rgba(74, 144, 226, 0.3);
+						}
+
+						&.active {
+							background-color: rgba(74, 144, 226, 0.15);
+							border-color: rgba(74, 144, 226, 0.4);
+							color: #4a90e2;
+						}
+
+						&.sort-level-1 {
+							box-shadow: 0 0 0 2px #4a90e2;
+							border-color: #4a90e2;
+							background-color: rgba(74, 144, 226, 0.2);
+						}
+
+						&.sort-level-2 {
+							box-shadow: 0 0 0 2px #5cb85c;
+							border-color: #5cb85c;
+							background-color: rgba(92, 184, 92, 0.2);
+						}
+
+						.sort-order-indicator {
+							font-size: 11px;
+						}
+						.sort-priority-indicator {
+							font-size: 10px;
+							background-color: #4a90e2;
+							color: white;
+							border-radius: 10px;
+							padding: 1px 4px;
+							margin-left: 3px;
+							font-weight: bold;
+						}
 					}
+				}
+
+				.sort-help {
+					margin-right: 15px;
+					color: #666;
+					font-size: 12px;
 				}
 
 				.search-box {
-					width: 100%;
-					min-width: auto;
-					max-width: none;
+					margin-left: auto;
+					min-width: 170px;
+					width: 26%;
+					max-width: 400px;
+
+					.input {
+						border-radius: var(--border-radius);
+						border: 1px solid #ddd;
+						padding: 6px 10px;
+						width: 100%;
+						font-size: 14px;
+
+						&:focus {
+							outline: none;
+							border-color: #4a90e2;
+							box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+						}
+					}
+				}
+			}
+		}
+
+		/* 响应式设计 */
+		@media (max-width: 768px) {
+			.toolbar {
+				flex-wrap: wrap;
+				padding-bottom: 10px;
+				height: auto;
+
+				.toolbar-content {
+					flex-wrap: wrap;
+					gap: 10px;
+					margin-top: 5px;
+
+					.sort-controls {
+						width: 100%;
+						margin-right: 0;
+						flex-wrap: wrap;
+						justify-content: space-between;
+
+						.sort-btn {
+							flex: 1;
+							min-width: 70px;
+							text-align: center;
+						}
+					}
+
+					.search-box {
+						width: 100%;
+						min-width: auto;
+						max-width: none;
+					}
+				}
+			}
+		}
+
+		.resource-list {
+			flex-grow: 1;
+			overflow: auto;
+			padding: 10px;
+		}
+
+		.player-opr {
+			background-color: var(--card-bg);
+			padding: 10px;
+			border-top: 1px solid #e0e0e0;
+			display: flex;
+			align-items: center;
+
+			&.hidden {
+				display: none;
+			}
+
+			.player-info {
+				display: flex;
+				align-items: center;
+				margin-right: 15px;
+
+				.song-name {
+					font-size: 14px;
+					font-weight: 500;
+					margin-right: 5px;
+				}
+			}
+
+			.player-controls {
+				display: flex;
+				align-items: center;
+				flex-grow: 1;
+
+				.volume-control {
+					display: flex;
+					align-items: center;
+					margin-right: 15px;
+				}
+
+				.play-model {
+					margin-right: 15px;
+				}
+
+				.operation {
+					display: flex;
+					align-items: center;
 				}
 			}
 		}
 	}
-
-	.resource-list {
-		flex-grow: 1;
-		overflow: auto;
-		padding: 10px;
-	}
-
-	.player-opr {
-		background-color: var(--card-bg);
-		padding: 10px;
-		border-top: 1px solid #e0e0e0;
-		display: flex;
-		align-items: center;
-
-		&.hidden {
-			display: none;
-		}
-
-		.player-info {
-			display: flex;
-			align-items: center;
-			margin-right: 15px;
-
-			.song-name {
-				font-size: 14px;
-				font-weight: 500;
-				margin-right: 5px;
-			}
-		}
-
-		.player-controls {
-			display: flex;
-			align-items: center;
-			flex-grow: 1;
-
-			.volume-control {
-				display: flex;
-				align-items: center;
-				margin-right: 15px;
-			}
-
-			.play-model {
-				margin-right: 15px;
-			}
-
-			.operation {
-				display: flex;
-				align-items: center;
-			}
-		}
-	}
-}
 </style>
 <template>
 	<div id="ViewExplore">
@@ -459,511 +459,517 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	const LOOP_TYPE_NAME_ARRAY = ["playOrder", "playRandom", "playLoop", "playSingleLoop"];
-	return defineComponent({
-		components: {
-			MusicPlayerModel: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
-			MusicPlayerVolume: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
-			MusicPlayerAudio: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
-			MusicPlayerOpration: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue"),
-			ResourceItem: () => _.$importVue("@/views/explore/ResourceItem.vue")
-		},
-		setup() {
-			const vm = this;
-			let intervalTimer;
-			const stateAudio = reactive({
-				loopType: 0,
-				songId: "",
-				isPlaying: false, //是否播放中
-				isPause: false, //是否暂停
-				audio: new Audio(),
-				currentTime: 0,
-				ended: false, //是否播放结束
-				duration: 0, //总播放时长,
-				isMute: false, //是否静音
-				volume: (() => {
-					const volume = _.$lStorage["PLAYER-VOLUME"];
-					if (volume) {
-						return Number(volume) * 100;
-					} else {
-						return 100;
-					}
-				})()
-			});
-
-			watch(
-				() => stateAudio.ended,
-				ended => {
-					if (!ended) return;
-					handlePlayEnd();
-				}
-			);
-
-			const cptIconPlayModel = computed(() => {
-				return LOOP_TYPE_NAME_ARRAY[stateAudio.loopType];
-			});
-
-			function handlePlayEnd() {
-				stopSong();
-				const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
-					name: stateAudio.songId
+	export default async function () {
+		const LOOP_TYPE_NAME_ARRAY = ["playOrder", "playRandom", "playLoop", "playSingleLoop"];
+		return defineComponent({
+			components: {
+				MusicPlayerModel: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
+				MusicPlayerVolume: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
+				MusicPlayerAudio: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
+				MusicPlayerOpration: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue"),
+				ResourceItem: () => _.$importVue("@/views/explore/ResourceItem.vue")
+			},
+			setup() {
+				const vm = this;
+				let intervalTimer;
+				const stateAudio = reactive({
+					loopType: 0,
+					songId: "",
+					isPlaying: false, //是否播放中
+					isPause: false, //是否暂停
+					audio: new Audio(),
+					currentTime: 0,
+					ended: false, //是否播放结束
+					duration: 0, //总播放时长,
+					isMute: false, //是否静音
+					volume: (() => {
+						const volume = _.$lStorage["PLAYER-VOLUME"];
+						if (volume) {
+							return Number(volume) * 100;
+						} else {
+							return 100;
+						}
+					})()
 				});
 
-				if (currentSongIndex > -1) {
-					playMethods[cptIconPlayModel.value](currentSongIndex);
-				}
-			}
+				watch(
+					() => stateAudio.ended,
+					ended => {
+						if (!ended) return;
+						handlePlayEnd();
+					}
+				);
 
-			function setCurrentTime(val) {
-				try {
-					stateAudio.audio.currentTime = val;
-				} catch (error) {
-					console.error(error);
-				} finally {
-				}
-			}
-			function intervalCurrentTime() {
-				stateAudio.currentTime = parseInt(stateAudio.audio.currentTime.toString());
-				stateAudio.duration = parseInt(stateAudio.audio.duration.toString());
-				stateAudio.ended = stateAudio.audio.ended;
-			}
-
-			function palyPrevSong() {
-				const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
-					name: stateAudio.songId
+				const cptIconPlayModel = computed(() => {
+					return LOOP_TYPE_NAME_ARRAY[stateAudio.loopType];
 				});
-				if (currentSongIndex > -1) {
-					if (currentSongIndex === 0) {
-						playAudio(vm.cptResourceOnlyAudio[vm.cptResourceOnlyAudio.length - 1]);
-					} else {
-						playAudio(vm.cptResourceOnlyAudio[currentSongIndex - 1]);
+
+				function handlePlayEnd() {
+					stopSong();
+					const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
+						name: stateAudio.songId
+					});
+
+					if (currentSongIndex > -1) {
+						playMethods[cptIconPlayModel.value](currentSongIndex);
 					}
 				}
-			}
-			function stopSong() {
-				stateAudio.isPlaying = false;
-				stateAudio.audio.pause();
-				stateAudio.audio.currentTime = 0;
-				stateAudio.currentTime = 0;
-			}
-			function togglePlayOrPause() {
-				if (!stateAudio.songId) return;
-				stateAudio.isPlaying = !stateAudio.isPlaying;
-				if (stateAudio.isPlaying) {
-					stateAudio.audio.play();
-				} else {
-					stateAudio.audio.pause();
-				}
-			}
 
-			function playNextSong() {
-				if (cptIconPlayModel.value === "playSingleLoop") {
+				function setCurrentTime(val) {
+					try {
+						stateAudio.audio.currentTime = val;
+					} catch (error) {
+						console.error(error);
+					} finally {
+					}
+				}
+				function intervalCurrentTime() {
+					stateAudio.currentTime = parseInt(stateAudio.audio.currentTime.toString());
+					stateAudio.duration = parseInt(stateAudio.audio.duration.toString());
+					stateAudio.ended = stateAudio.audio.ended;
+				}
+
+				function palyPrevSong() {
 					const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
 						name: stateAudio.songId
 					});
 					if (currentSongIndex > -1) {
-						playMethods.playLoop(currentSongIndex);
+						if (currentSongIndex === 0) {
+							playAudio(vm.cptResourceOnlyAudio[vm.cptResourceOnlyAudio.length - 1]);
+						} else {
+							playAudio(vm.cptResourceOnlyAudio[currentSongIndex - 1]);
+						}
 					}
-				} else {
-					handlePlayEnd();
 				}
-			}
-
-			function playMedia(record) {
-				if (record.type === "audio") {
-					playAudio(record);
+				function stopSong() {
+					stateAudio.isPlaying = false;
+					stateAudio.audio.pause();
+					stateAudio.audio.currentTime = 0;
+					stateAudio.currentTime = 0;
 				}
-				if (record.type === "video") {
-					playVideo(record);
-				}
-				if (record.type === "img") {
-					playImg(record);
-				}
-			}
-
-			async function playImg(current_resource) {
-				const { name } = current_resource;
-				const urlList = _.filter(vm.cptResource, { type: "img" });
-				const index = _.findIndex(urlList, { name });
-
-				_.$previewImgs(
-					{
-						urlList: _.map(urlList, resource => {
-							const uri = encodeURIComponent(JSON.stringify(resource.path));
-							return Vue._common_utils.appendToken(
-								_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
-							);
-						}),
-						index
-					},
-					{
-						autoPlay: true
-					}
-				);
-			}
-			async function playVideo(current_resource) {
-				const { name } = current_resource;
-				const all_video_array = _.filter(vm.cptResource, { type: "video" }).map(item => {
-					const uri = encodeURIComponent(JSON.stringify(item.path));
-					return {
-						...item,
-						download_uri: Vue._common_utils.appendToken(
-							_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
-						),
-						uri: Vue._common_utils.appendToken(
-							_.$ajax.urlWrapper(`/api/resource/video?uri=${uri}`)
-						)
-					};
-				});
-				const current_index = _.findIndex(all_video_array, { name });
-				return _.$openModal({
-					title: "Player",
-					url: "@/views/explore/execTools/video/VideoPlayerFullscreen.dialog.vue",
-					current_index,
-					current_resource,
-					all_video_array
-				});
-			}
-
-			async function playAudio(record) {
-				const { path, name } = record;
-				stopSong();
-				function canPlay() {
-					return new Promise(resolve => {
-						stateAudio.audio.onloadedmetadata = async event => {};
-						stateAudio.audio.oncanplaythrough = async event => {
-							console.log("I think I can play through the entire ", event);
-						};
-						stateAudio.audio.oncanplay = function (event) {
-							if (intervalTimer) {
-								clearInterval(intervalTimer);
-							}
-							intervalTimer = setInterval(intervalCurrentTime, 1000);
-							resolve(stateAudio.duration);
-						};
-					});
-				}
-				let uri = encodeURIComponent(JSON.stringify(path));
-				stateAudio.songId = name;
-				stateAudio.audio.src = Vue._common_utils.appendToken(
-					`${window._AJAX_URL_PREFIX || ""}/api/resource/audio?uri=${uri}`
-				);
-				await canPlay();
-				stateAudio.audio.play();
-				stateAudio.isPlaying = true;
-				const audioVolume = stateAudio.volume / 100;
-				stateAudio.audio.volume = audioVolume;
-			}
-			const playMethods = {
-				playLoop(currentSongIndex) {
-					const next = currentSongIndex + 1;
-					if (next > vm.cptResourceOnlyAudio.length - 1) {
-						playAudio(vm.cptResourceOnlyAudio[0]);
+				function togglePlayOrPause() {
+					if (!stateAudio.songId) return;
+					stateAudio.isPlaying = !stateAudio.isPlaying;
+					if (stateAudio.isPlaying) {
+						stateAudio.audio.play();
 					} else {
-						playAudio(vm.cptResourceOnlyAudio[next]);
+						stateAudio.audio.pause();
 					}
-				},
-				playRandom(currentSongIndex) {
-					let next;
-					/* 如果只有一首，循环一首 */
-					if (vm.cptResourceOnlyAudio.length === 1) {
-						next = 0;
-						playAudio(vm.cptResourceOnlyAudio[0]);
-						return;
-					}
-					const max = vm.cptResourceOnlyAudio.length - 1;
-					const min = 0;
-					const getNext = () => Math.floor(Math.random() * (max - min + 1)) + min;
-					next = getNext();
-					while (next === currentSongIndex) {
-						next = getNext();
-					}
-					playAudio(vm.cptResourceOnlyAudio[next]);
-				},
-				playOrder(currentSongIndex) {
-					const next = currentSongIndex + 1;
-					if (next > vm.cptResourceOnlyAudio.length - 1) {
-						stopSong();
+				}
+
+				function playNextSong() {
+					if (cptIconPlayModel.value === "playSingleLoop") {
+						const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
+							name: stateAudio.songId
+						});
+						if (currentSongIndex > -1) {
+							playMethods.playLoop(currentSongIndex);
+						}
 					} else {
-						playAudio(vm.cptResourceOnlyAudio[next]);
-					}
-				},
-				playSingleLoop(currentSongIndex) {
-					playAudio(vm.cptResourceOnlyAudio[currentSongIndex]);
-				}
-			};
-
-			function toggleVolumeMute() {
-				stateAudio.isMute = !stateAudio.isMute;
-				stateAudio.audio.muted = stateAudio.isMute;
-			}
-
-			const cacheAudioVolume = _.debounce(function (audiovolume) {
-				_.$lStorage["PLAYER-VOLUME"] = audiovolume;
-			}, 1000);
-
-			return {
-				LOOP_TYPE_NAME_ARRAY,
-				playAudio,
-				playMedia,
-				/*  */
-				stateAudio,
-				methodsMusicPlayer: {
-					setCurrentTime,
-					palyPrevSong,
-					stopSong,
-					togglePlayOrPause,
-					playNextSong,
-					toggleVolumeMute,
-					setVolume(n) {
-						n = n > 100 ? 100 : n;
-						n = n < 0 ? 0 : n;
-						stateAudio.volume = n;
-						const audioVolume = n / 100;
-						stateAudio.audio.volume = audioVolume;
-						cacheAudioVolume(audioVolume);
-					},
-					async togglePlayModel() {
-						stateAudio.loopType =
-							(stateAudio.loopType + 1) % LOOP_TYPE_NAME_ARRAY.length;
+						handlePlayEnd();
 					}
 				}
-			};
-		},
-		provide() {
-			return {
-				inject_explore: this
-			};
-		},
-		data() {
-			// 从localStorage读取排序设置，如果没有则使用默认值
-			const savedSortConfig = _.$lStorage["VIEW_EXPLORE_SORT_CONFIG"];
-			const defaultSortConfig = [
-				{ field: "type", order: "asc" },
-				{ field: "name", order: "asc" }
-			];
 
-			return {
-				resource: _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [],
-				pathStack: _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [],
-				searchKey: "",
-				sortConfig: savedSortConfig || defaultSortConfig, // 排序配置：支持多个字段
-				sortOptions: [
-					{ label: "名称", value: "name" },
-					{ label: "类型", value: "type" },
-					{ label: "大小", value: "size" },
-					{ label: "修改时间", value: "mtime" }
-				],
-				toolbarCollapsed: _.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] === "true" || false,
-				isPathDrawerOpen: _.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] === "true" || false // 路径抽屉的展开状态，使用localStorage持久化
-			};
-		},
-		computed: {
-			cptResource() {
-				let filtered = this.resource;
-				// 搜索过滤
-				if (this.searchKey) {
-					filtered = _.filter(filtered, item =>
-						_.lowerCase(item.name || "").includes(this.searchKey)
+				function playMedia(record) {
+					if (record.type === "audio") {
+						playAudio(record);
+					}
+					if (record.type === "video") {
+						playVideo(record);
+					}
+					if (record.type === "img") {
+						playImg(record);
+					}
+				}
+
+				async function playImg(current_resource) {
+					const { name } = current_resource;
+					const urlList = _.filter(vm.cptResource, { type: "img" });
+					const index = _.findIndex(urlList, { name });
+
+					_.$previewImgs(
+						{
+							urlList: _.map(urlList, resource => {
+								const uri = encodeURIComponent(JSON.stringify(resource.path));
+								return Vue._common_utils.appendToken(
+									_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
+								);
+							}),
+							index
+						},
+						{
+							autoPlay: true
+						}
 					);
 				}
-				// 组合排序处理
-				return [...filtered].sort((a, b) => {
-					// 按sortConfig中的字段顺序依次比较
-					for (const { field, order } of this.sortConfig) {
-						let compareResult = 0;
-						// 处理名称字段的自然排序
-						if (field === "name") {
-							const aName = String(a.name || "");
-							const bName = String(b.name || "");
-							const aParts = aName.split(/(\d+)/);
-							const bParts = bName.split(/(\d+)/);
+				async function playVideo(current_resource) {
+					const { name } = current_resource;
+					const all_video_array = _.filter(vm.cptResource, { type: "video" }).map(
+						item => {
+							const uri = encodeURIComponent(JSON.stringify(item.path));
+							return {
+								...item,
+								download_uri: Vue._common_utils.appendToken(
+									_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
+								),
+								uri: Vue._common_utils.appendToken(
+									_.$ajax.urlWrapper(`/api/resource/video?uri=${uri}`)
+								)
+							};
+						}
+					);
+					const current_index = _.findIndex(all_video_array, { name });
+					return _.$openModal({
+						title: "Player",
+						url: "@/views/explore/execTools/video/VideoPlayerFullscreen.dialog.vue",
+						current_index,
+						current_resource,
+						all_video_array
+					});
+				}
 
-							// 比较每一部分
-							for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {
-								const aPart = aParts[i];
-								const bPart = bParts[i];
+				async function playAudio(record) {
+					const { path, name } = record;
+					stopSong();
+					function canPlay() {
+						return new Promise(resolve => {
+							stateAudio.audio.onloadedmetadata = async event => {};
+							stateAudio.audio.oncanplaythrough = async event => {
+								console.log("I think I can play through the entire ", event);
+							};
+							stateAudio.audio.oncanplay = function (event) {
+								if (intervalTimer) {
+									clearInterval(intervalTimer);
+								}
+								intervalTimer = setInterval(intervalCurrentTime, 1000);
+								resolve(stateAudio.duration);
+							};
+						});
+					}
+					let uri = encodeURIComponent(JSON.stringify(path));
+					stateAudio.songId = name;
+					stateAudio.audio.src = Vue._common_utils.appendToken(
+						`${window._AJAX_URL_PREFIX || ""}/api/resource/audio?uri=${uri}`
+					);
+					await canPlay();
+					stateAudio.audio.play();
+					stateAudio.isPlaying = true;
+					const audioVolume = stateAudio.volume / 100;
+					stateAudio.audio.volume = audioVolume;
+				}
+				const playMethods = {
+					playLoop(currentSongIndex) {
+						const next = currentSongIndex + 1;
+						if (next > vm.cptResourceOnlyAudio.length - 1) {
+							playAudio(vm.cptResourceOnlyAudio[0]);
+						} else {
+							playAudio(vm.cptResourceOnlyAudio[next]);
+						}
+					},
+					playRandom(currentSongIndex) {
+						let next;
+						/* 如果只有一首，循环一首 */
+						if (vm.cptResourceOnlyAudio.length === 1) {
+							next = 0;
+							playAudio(vm.cptResourceOnlyAudio[0]);
+							return;
+						}
+						const max = vm.cptResourceOnlyAudio.length - 1;
+						const min = 0;
+						const getNext = () => Math.floor(Math.random() * (max - min + 1)) + min;
+						next = getNext();
+						while (next === currentSongIndex) {
+							next = getNext();
+						}
+						playAudio(vm.cptResourceOnlyAudio[next]);
+					},
+					playOrder(currentSongIndex) {
+						const next = currentSongIndex + 1;
+						if (next > vm.cptResourceOnlyAudio.length - 1) {
+							stopSong();
+						} else {
+							playAudio(vm.cptResourceOnlyAudio[next]);
+						}
+					},
+					playSingleLoop(currentSongIndex) {
+						playAudio(vm.cptResourceOnlyAudio[currentSongIndex]);
+					}
+				};
 
-								// 如果都是数字，按数值比较
-								if (/^\d+$/.test(aPart) && /^\d+$/.test(bPart)) {
-									const aInt = parseInt(aPart);
-									const bInt = parseInt(bPart);
-									if (aInt !== bInt) {
-										compareResult = order === "asc" ? aInt - bInt : bInt - aInt;
-										break;
+				function toggleVolumeMute() {
+					stateAudio.isMute = !stateAudio.isMute;
+					stateAudio.audio.muted = stateAudio.isMute;
+				}
+
+				const cacheAudioVolume = _.debounce(function (audiovolume) {
+					_.$lStorage["PLAYER-VOLUME"] = audiovolume;
+				}, 1000);
+
+				return {
+					LOOP_TYPE_NAME_ARRAY,
+					playAudio,
+					playMedia,
+					/*  */
+					stateAudio,
+					methodsMusicPlayer: {
+						setCurrentTime,
+						palyPrevSong,
+						stopSong,
+						togglePlayOrPause,
+						playNextSong,
+						toggleVolumeMute,
+						setVolume(n) {
+							n = n > 100 ? 100 : n;
+							n = n < 0 ? 0 : n;
+							stateAudio.volume = n;
+							const audioVolume = n / 100;
+							stateAudio.audio.volume = audioVolume;
+							cacheAudioVolume(audioVolume);
+						},
+						async togglePlayModel() {
+							stateAudio.loopType =
+								(stateAudio.loopType + 1) % LOOP_TYPE_NAME_ARRAY.length;
+						}
+					}
+				};
+			},
+			provide() {
+				return {
+					inject_explore: this
+				};
+			},
+			data() {
+				// 从localStorage读取排序设置，如果没有则使用默认值
+				const savedSortConfig = _.$lStorage["VIEW_EXPLORE_SORT_CONFIG"];
+				const defaultSortConfig = [
+					{ field: "type", order: "asc" },
+					{ field: "name", order: "asc" }
+				];
+
+				return {
+					resource: _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [],
+					pathStack: _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [],
+					searchKey: "",
+					sortConfig: savedSortConfig || defaultSortConfig, // 排序配置：支持多个字段
+					sortOptions: [
+						{ label: "名称", value: "name" },
+						{ label: "类型", value: "type" },
+						{ label: "大小", value: "size" },
+						{ label: "修改时间", value: "mtime" }
+					],
+					toolbarCollapsed:
+						_.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] === "true" || false,
+					isPathDrawerOpen:
+						_.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] === "true" || false // 路径抽屉的展开状态，使用localStorage持久化
+				};
+			},
+			computed: {
+				cptResource() {
+					let filtered = this.resource;
+					// 搜索过滤
+					if (this.searchKey) {
+						filtered = _.filter(filtered, item =>
+							_.lowerCase(item.name || "").includes(this.searchKey)
+						);
+					}
+					// 组合排序处理
+					return [...filtered].sort((a, b) => {
+						// 按sortConfig中的字段顺序依次比较
+						for (const { field, order } of this.sortConfig) {
+							let compareResult = 0;
+							// 处理名称字段的自然排序
+							if (field === "name") {
+								const aName = String(a.name || "");
+								const bName = String(b.name || "");
+								const aParts = aName.split(/(\d+)/);
+								const bParts = bName.split(/(\d+)/);
+
+								// 比较每一部分
+								for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {
+									const aPart = aParts[i];
+									const bPart = bParts[i];
+
+									// 如果都是数字，按数值比较
+									if (/^\d+$/.test(aPart) && /^\d+$/.test(bPart)) {
+										const aInt = parseInt(aPart);
+										const bInt = parseInt(bPart);
+										if (aInt !== bInt) {
+											compareResult =
+												order === "asc" ? aInt - bInt : bInt - aInt;
+											break;
+										}
+									} else {
+										// 否则按字符串比较
+										const compare = aPart.localeCompare(bPart);
+										if (compare !== 0) {
+											compareResult = order === "asc" ? compare : -compare;
+											break;
+										}
 									}
-								} else {
-									// 否则按字符串比较
-									const compare = aPart.localeCompare(bPart);
-									if (compare !== 0) {
-										compareResult = order === "asc" ? compare : -compare;
-										break;
-									}
+								}
+
+								// 如果一个是另一个的前缀，比较长度
+								if (compareResult === 0) {
+									compareResult =
+										order === "asc"
+											? aParts.length - bParts.length
+											: bParts.length - aParts.length;
+								}
+							} else {
+								// 其他字段（type/size/mtime）直接比较
+								const aValue = a[field] || "";
+								const bValue = b[field] || "";
+								if (aValue !== bValue) {
+									compareResult = aValue > bValue ? 1 : -1;
+									compareResult =
+										order === "asc" ? compareResult : -compareResult;
 								}
 							}
 
-							// 如果一个是另一个的前缀，比较长度
-							if (compareResult === 0) {
-								compareResult =
-									order === "asc"
-										? aParts.length - bParts.length
-										: bParts.length - aParts.length;
-							}
-						} else {
-							// 其他字段（type/size/mtime）直接比较
-							const aValue = a[field] || "";
-							const bValue = b[field] || "";
-							if (aValue !== bValue) {
-								compareResult = aValue > bValue ? 1 : -1;
-								compareResult = order === "asc" ? compareResult : -compareResult;
-							}
+							// 如果当前字段比较结果不为0，则返回该结果
+							if (compareResult !== 0) return compareResult;
 						}
-
-						// 如果当前字段比较结果不为0，则返回该结果
-						if (compareResult !== 0) return compareResult;
-					}
-					// 所有字段都相同，保持原顺序
-					return 0;
-				});
+						// 所有字段都相同，保持原顺序
+						return 0;
+					});
+				},
+				cptResourceOnlyAudio() {
+					return _.filter(this.cptResource, { type: "audio" });
+				}
 			},
-			cptResourceOnlyAudio() {
-				return _.filter(this.cptResource, { type: "audio" });
-			}
-		},
-		mounted() {
-			// 从localStorage获取保存的路径和资源数据
-			const savedPathStack = _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [];
-			const savedResource = _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [];
+			mounted() {
+				// 从localStorage获取保存的路径和资源数据
+				const savedPathStack = _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [];
+				const savedResource = _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [];
 
-			// 如果不是根目录且有保存的资源数据，则使用保存的数据
-			if (savedPathStack.length > 0 && savedResource.length > 0) {
-				this.pathStack = savedPathStack;
-				this.resource = savedResource;
-			} else {
-				// 根目录或没有保存的数据，重新获取
-				this.getResource();
-			}
-		},
-		methods: {
-			back(index) {
-				if (index === -1) {
-					this.getResource({ path: [] });
+				// 如果不是根目录且有保存的资源数据，则使用保存的数据
+				if (savedPathStack.length > 0 && savedResource.length > 0) {
+					this.pathStack = savedPathStack;
+					this.resource = savedResource;
 				} else {
-					this.getResource({ path: this.pathStack.slice(0, index + 1) });
+					// 根目录或没有保存的数据，重新获取
+					this.getResource();
 				}
 			},
-			// 切换路径抽屉的展开/收起状态
-			togglePathDrawer() {
-				this.isPathDrawerOpen = !this.isPathDrawerOpen;
-				// 保存到localStorage
-				_.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] = this.isPathDrawerOpen;
-			},
-			// 获取排序按钮的CSS类
-			getSortBtnClass(field) {
-				const sortIndex = this.sortConfig.findIndex(item => item.field === field);
-				if (sortIndex === -1) {
-					return {};
-				}
-				return {
-					"sort-btn": true,
-					active: true,
-					[`sort-level-${sortIndex + 1}`]: true
-				};
-			},
-			// 获取排序方向指示器
-			getSortOrderIndicator(field) {
-				const sortItem = this.sortConfig.find(item => item.field === field);
-				if (!sortItem) {
-					return "";
-				}
-				return sortItem.order === "asc" ? "↑" : "↓";
-			},
-			// 获取排序优先级指示器
-			getSortPriorityIndicator(field) {
-				const sortIndex = this.sortConfig.findIndex(item => item.field === field);
-				if (sortIndex === -1) {
-					return "";
-				}
-				return `(${sortIndex + 1})`;
-			},
-			// 获取排序按钮的提示信息
-			getSortBtnTitle(field) {
-				const sortIndex = this.sortConfig.findIndex(item => item.field === field);
-				if (sortIndex === -1) {
-					return `${this.sortOptions.find(opt => opt.value === field).label}排序`;
-				}
-				const orderText = this.sortConfig[sortIndex].order === "asc" ? "升序" : "降序";
-				return `${
-					this.sortOptions.find(opt => opt.value === field).label
-				}${orderText} (优先级${sortIndex + 1})`;
-			},
-			// 切换排序字段
-			toggleSortField(field) {
-				const existingIndex = this.sortConfig.findIndex(item => item.field === field);
-
-				if (existingIndex === -1) {
-					// 如果字段不在排序配置中，添加到末尾
-					this.sortConfig.push({ field, order: "asc" });
-				} else {
-					// 如果字段已在排序配置中，切换排序方向
-					this.sortConfig[existingIndex].order =
-						this.sortConfig[existingIndex].order === "asc" ? "desc" : "asc";
-
-					// 如果不是唯一的排序字段且不在首位，调整其优先级到首位
-					if (this.sortConfig.length > 1 && existingIndex !== 0) {
-						const [sortItem] = this.sortConfig.splice(existingIndex, 1);
-						this.sortConfig.unshift(sortItem);
+			methods: {
+				back(index) {
+					if (index === -1) {
+						this.getResource({ path: [] });
+					} else {
+						this.getResource({ path: this.pathStack.slice(0, index + 1) });
 					}
-				}
+				},
+				// 切换路径抽屉的展开/收起状态
+				togglePathDrawer() {
+					this.isPathDrawerOpen = !this.isPathDrawerOpen;
+					// 保存到localStorage
+					_.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] = this.isPathDrawerOpen;
+				},
+				// 获取排序按钮的CSS类
+				getSortBtnClass(field) {
+					const sortIndex = this.sortConfig.findIndex(item => item.field === field);
+					if (sortIndex === -1) {
+						return {};
+					}
+					return {
+						"sort-btn": true,
+						active: true,
+						[`sort-level-${sortIndex + 1}`]: true
+					};
+				},
+				// 获取排序方向指示器
+				getSortOrderIndicator(field) {
+					const sortItem = this.sortConfig.find(item => item.field === field);
+					if (!sortItem) {
+						return "";
+					}
+					return sortItem.order === "asc" ? "↑" : "↓";
+				},
+				// 获取排序优先级指示器
+				getSortPriorityIndicator(field) {
+					const sortIndex = this.sortConfig.findIndex(item => item.field === field);
+					if (sortIndex === -1) {
+						return "";
+					}
+					return `(${sortIndex + 1})`;
+				},
+				// 获取排序按钮的提示信息
+				getSortBtnTitle(field) {
+					const sortIndex = this.sortConfig.findIndex(item => item.field === field);
+					if (sortIndex === -1) {
+						return `${this.sortOptions.find(opt => opt.value === field).label}排序`;
+					}
+					const orderText = this.sortConfig[sortIndex].order === "asc" ? "升序" : "降序";
+					return `${
+						this.sortOptions.find(opt => opt.value === field).label
+					}${orderText} (优先级${sortIndex + 1})`;
+				},
+				// 切换排序字段
+				toggleSortField(field) {
+					const existingIndex = this.sortConfig.findIndex(item => item.field === field);
 
-				// 限制最大排序字段数为2
-				if (this.sortConfig.length > 2) {
-					this.sortConfig.pop();
-				}
+					if (existingIndex === -1) {
+						// 如果字段不在排序配置中，添加到末尾
+						this.sortConfig.push({ field, order: "asc" });
+					} else {
+						// 如果字段已在排序配置中，切换排序方向
+						this.sortConfig[existingIndex].order =
+							this.sortConfig[existingIndex].order === "asc" ? "desc" : "asc";
 
+						// 如果不是唯一的排序字段且不在首位，调整其优先级到首位
+						if (this.sortConfig.length > 1 && existingIndex !== 0) {
+							const [sortItem] = this.sortConfig.splice(existingIndex, 1);
+							this.sortConfig.unshift(sortItem);
+						}
+					}
+
+					// 限制最大排序字段数为2
+					if (this.sortConfig.length > 2) {
+						this.sortConfig.pop();
+					}
+
+					// 保存排序配置到localStorage
+					this.saveSortConfig();
+				},
 				// 保存排序配置到localStorage
-				this.saveSortConfig();
-			},
-			// 保存排序配置到localStorage
-			saveSortConfig() {
-				_.$lStorage["VIEW_EXPLORE_SORT_CONFIG"] = this.sortConfig;
-			},
-			async getResource(item = {}) {
-				this.pathStack = _.isArray(item?.path) ? item.path : [];
-				_.$loading(true);
-				try {
-					const res = await _api.yapi.resourceLs({ path: this.pathStack });
-					if (!res.errcode) {
-						this.resource = res.data;
+				saveSortConfig() {
+					_.$lStorage["VIEW_EXPLORE_SORT_CONFIG"] = this.sortConfig;
+				},
+				async getResource(item = {}) {
+					this.pathStack = _.isArray(item?.path) ? item.path : [];
+					_.$loading(true);
+					try {
+						const res = await _api.yapi.resourceLs({ path: this.pathStack });
+						if (!res.errcode) {
+							this.resource = res.data;
+						}
+					} catch (error) {
+						console.error(error);
+					} finally {
+						_.$loading(false);
 					}
-				} catch (error) {
-					console.error(error);
-				} finally {
-					_.$loading(false);
+				},
+				toggleToolbar() {
+					this.toolbarCollapsed = !this.toolbarCollapsed;
+					_.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] = this.toolbarCollapsed;
+				},
+				// 刷新当前路径的资源数据
+				refreshResource() {
+					this.getResource({ path: this.pathStack });
 				}
 			},
-			toggleToolbar() {
-				this.toolbarCollapsed = !this.toolbarCollapsed;
-				_.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] = this.toolbarCollapsed;
-			},
-			// 刷新当前路径的资源数据
-			refreshResource() {
-				this.getResource({ path: this.pathStack });
+			watch: {
+				pathStack(val) {
+					_.$lStorage["VIEW_EXPLORE_PATH_STACK"] = val;
+				},
+				resource(val) {
+					_.$lStorage["VIEW_EXPLORE_RESOURCE"] = val;
+				}
 			}
-		},
-		watch: {
-			pathStack(val) {
-				_.$lStorage["VIEW_EXPLORE_PATH_STACK"] = val;
-			},
-			resource(val) {
-				_.$lStorage["VIEW_EXPLORE_RESOURCE"] = val;
-			}
-		}
-	});
-}
+		});
+	}
 </script>

@@ -9,57 +9,57 @@
 	</xDialog>
 </template>
 <script lang="ts">
-export default async function ({ selected, callBack }) {
-	/* 必要，混入"closeModal", "layerMax", "layerMin", "layerRestore" */
-	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
-	return defineComponent({
-		inject: ["APP", "inject_project"],
-		props: useDialogProps(),
-		data() {
-			return {};
-		},
-		computed: {
-			labelStyle() {
-				return {
-					"--xItem-label-width": "144px"
-				};
+	export default async function ({ selected, callBack }) {
+		/* 必要，混入"closeModal", "layerMax", "layerMin", "layerRestore" */
+		const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
+		return defineComponent({
+			inject: ["APP", "inject_project"],
+			props: useDialogProps(),
+			data() {
+				return {};
 			},
-			cptFormData() {
-				return _.$pickFormValues(this.form);
-			},
-			btnOk() {
-				const vm = this;
-				return {
-					label: i18n("ok"),
-					preset: "blue",
-					async onClick() {
-						let id;
-						while ((id = selected.pop())) {
-							await vm.update(id);
-						}
-
-						vm.inject_project.get_interface_list();
-						vm.closeModal();
-					}
-				};
-			}
-		},
-		methods: {
-			async update(id) {
-				_.$loading(true);
-				try {
-					const params = {
-						id,
-						resBackupJson: ""
+			computed: {
+				labelStyle() {
+					return {
+						"--xItem-label-width": "144px"
 					};
-					return await _api.yapi.interface_up(params);
-				} catch (error) {
-					_.$msgError("修改失败");
-				} finally {
-					_.$loading(false);
+				},
+				cptFormData() {
+					return _.$pickFormValues(this.form);
+				},
+				btnOk() {
+					const vm = this;
+					return {
+						label: i18n("ok"),
+						preset: "blue",
+						async onClick() {
+							let id;
+							while ((id = selected.pop())) {
+								await vm.update(id);
+							}
+
+							vm.inject_project.get_interface_list();
+							vm.closeModal();
+						}
+					};
+				}
+			},
+			methods: {
+				async update(id) {
+					_.$loading(true);
+					try {
+						const params = {
+							id,
+							resBackupJson: ""
+						};
+						return await _api.yapi.interface_up(params);
+					} catch (error) {
+						_.$msgError("修改失败");
+					} finally {
+						_.$loading(false);
+					}
 				}
 			}
-		}
-	});
-}
+		});
+	}
 </script>

@@ -19,33 +19,33 @@
 </template>
 
 <script lang="ts">
-export default async function ({ diffView }) {
-	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
+	export default async function ({ diffView }) {
+		const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 
-	return {
-		inject: ["APP"],
-		props: useDialogProps(),
-		methods: {
-			renderContentItem() {
-				if (diffView.length === 0) {
-					return h("YapiPlaceholderView", {
-						view: "GroupSectionLogWindowDiff"
-					});
-				} else {
-					return _.map(diffView, (item, index) => {
-						if (!item.content) {
-							return null;
-						}
-						return hDiv({ class: "item-content" }, [
-							h("h3", { class: "title" }, [item.title]),
-							hDiv({ domProps: { innerHTML: item.content } })
-						]);
-					});
+		return {
+			inject: ["APP"],
+			props: useDialogProps(),
+			methods: {
+				renderContentItem() {
+					if (diffView.length === 0) {
+						return h("YapiPlaceholderView", {
+							view: "GroupSectionLogWindowDiff"
+						});
+					} else {
+						return _.map(diffView, (item, index) => {
+							if (!item.content) {
+								return null;
+							}
+							return hDiv({ class: "item-content" }, [
+								h("h3", { class: "title" }, [item.title]),
+								hDiv({ domProps: { innerHTML: item.content } })
+							]);
+						});
+					}
 				}
 			}
-		}
-	};
-}
+		};
+	}
 </script>
 
 <style lang="less"></style>

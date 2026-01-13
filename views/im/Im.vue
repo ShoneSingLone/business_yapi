@@ -21,96 +21,96 @@
 	</section>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		inject: ["APP"],
-		components: {
-			AppHeader: () => _.$importVue("@/views/Api/Header/ApiHeader.vue"),
-			ImAside: () => _.$importVue("@/views/im/ImAside.vue"),
-			ImSection: () => _.$importVue("@/views/im/ImSection.vue")
-		},
-		async mounted() {
-			(() => {
-				const TITLE_MAP = {
-					private: "个人可见",
-					all: "所有人可见"
-				};
-				const title = TITLE_MAP[this.cptBelongType];
-				title && (document.title = `联系人-${title}`);
-			})();
-		},
-		provide() {
-			const inject_im = this;
-			return {
-				inject_im
-			};
-		},
-		data() {
-			return {
-				isCollapse: true,
-				expandedKeys: [],
-				isShowEditor: false
-			};
-		},
-		methods: {},
-		computed: {
-			cpt_im_chat_with() {
-				const { uid } = this.$route.query;
-				const item = _.find(this.APP.all_user, i => _.$isSame(i.uid, uid));
-				return item || {};
+	export default async function () {
+		return defineComponent({
+			inject: ["APP"],
+			components: {
+				AppHeader: () => _.$importVue("@/views/Api/Header/ApiHeader.vue"),
+				ImAside: () => _.$importVue("@/views/im/ImAside.vue"),
+				ImSection: () => _.$importVue("@/views/im/ImSection.vue")
 			},
-			cptToggleStyle() {
+			async mounted() {
+				(() => {
+					const TITLE_MAP = {
+						private: "个人可见",
+						all: "所有人可见"
+					};
+					const title = TITLE_MAP[this.cptBelongType];
+					title && (document.title = `联系人-${title}`);
+				})();
+			},
+			provide() {
+				const inject_im = this;
 				return {
-					position: "absolute",
-					zIndex: 1,
-					margin: "8px"
+					inject_im
 				};
 			},
-			cptMountProps() {
+			data() {
 				return {
-					class: "flex1 flex vertical",
-					style: {
-						height: "1px"
-					}
+					isCollapse: true,
+					expandedKeys: [],
+					isShowEditor: false
 				};
 			},
-			cptNoteClass() {
-				return { "is-show-header": this.cptIsShowAppHeaderComponent };
-			},
-			cptIsShowAppHeaderComponent() {
-				return ["private", "all"].includes(this.cptBelongType);
-			},
-			cptBelongType() {
-				const { privateId, project_id, group_id } = this.$route.query;
-				/* 有优先级和权重，顺序不可变 */
-				if (privateId) return "private";
-				if (project_id) return "project";
-				if (group_id) return "group";
-				return "all";
-			},
-			cptBelongId() {
-				const { privateId, project_id, group_id } = this.$route.query;
-				const variable_map = {
-					private: privateId,
-					project: project_id,
-					group: group_id,
-					all: "BELONG_ALL"
-				};
-				return variable_map[this.cptBelongType];
+			methods: {},
+			computed: {
+				cpt_im_chat_with() {
+					const { uid } = this.$route.query;
+					const item = _.find(this.APP.all_user, i => _.$isSame(i.uid, uid));
+					return item || {};
+				},
+				cptToggleStyle() {
+					return {
+						position: "absolute",
+						zIndex: 1,
+						margin: "8px"
+					};
+				},
+				cptMountProps() {
+					return {
+						class: "flex1 flex vertical",
+						style: {
+							height: "1px"
+						}
+					};
+				},
+				cptNoteClass() {
+					return { "is-show-header": this.cptIsShowAppHeaderComponent };
+				},
+				cptIsShowAppHeaderComponent() {
+					return ["private", "all"].includes(this.cptBelongType);
+				},
+				cptBelongType() {
+					const { privateId, project_id, group_id } = this.$route.query;
+					/* 有优先级和权重，顺序不可变 */
+					if (privateId) return "private";
+					if (project_id) return "project";
+					if (group_id) return "group";
+					return "all";
+				},
+				cptBelongId() {
+					const { privateId, project_id, group_id } = this.$route.query;
+					const variable_map = {
+						private: privateId,
+						project: project_id,
+						group: group_id,
+						all: "BELONG_ALL"
+					};
+					return variable_map[this.cptBelongType];
+				}
 			}
-		}
-	});
-}
+		});
+	}
 </script>
 
 <style lang="less">
-#ViewNote {
-	height: 100%;
-	width: 100%;
-	display: flex;
-	flex-flow: row nowrap;
-	&.is-show-header {
-		flex-flow: column nowrap;
+	#ViewNote {
+		height: 100%;
+		width: 100%;
+		display: flex;
+		flex-flow: row nowrap;
+		&.is-show-header {
+			flex-flow: column nowrap;
+		}
 	}
-}
 </style>

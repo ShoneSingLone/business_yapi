@@ -11,37 +11,37 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		inject: ["inject_explore"],
-		data() {
-			return {
-				isTooltipVisible: false
-			};
-		},
-		computed: {
-			cptIconSound() {
-				return this.stateAudio.isMute ? "_soundMute" : "_sound";
+	export default async function () {
+		return defineComponent({
+			inject: ["inject_explore"],
+			data() {
+				return {
+					isTooltipVisible: false
+				};
 			},
-			stateAudio() {
-				return this.inject_explore.stateAudio;
-			},
-			methodsMusicPlayer() {
-				return this.inject_explore.methodsMusicPlayer;
-			}
-		},
-		methods: {
-			changeVolume(val) {
-				if (!this.isTooltipVisible) {
-					this.isTooltipVisible = true;
+			computed: {
+				cptIconSound() {
+					return this.stateAudio.isMute ? "_soundMute" : "_sound";
+				},
+				stateAudio() {
+					return this.inject_explore.stateAudio;
+				},
+				methodsMusicPlayer() {
+					return this.inject_explore.methodsMusicPlayer;
 				}
-				this.delayHideIsTooltipVisible();
-				this.methodsMusicPlayer.setVolume(val);
 			},
-			delayHideIsTooltipVisible: _.debounce(function () {
-				this.isTooltipVisible = false;
-			}, 1000 * 3)
-		}
-	});
-}
+			methods: {
+				changeVolume(val) {
+					if (!this.isTooltipVisible) {
+						this.isTooltipVisible = true;
+					}
+					this.delayHideIsTooltipVisible();
+					this.methodsMusicPlayer.setVolume(val);
+				},
+				delayHideIsTooltipVisible: _.debounce(function () {
+					this.isTooltipVisible = false;
+				}, 1000 * 3)
+			}
+		});
+	}
 </script>

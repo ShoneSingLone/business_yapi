@@ -1,7 +1,7 @@
 <style lang="less">
-.CloudDiskMine {
-	height: 1px;
-}
+	.CloudDiskMine {
+		height: 1px;
+	}
 </style>
 <template>
 	<div class="CloudDiskMine flex1 flex vertical">
@@ -32,48 +32,48 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		inject: ["APP"],
-		components: {
-			CloudDiskResourceAudioItem: () =>
-				_.$importVue("@/views/CloudDisk/CloudDiskResourceAudioItem.vue"),
-			MusicPlayerModel: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
-			MusicPlayerVolume: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
-			MusicPlayerAudio: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
-			MusicPlayerOpration: () =>
-				_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue")
-		},
-		provide() {
-			return { inject_explore: this.APP };
-		},
-		data() {
-			return {
-				activeName: "second"
-			};
-		},
-		computed: {
-			cloudDiskSizeUsed() {
-				return this.APP.user.cloudDiskSizeUsed || 0;
+	export default async function () {
+		return defineComponent({
+			inject: ["APP"],
+			components: {
+				CloudDiskResourceAudioItem: () =>
+					_.$importVue("@/views/CloudDisk/CloudDiskResourceAudioItem.vue"),
+				MusicPlayerModel: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
+				MusicPlayerVolume: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
+				MusicPlayerAudio: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
+				MusicPlayerOpration: () =>
+					_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue")
 			},
-			cloudDiskSizeTotal() {
-				return this.APP.user.cloudDiskSizeTotal || 0;
+			provide() {
+				return { inject_explore: this.APP };
 			},
-			cptPercent() {
-				if (!this.cloudDiskSizeTotal) {
-					return 0;
+			data() {
+				return {
+					activeName: "second"
+				};
+			},
+			computed: {
+				cloudDiskSizeUsed() {
+					return this.APP.user.cloudDiskSizeUsed || 0;
+				},
+				cloudDiskSizeTotal() {
+					return this.APP.user.cloudDiskSizeTotal || 0;
+				},
+				cptPercent() {
+					if (!this.cloudDiskSizeTotal) {
+						return 0;
+					}
+					return Number(this.cloudDiskSizeUsed / this.cloudDiskSizeTotal).toFixed(2);
 				}
-				return Number(this.cloudDiskSizeUsed / this.cloudDiskSizeTotal).toFixed(2);
+			},
+			methods: {
+				handleClick(tab, event) {
+					console.log(tab, event);
+				}
 			}
-		},
-		methods: {
-			handleClick(tab, event) {
-				console.log(tab, event);
-			}
-		}
-	});
-}
+		});
+	}
 </script>
