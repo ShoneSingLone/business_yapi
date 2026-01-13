@@ -18,18 +18,18 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		componentName: "RtcCamera",
-		inject: ["inject_rtc"],
-		components: {},
-		mounted() {},
-		data() {
-			return {};
-		},
-		computed: {},
-		methods: {},
-		watch: {}
-	});
-}
+	export default async function () {
+		return defineComponent({
+			componentName: "RtcCamera",
+			inject: ["inject_rtc"],
+			components: {},
+			mounted() {},
+			data() {
+				return {};
+			},
+			computed: {},
+			methods: {},
+			watch: {}
+		});
+	}
 </script>

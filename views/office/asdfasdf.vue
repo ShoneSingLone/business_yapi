@@ -1,88 +1,88 @@
 <style lang="less">
-.office-section {
-	display: flex;
-	height: 100vh;
+	.office-section {
+		display: flex;
+		height: 100vh;
 
-	.sidebar {
-		width: 250px;
-		border-right: 1px solid #eee;
-		padding: 20px;
+		.sidebar {
+			width: 250px;
+			border-right: 1px solid #eee;
+			padding: 20px;
 
-		.file-manager {
-			.search-box {
-				margin-bottom: 20px;
-			}
+			.file-manager {
+				.search-box {
+					margin-bottom: 20px;
+				}
 
-			.file-list {
-				.file-item {
-					display: flex;
-					align-items: center;
-					padding: 8px;
-					cursor: pointer;
+				.file-list {
+					.file-item {
+						display: flex;
+						align-items: center;
+						padding: 8px;
+						cursor: pointer;
 
-					&:hover {
-						background: #f5f5f5;
-					}
+						&:hover {
+							background: #f5f5f5;
+						}
 
-					.file-icon {
-						margin-right: 10px;
+						.file-icon {
+							margin-right: 10px;
+						}
 					}
 				}
 			}
 		}
-	}
 
-	.main-content {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-
-		.toolbar {
-			padding: 10px;
-			border-bottom: 1px solid #eee;
-			display: flex;
-			align-items: center;
-			gap: 10px;
-		}
-
-		.editor-container {
+		.main-content {
 			flex: 1;
-			padding: 20px;
-			position: relative;
-		}
-
-		.status-bar {
-			padding: 8px;
-			border-top: 1px solid #eee;
 			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			flex-direction: column;
+
+			.toolbar {
+				padding: 10px;
+				border-bottom: 1px solid #eee;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+
+			.editor-container {
+				flex: 1;
+				padding: 20px;
+				position: relative;
+			}
+
+			.status-bar {
+				padding: 8px;
+				border-top: 1px solid #eee;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
 		}
-	}
 
-	.collaborators {
-		position: fixed;
-		top: 20px;
-		right: 20px;
-		display: flex;
-		gap: 8px;
+		.collaborators {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			display: flex;
+			gap: 8px;
 
-		.avatar {
-			position: relative;
+			.avatar {
+				position: relative;
 
-			&::after {
-				content: "";
-				position: absolute;
-				bottom: 0;
-				right: 0;
-				width: 8px;
-				height: 8px;
-				border-radius: 50%;
-				background: #52c41a;
+				&::after {
+					content: "";
+					position: absolute;
+					bottom: 0;
+					right: 0;
+					width: 8px;
+					height: 8px;
+					border-radius: 50%;
+					background: #52c41a;
+				}
 			}
 		}
 	}
-}
 </style>
 
 <template>
@@ -170,73 +170,73 @@
 </template>
 
 <script>
-export default defineComponent({
-	components: {},
-	data() {
-		return {
-			documentTitle: "",
-			content: "",
-			searchQuery: "",
-			uploadModalVisible: false,
-			saveStatus: "All changes saved",
-			wordCount: 0,
-			uploadUrl: "/api/upload",
-			files: [],
-			onlineUsers: [],
-			editorOptions: {
-				theme: "snow",
-				modules: {
-					toolbar: [
-						["bold", "italic", "underline"],
-						[{ list: "ordered" }, { list: "bullet" }],
-						[{ align: [] }]
-					]
+	export default defineComponent({
+		components: {},
+		data() {
+			return {
+				documentTitle: "",
+				content: "",
+				searchQuery: "",
+				uploadModalVisible: false,
+				saveStatus: "All changes saved",
+				wordCount: 0,
+				uploadUrl: "/api/upload",
+				files: [],
+				onlineUsers: [],
+				editorOptions: {
+					theme: "snow",
+					modules: {
+						toolbar: [
+							["bold", "italic", "underline"],
+							[{ list: "ordered" }, { list: "bullet" }],
+							[{ align: [] }]
+						]
+					}
 				}
+			};
+		},
+
+		computed: {
+			filteredFiles() {
+				return this.files.filter(file =>
+					file.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+				);
 			}
-		};
-	},
+		},
 
-	computed: {
-		filteredFiles() {
-			return this.files.filter(file =>
-				file.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-			);
+		methods: {
+			applyFormat(format) {
+				const editor = this.$refs.editor.quill;
+				editor.format(format, !editor.getFormat()[format]);
+			},
+
+			inviteCollaborator() {
+				// Implement invite logic
+			},
+
+			shareDocument() {
+				// Implement share logic
+			},
+
+			handleUpload(info) {
+				// Implement upload handling
+			},
+
+			onTextChange: debounce(function () {
+				this.saveStatus = "Saving...";
+				this.wordCount = this.content.trim().split(/\s+/).length;
+
+				// Simulate auto-save
+				setTimeout(() => {
+					this.saveStatus = "All changes saved";
+				}, 1000);
+			}, 300)
+		},
+
+		mounted() {
+			// Initialize websocket connection for real-time collaboration
+			// Subscribe to document changes
+			// Load initial document data
 		}
-	},
-
-	methods: {
-		applyFormat(format) {
-			const editor = this.$refs.editor.quill;
-			editor.format(format, !editor.getFormat()[format]);
-		},
-
-		inviteCollaborator() {
-			// Implement invite logic
-		},
-
-		shareDocument() {
-			// Implement share logic
-		},
-
-		handleUpload(info) {
-			// Implement upload handling
-		},
-
-		onTextChange: debounce(function () {
-			this.saveStatus = "Saving...";
-			this.wordCount = this.content.trim().split(/\s+/).length;
-
-			// Simulate auto-save
-			setTimeout(() => {
-				this.saveStatus = "All changes saved";
-			}, 1000);
-		}, 300)
-	},
-
-	mounted() {
-		// Initialize websocket connection for real-time collaboration
-		// Subscribe to document changes
-		// Load initial document data
-	}
-});
+	});
 </script>

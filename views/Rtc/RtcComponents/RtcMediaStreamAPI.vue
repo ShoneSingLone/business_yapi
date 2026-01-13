@@ -23,65 +23,65 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		componentName: "RtcCamera",
-		inject: ["inject_rtc"],
-		components: {},
-		data() {
-			return {
-				stream: null
-			};
-		},
-		computed: {},
-		mounted() {
-			this.$on("getUserMedia.success", this.openDevice);
-		},
-		methods: {
-			//打开音视频设备
-			async openDevice(stream) {
-				try {
-					//根据约束条件获取媒体
-					this.stream = stream;
-					let video = this.$refs["myVideo"];
-					video.srcObject = this.stream;
-				} catch (e) {
-					console.log(`getUserMedia错误:` + e);
+	export default async function () {
+		return defineComponent({
+			componentName: "RtcCamera",
+			inject: ["inject_rtc"],
+			components: {},
+			data() {
+				return {
+					stream: null
+				};
+			},
+			computed: {},
+			mounted() {
+				this.$on("getUserMedia.success", this.openDevice);
+			},
+			methods: {
+				//打开音视频设备
+				async openDevice(stream) {
+					try {
+						//根据约束条件获取媒体
+						this.stream = stream;
+						let video = this.$refs["myVideo"];
+						video.srcObject = this.stream;
+					} catch (e) {
+						console.log(`getUserMedia错误:` + e);
+					}
+				},
+				//获取音频轨道列表
+				btnGetAudioTracks() {
+					console.log("getAudioTracks");
+					//返回一个数据
+					console.log(this.stream.getAudioTracks());
+				},
+				//根据Id获取音频轨道
+				btnGetTrackById() {
+					console.log("getTrackById");
+					console.log(this.stream.getTrackById(this.stream.getAudioTracks()[0].id));
+				},
+				//删除音频轨道
+				btnRemoveAudioTrack() {
+					console.log("removeAudioTrack()");
+					this.stream.removeTrack(this.stream.getAudioTracks()[0]);
+				},
+				//获取所有轨道，包括音频及视频
+				btnGetTracks() {
+					console.log("getTracks()");
+					console.log(this.stream.getTracks());
+				},
+				//获取视频轨道列表
+				btnGetVideoTracks() {
+					console.log("getVideoTracks()");
+					console.log(this.stream.getVideoTracks());
+				},
+				//删除视频轨道
+				btnRemoveVideoTrack() {
+					console.log("removeVideoTrack()");
+					this.stream.removeTrack(this.stream.getVideoTracks()[0]);
 				}
 			},
-			//获取音频轨道列表
-			btnGetAudioTracks() {
-				console.log("getAudioTracks");
-				//返回一个数据
-				console.log(this.stream.getAudioTracks());
-			},
-			//根据Id获取音频轨道
-			btnGetTrackById() {
-				console.log("getTrackById");
-				console.log(this.stream.getTrackById(this.stream.getAudioTracks()[0].id));
-			},
-			//删除音频轨道
-			btnRemoveAudioTrack() {
-				console.log("removeAudioTrack()");
-				this.stream.removeTrack(this.stream.getAudioTracks()[0]);
-			},
-			//获取所有轨道，包括音频及视频
-			btnGetTracks() {
-				console.log("getTracks()");
-				console.log(this.stream.getTracks());
-			},
-			//获取视频轨道列表
-			btnGetVideoTracks() {
-				console.log("getVideoTracks()");
-				console.log(this.stream.getVideoTracks());
-			},
-			//删除视频轨道
-			btnRemoveVideoTrack() {
-				console.log("removeVideoTrack()");
-				this.stream.removeTrack(this.stream.getVideoTracks()[0]);
-			}
-		},
-		watch: {}
-	});
-}
+			watch: {}
+		});
+	}
 </script>

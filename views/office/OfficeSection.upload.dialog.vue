@@ -15,50 +15,50 @@
 	</xDialog>
 </template>
 <script lang="ts">
-export default async function ({ row }) {
-	const isUpdate = !!row;
-	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
-	return defineComponent({
-		props: useDialogProps(),
-		mounted() {
-			this.init();
-		},
-		data() {
-			return {
-				form: {
-					name: {
-						value: "",
-						label: i18n("name"),
-						disabled: isUpdate,
-						rules: [_rules.required(), _rules.lessThan(50)]
-					}
-				}
-			};
-		},
-		computed: {
-			isUpdate() {
-				return !!row;
+	export default async function ({ row }) {
+		const isUpdate = !!row;
+		const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
+		return defineComponent({
+			props: useDialogProps(),
+			mounted() {
+				this.init();
 			},
-			btnOk() {
-				const vm = this;
+			data() {
 				return {
-					label: i18n("确定"),
-					preset: "blue",
-					async onClick() {
-						vm.onClickOk();
+					form: {
+						name: {
+							value: "",
+							label: i18n("name"),
+							disabled: isUpdate,
+							rules: [_rules.required(), _rules.lessThan(50)]
+						}
 					}
 				};
-			}
-		},
-		methods: {
-			async onClickOk() {
-				const [error] = await _.$validateForm(this.el);
-				if (error) {
-					return;
+			},
+			computed: {
+				isUpdate() {
+					return !!row;
+				},
+				btnOk() {
+					const vm = this;
+					return {
+						label: i18n("确定"),
+						preset: "blue",
+						async onClick() {
+							vm.onClickOk();
+						}
+					};
 				}
-				this.closeModal();
+			},
+			methods: {
+				async onClickOk() {
+					const [error] = await _.$validateForm(this.el);
+					if (error) {
+						return;
+					}
+					this.closeModal();
+				}
 			}
-		}
-	});
-}
+		});
+	}
 </script>

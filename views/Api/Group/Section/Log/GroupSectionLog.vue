@@ -31,123 +31,129 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		inject: ["APP"],
-		data() {
-			const vm = this;
-			return {
-				logList: [],
-				configsTable: {
-					onQuery() {
-						vm.updateGroupLog();
-					},
-					pagination: {
-						page: 1,
-						size: 10,
-						total: 0
-					}
-				}
-			};
-		},
-		computed: {
-			isShow() {
-				return this.$route.query.group_view_tab_name === Vue._yapi_var.TAB_KEY_GROUP_LOG;
-			}
-		},
-		methods: {
-			async showDiff(data) {
+	export default async function () {
+		return defineComponent({
+			inject: ["APP"],
+			data() {
 				const vm = this;
-				const jsondiffpatch = await _.$appendScript(
-					"/common/libs/jsondiffpatch.umd.js",
-					"jsondiffpatch"
-				);
-				const formattersHtml = jsondiffpatch.formatters.html;
-				const diffView = Vue._common_utils.diffMessage(jsondiffpatch, formattersHtml, data);
-				const addMember = await _.$importVue(
-					"@/views/Api/Group/Section/Log/GroupSectionLogWindowDiff.vue",
-					{
-						parent: this,
-						diffView,
-						onOk() {
-							vm.APP.updateGroupMemberList();
+				return {
+					logList: [],
+					configsTable: {
+						onQuery() {
+							vm.updateGroupLog();
+						},
+						pagination: {
+							page: 1,
+							size: 10,
+							total: 0
 						}
 					}
-				);
-				_.$openWindow_deprecated(i18n("Api 改动日志"), addMember, {
-					maxmin: true,
-					fullscreen: false
-				});
+				};
 			},
-			async updateGroupLog() {
-				_.$loading(true);
-				try {
-					const { page, size } = this.configsTable.pagination;
-					const {
-						data: { list, total }
-					} = await _api.yapi.get_log_list({
-						typeid: this.APP.cptGroupId,
-						type: "group",
-						page,
-						size
+			computed: {
+				isShow() {
+					return (
+						this.$route.query.group_view_tab_name === Vue._yapi_var.TAB_KEY_GROUP_LOG
+					);
+				}
+			},
+			methods: {
+				async showDiff(data) {
+					const vm = this;
+					const jsondiffpatch = await _.$appendScript(
+						"/common/libs/jsondiffpatch.umd.js",
+						"jsondiffpatch"
+					);
+					const formattersHtml = jsondiffpatch.formatters.html;
+					const diffView = Vue._common_utils.diffMessage(
+						jsondiffpatch,
+						formattersHtml,
+						data
+					);
+					const addMember = await _.$importVue(
+						"@/views/Api/Group/Section/Log/GroupSectionLogWindowDiff.vue",
+						{
+							parent: this,
+							diffView,
+							onOk() {
+								vm.APP.updateGroupMemberList();
+							}
+						}
+					);
+					_.$openWindow_deprecated(i18n("Api 改动日志"), addMember, {
+						maxmin: true,
+						fullscreen: false
 					});
-					this.logList = list;
-					_.$setPagination(this.configsTable, { page, size, total });
-				} catch (error) {
-				} finally {
-					_.$loading(false);
+				},
+				async updateGroupLog() {
+					_.$loading(true);
+					try {
+						const { page, size } = this.configsTable.pagination;
+						const {
+							data: { list, total }
+						} = await _api.yapi.get_log_list({
+							typeid: this.APP.cptGroupId,
+							type: "group",
+							page,
+							size
+						});
+						this.logList = list;
+						_.$setPagination(this.configsTable, { page, size, total });
+					} catch (error) {
+					} finally {
+						_.$loading(false);
+					}
+				},
+				getTime(time) {
+					return _.$dateFormat(time);
+				},
+				getTimeAgo(time) {
+					return _.$timeAgo(time);
+				},
+				getTitle(type) {
+					return `${Vue._yapi_var.LOG_TYPE[type]}动态`;
+				},
+				hasDiff(data) {
+					return _.isPlainObject(data);
 				}
 			},
-			getTime(time) {
-				return _.$dateFormat(time);
-			},
-			getTimeAgo(time) {
-				return _.$timeAgo(time);
-			},
-			getTitle(type) {
-				return `${Vue._yapi_var.LOG_TYPE[type]}动态`;
-			},
-			hasDiff(data) {
-				return _.isPlainObject(data);
-			}
-		},
-		watch: {
-			"APP.cptGroupId": {
-				immediate: true,
-				async handler(group_id, oldGroupId) {
-					if (group_id) {
-						try {
-							this.configsTable.pagination.current = 1;
-							this.updateGroupLog();
-						} catch (error) {
-							_.$msgError(error);
+			watch: {
+				"APP.cptGroupId": {
+					immediate: true,
+					async handler(group_id, oldGroupId) {
+						if (group_id) {
+							try {
+								this.configsTable.pagination.current = 1;
+								this.updateGroupLog();
+							} catch (error) {
+								_.$msgError(error);
+							}
 						}
 					}
 				}
 			}
-		}
-	});
-}
+		});
+	}
 </script>
 <style lang="less">
-.GroupSectionLog {
-	height: 100%;
-	overflow: hidden;
-	display: flex;
-	flex-flow: column nowrap;
-	.log-wrapper {
-		flex: 1;
-		height: 1px;
-		overflow: auto;
-	}
+	.GroupSectionLog {
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		flex-flow: column nowrap;
+		.log-wrapper {
+			flex: 1;
+			height: 1px;
+			overflow: auto;
+		}
 
-	.logcontent {
-		line-height: 24px;
-		margin-top: var(--ui-one);
-		padding: 0px 16px;
-		a {
-			color: var(--el-color-primary-active);
+		.logcontent {
+			line-height: 24px;
+			margin-top: var(--ui-one);
+			padding: 0px 16px;
+			a {
+				color: var(--el-color-primary-active);
+			}
 		}
 	}
-}
 </style>

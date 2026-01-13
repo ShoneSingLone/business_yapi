@@ -17,24 +17,24 @@
 </template>
 
 <script lang="ts">
-export default async function () {
-	const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
-	return defineComponent({
-		mixins: [mixins],
-		methods: {
-			changeExample(example, index) {
-				const _value = _.cloneDeep(this.x_item_value);
-				_value[index].example = example;
-				this.x_item_value = [..._value];
-			},
-			changeDesc(desc, index) {
-				const _value = _.cloneDeep(this.x_item_value);
-				_value[index].desc = desc;
-				this.x_item_value = [..._value];
+	export default async function () {
+		const { mixins } = await _.$importVue("/common/ui-x/common/ItemMixins.vue");
+		return defineComponent({
+			mixins: [mixins],
+			methods: {
+				changeExample(example, index) {
+					const _value = _.cloneDeep(this.x_item_value);
+					_value[index].example = example;
+					this.x_item_value = [..._value];
+				},
+				changeDesc(desc, index) {
+					const _value = _.cloneDeep(this.x_item_value);
+					_value[index].desc = desc;
+					this.x_item_value = [..._value];
+				}
 			}
-		}
-	});
-}
+		});
+	}
 </script>
 
 <style lang="less"></style>

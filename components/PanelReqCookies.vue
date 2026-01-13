@@ -1,30 +1,30 @@
 <style lang="less">
-.headers-panel {
-	padding: 16px;
+	.headers-panel {
+		padding: 16px;
 
-	.header-row {
-		display: flex;
-		gap: 8px;
-		margin-bottom: 8px;
-		align-items: center;
+		.header-row {
+			display: flex;
+			gap: 8px;
+			margin-bottom: 8px;
+			align-items: center;
 
-		.header-checkbox {
-			width: 20px;
+			.header-checkbox {
+				width: 20px;
+			}
+
+			.header-input {
+				flex: 1;
+			}
+
+			.header-actions {
+				width: 40px;
+			}
 		}
 
-		.header-input {
-			flex: 1;
-		}
-
-		.header-actions {
-			width: 40px;
+		.add-header {
+			margin-top: 16px;
 		}
 	}
-
-	.add-header {
-		margin-top: 16px;
-	}
-}
 </style>
 <template>
 	<div class="headers-panel">
@@ -59,39 +59,39 @@
 	</div>
 </template>
 <script lang="ts">
-export default async function () {
-	return defineComponent({
-		name: "PanelReqBodyJsonHeaders",
+	export default async function () {
+		return defineComponent({
+			name: "PanelReqBodyJsonHeaders",
 
-		data() {
-			return {
-				headers: []
-			};
-		},
-
-		methods: {
-			addHeader() {
-				this.headers.push({
-					key: "",
-					value: "",
-					enabled: true
-				});
+			data() {
+				return {
+					headers: []
+				};
 			},
 
-			removeHeader(index) {
-				this.headers.splice(index, 1);
-			},
+			methods: {
+				addHeader() {
+					this.headers.push({
+						key: "",
+						value: "",
+						enabled: true
+					});
+				},
 
-			// Get all enabled headers as an object
-			getHeaders() {
-				return this.headers
-					.filter(h => h.enabled && h.key)
-					.reduce((acc, h) => {
-						acc[h.key] = h.value;
-						return acc;
-					}, {});
+				removeHeader(index) {
+					this.headers.splice(index, 1);
+				},
+
+				// Get all enabled headers as an object
+				getHeaders() {
+					return this.headers
+						.filter(h => h.enabled && h.key)
+						.reduce((acc, h) => {
+							acc[h.key] = h.value;
+							return acc;
+						}, {});
+				}
 			}
-		}
-	});
-}
+		});
+	}
 </script>
