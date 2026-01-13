@@ -86,6 +86,8 @@ module.exports = {
 		"Please enter the correct IPv6 address"
 	],
 
+	ruleEnterCorrectAddress: ["ruleEnterCorrectAddress", "ruleEnterCorrectAddress"],
+
 	msgEnterPositiveInteger: ["请输入正整数", "Please enter a positive integer"],
 
 	msgEnter220DigitsLettersNumbers: [

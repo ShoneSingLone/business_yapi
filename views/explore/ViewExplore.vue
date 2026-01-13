@@ -459,120 +459,294 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		const LOOP_TYPE_NAME_ARRAY = ["playOrder", "playRandom", "playLoop", "playSingleLoop"];
-		return defineComponent({
-			components: {
-				MusicPlayerModel: () =>
-					_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
-				MusicPlayerVolume: () =>
-					_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
-				MusicPlayerAudio: () =>
-					_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
-				MusicPlayerOpration: () =>
-					_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue"),
-				ResourceItem: () => _.$importVue("@/views/explore/ResourceItem.vue")
-			},
-			setup() {
-				const vm = this;
-				let intervalTimer;
-				const stateAudio = reactive({
-					loopType: 0,
-					songId: "",
-					isPlaying: false, //是否播放中
-					isPause: false, //是否暂停
-					audio: new Audio(),
-					currentTime: 0,
-					ended: false, //是否播放结束
-					duration: 0, //总播放时长,
-					isMute: false, //是否静音
-					volume: (() => {
-						const volume = _.$lStorage["PLAYER-VOLUME"];
-						if (volume) {
-							return Number(volume) * 100;
-						} else {
-							return 100;
-						}
-					})()
+export default async function () {
+	const LOOP_TYPE_NAME_ARRAY = ["playOrder", "playRandom", "playLoop", "playSingleLoop"];
+	return defineComponent({
+		components: {
+			MusicPlayerModel: () =>
+				_.$importVue("@/views/explore/execTools/music/MusicPlayerModel.vue"),
+			MusicPlayerVolume: () =>
+				_.$importVue("@/views/explore/execTools/music/MusicPlayerVolume.vue"),
+			MusicPlayerAudio: () =>
+				_.$importVue("@/views/explore/execTools/music/MusicPlayerAudio.vue"),
+			MusicPlayerOpration: () =>
+				_.$importVue("@/views/explore/execTools/music/MusicPlayerOpration.vue"),
+			ResourceItem: () => _.$importVue("@/views/explore/ResourceItem.vue")
+		},
+		setup() {
+			const vm = this;
+			let intervalTimer;
+			const stateAudio = reactive({
+				loopType: 0,
+				songId: "",
+				isPlaying: false, //是否播放中
+				isPause: false, //是否暂停
+				audio: new Audio(),
+				currentTime: 0,
+				ended: false, //是否播放结束
+				duration: 0, //总播放时长,
+				isMute: false, //是否静音
+				volume: (() => {
+					const volume = _.$lStorage["PLAYER-VOLUME"];
+					if (volume) {
+						return Number(volume) * 100;
+					} else {
+						return 100;
+					}
+				})()
+			});
+
+			watch(
+				() => stateAudio.ended,
+				ended => {
+					if (!ended) return;
+					handlePlayEnd();
+				}
+			);
+
+			const cptIconPlayModel = computed(() => {
+				return LOOP_TYPE_NAME_ARRAY[stateAudio.loopType];
+			});
+
+			function handlePlayEnd() {
+				stopSong();
+				const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
+					name: stateAudio.songId
 				});
 
-				watch(
-					() => stateAudio.ended,
-					ended => {
-						if (!ended) return;
-						handlePlayEnd();
+				if (currentSongIndex > -1) {
+					playMethods[cptIconPlayModel.value](currentSongIndex);
+				}
+			}
+
+			function setCurrentTime(val) {
+				try {
+					stateAudio.audio.currentTime = val;
+				} catch (error) {
+					console.error(error);
+				} finally {
+				}
+			}
+			function intervalCurrentTime() {
+				stateAudio.currentTime = parseInt(stateAudio.audio.currentTime.toString());
+				stateAudio.duration = parseInt(stateAudio.audio.duration.toString());
+				stateAudio.ended = stateAudio.audio.ended;
+			}
+
+			function palyPrevSong() {
+				const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
+					name: stateAudio.songId
+				});
+				if (currentSongIndex > -1) {
+					if (currentSongIndex === 0) {
+						playAudio(vm.cptResourceOnlyAudio[vm.cptResourceOnlyAudio.length - 1]);
+					} else {
+						playAudio(vm.cptResourceOnlyAudio[currentSongIndex - 1]);
+					}
+				}
+			}
+			function stopSong() {
+				stateAudio.isPlaying = false;
+				stateAudio.audio.pause();
+				stateAudio.audio.currentTime = 0;
+				stateAudio.currentTime = 0;
+			}
+			function togglePlayOrPause() {
+				if (!stateAudio.songId) return;
+				stateAudio.isPlaying = !stateAudio.isPlaying;
+				if (stateAudio.isPlaying) {
+					stateAudio.audio.play();
+				} else {
+					stateAudio.audio.pause();
+				}
+			}
+
+			function playNextSong() {
+				if (cptIconPlayModel.value === "playSingleLoop") {
+					const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
+						name: stateAudio.songId
+					});
+					if (currentSongIndex > -1) {
+						playMethods.playLoop(currentSongIndex);
+					}
+				} else {
+					handlePlayEnd();
+				}
+			}
+
+			function playMedia(record) {
+				if (record.type === "audio") {
+					playAudio(record);
+				}
+				if (record.type === "video") {
+					playVideo(record);
+				}
+				if (record.type === "img") {
+					playImg(record);
+				}
+			}
+
+			async function playImg(current_resource) {
+				const { name } = current_resource;
+				const urlList = _.filter(vm.cptResource, { type: "img" });
+				const index = _.findIndex(urlList, { name });
+
+				_.$previewImgs(
+					{
+						urlList: _.map(urlList, resource => {
+							const uri = encodeURIComponent(JSON.stringify(resource.path));
+							return Vue._common_utils.appendToken(
+								_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
+							);
+						}),
+						index
+					},
+					{
+						autoPlay: true
 					}
 				);
-
-				const cptIconPlayModel = computed(() => {
-					return LOOP_TYPE_NAME_ARRAY[stateAudio.loopType];
+			}
+			async function playVideo(current_resource) {
+				const { name } = current_resource;
+				const all_video_array = _.filter(vm.cptResource, { type: "video" }).map(item => {
+					const uri = encodeURIComponent(JSON.stringify(item.path));
+					return {
+						...item,
+						download_uri: Vue._common_utils.appendToken(
+							_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
+						),
+						uri: Vue._common_utils.appendToken(
+							_.$ajax.urlWrapper(`/api/resource/video?uri=${uri}`)
+						)
+					};
 				});
+				const current_index = _.findIndex(all_video_array, { name });
+				return _.$openModal({
+					title: "Player",
+					url: "@/views/explore/execTools/video/VideoPlayerFullscreen.dialog.vue",
+					current_index,
+					current_resource,
+					all_video_array
+				});
+			}
 
-				function handlePlayEnd() {
-					stopSong();
-					const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
-						name: stateAudio.songId
+			async function playAudio(record) {
+				const { path, name } = record;
+				stopSong();
+				function canPlay() {
+					return new Promise(resolve => {
+						stateAudio.audio.onloadedmetadata = async event => {};
+						stateAudio.audio.oncanplaythrough = async event => {
+							console.log("I think I can play through the entire ", event);
+						};
+						stateAudio.audio.oncanplay = function (event) {
+							if (intervalTimer) {
+								clearInterval(intervalTimer);
+							}
+							intervalTimer = setInterval(intervalCurrentTime, 1000);
+							resolve(stateAudio.duration);
+						};
 					});
-
-					if (currentSongIndex > -1) {
-						playMethods[cptIconPlayModel.value](currentSongIndex);
-					}
 				}
-
-				function setCurrentTime(val) {
-					try {
-						stateAudio.audio.currentTime = val;
-					} catch (error) {
-						console.error(error);
-					} finally {
-					}
-				}
-				function intervalCurrentTime() {
-					stateAudio.currentTime = parseInt(stateAudio.audio.currentTime.toString());
-					stateAudio.duration = parseInt(stateAudio.audio.duration.toString());
-					stateAudio.ended = stateAudio.audio.ended;
-				}
-
-				function palyPrevSong() {
-					const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
-						name: stateAudio.songId
-					});
-					if (currentSongIndex > -1) {
-						if (currentSongIndex === 0) {
-							playAudio(vm.cptResourceOnlyAudio[vm.cptResourceOnlyAudio.length - 1]);
-						} else {
-							playAudio(vm.cptResourceOnlyAudio[currentSongIndex - 1]);
-						}
-					}
-				}
-				function stopSong() {
-					stateAudio.isPlaying = false;
-					stateAudio.audio.pause();
-					stateAudio.audio.currentTime = 0;
-					stateAudio.currentTime = 0;
-				}
-				function togglePlayOrPause() {
-					if (!stateAudio.songId) return;
-					stateAudio.isPlaying = !stateAudio.isPlaying;
-					if (stateAudio.isPlaying) {
-						stateAudio.audio.play();
+				let uri = encodeURIComponent(JSON.stringify(path));
+				stateAudio.songId = name;
+				stateAudio.audio.src = Vue._common_utils.appendToken(
+					`${window._AJAX_URL_PREFIX || ""}/api/resource/audio?uri=${uri}`
+				);
+				await canPlay();
+				stateAudio.audio.play();
+				stateAudio.isPlaying = true;
+				const audioVolume = stateAudio.volume / 100;
+				stateAudio.audio.volume = audioVolume;
+			}
+			const playMethods = {
+				playLoop(currentSongIndex) {
+					const next = currentSongIndex + 1;
+					if (next > vm.cptResourceOnlyAudio.length - 1) {
+						playAudio(vm.cptResourceOnlyAudio[0]);
 					} else {
-						stateAudio.audio.pause();
+						playAudio(vm.cptResourceOnlyAudio[next]);
 					}
-				}
-
-				function playNextSong() {
-					if (cptIconPlayModel.value === "playSingleLoop") {
-						const currentSongIndex = _.findIndex(vm.cptResourceOnlyAudio, {
-							name: stateAudio.songId
-						});
-						if (currentSongIndex > -1) {
-							playMethods.playLoop(currentSongIndex);
-						}
+				},
+				playRandom(currentSongIndex) {
+					let next;
+					/* 如果只有一首，循环一首 */
+					if (vm.cptResourceOnlyAudio.length === 1) {
+						next = 0;
+						playAudio(vm.cptResourceOnlyAudio[0]);
+						return;
+					}
+					const max = vm.cptResourceOnlyAudio.length - 1;
+					const min = 0;
+					const getNext = () => Math.floor(Math.random() * (max - min + 1)) + min;
+					next = getNext();
+					while (next === currentSongIndex) {
+						next = getNext();
+					}
+					playAudio(vm.cptResourceOnlyAudio[next]);
+				},
+				playOrder(currentSongIndex) {
+					const next = currentSongIndex + 1;
+					if (next > vm.cptResourceOnlyAudio.length - 1) {
+						stopSong();
 					} else {
-						handlePlayEnd();
+						playAudio(vm.cptResourceOnlyAudio[next]);
+					}
+				},
+				playSingleLoop(currentSongIndex) {
+					playAudio(vm.cptResourceOnlyAudio[currentSongIndex]);
+				}
+			};
+
+			function toggleVolumeMute() {
+				stateAudio.isMute = !stateAudio.isMute;
+				stateAudio.audio.muted = stateAudio.isMute;
+			}
+
+			const cacheAudioVolume = _.debounce(function (audiovolume) {
+				_.$lStorage["PLAYER-VOLUME"] = audiovolume;
+			}, 1000);
+
+			return {
+				LOOP_TYPE_NAME_ARRAY,
+				playAudio,
+				playMedia,
+				/*  */
+				stateAudio,
+				methodsMusicPlayer: {
+					setCurrentTime,
+					palyPrevSong,
+					stopSong,
+					togglePlayOrPause,
+					playNextSong,
+					toggleVolumeMute,
+					setVolume(n) {
+						n = n > 100 ? 100 : n;
+						n = n < 0 ? 0 : n;
+						stateAudio.volume = n;
+						const audioVolume = n / 100;
+						stateAudio.audio.volume = audioVolume;
+						cacheAudioVolume(audioVolume);
+					},
+					async togglePlayModel() {
+						stateAudio.loopType =
+							(stateAudio.loopType + 1) % LOOP_TYPE_NAME_ARRAY.length;
 					}
 				}
+			};
+		},
+		provide() {
+			return {
+				inject_explore: this
+			};
+		},
+		data() {
+			// 从localStorage读取排序设置，如果没有则使用默认值
+			const savedSortConfig = _.$lStorage["VIEW_EXPLORE_SORT_CONFIG"];
+			const defaultSortConfig = [
+				{ field: "type", order: "asc" },
+				{ field: "name", order: "asc" }
+			];
 
 			let pathStack = [];
 			if (_.$lStorage["VIEW_EXPLORE_PATH_STACK"] === "undefined") {
@@ -613,219 +787,61 @@
 							const aParts = aName.split(/(\d+)/);
 							const bParts = bName.split(/(\d+)/);
 
-				async function playAudio(record) {
-					const { path, name } = record;
-					stopSong();
-					function canPlay() {
-						return new Promise(resolve => {
-							stateAudio.audio.onloadedmetadata = async event => {};
-							stateAudio.audio.oncanplaythrough = async event => {
-								console.log("I think I can play through the entire ", event);
-							};
-							stateAudio.audio.oncanplay = function (event) {
-								if (intervalTimer) {
-									clearInterval(intervalTimer);
-								}
-								intervalTimer = setInterval(intervalCurrentTime, 1000);
-								resolve(stateAudio.duration);
-							};
-						});
-					}
-					let uri = encodeURIComponent(JSON.stringify(path));
-					stateAudio.songId = name;
-					stateAudio.audio.src = Vue._common_utils.appendToken(
-						`${window._AJAX_URL_PREFIX || ""}/api/resource/audio?uri=${uri}`
-					);
-					await canPlay();
-					stateAudio.audio.play();
-					stateAudio.isPlaying = true;
-					const audioVolume = stateAudio.volume / 100;
-					stateAudio.audio.volume = audioVolume;
-				}
-				const playMethods = {
-					playLoop(currentSongIndex) {
-						const next = currentSongIndex + 1;
-						if (next > vm.cptResourceOnlyAudio.length - 1) {
-							playAudio(vm.cptResourceOnlyAudio[0]);
-						} else {
-							playAudio(vm.cptResourceOnlyAudio[next]);
-						}
-					},
-					playRandom(currentSongIndex) {
-						let next;
-						/* 如果只有一首，循环一首 */
-						if (vm.cptResourceOnlyAudio.length === 1) {
-							next = 0;
-							playAudio(vm.cptResourceOnlyAudio[0]);
-							return;
-						}
-						const max = vm.cptResourceOnlyAudio.length - 1;
-						const min = 0;
-						const getNext = () => Math.floor(Math.random() * (max - min + 1)) + min;
-						next = getNext();
-						while (next === currentSongIndex) {
-							next = getNext();
-						}
-						playAudio(vm.cptResourceOnlyAudio[next]);
-					},
-					playOrder(currentSongIndex) {
-						const next = currentSongIndex + 1;
-						if (next > vm.cptResourceOnlyAudio.length - 1) {
-							stopSong();
-						} else {
-							playAudio(vm.cptResourceOnlyAudio[next]);
-						}
-					},
-					playSingleLoop(currentSongIndex) {
-						playAudio(vm.cptResourceOnlyAudio[currentSongIndex]);
-					}
-				};
+							// 比较每一部分
+							for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {
+								const aPart = aParts[i];
+								const bPart = bParts[i];
 
-				function toggleVolumeMute() {
-					stateAudio.isMute = !stateAudio.isMute;
-					stateAudio.audio.muted = stateAudio.isMute;
-				}
-
-				const cacheAudioVolume = _.debounce(function (audiovolume) {
-					_.$lStorage["PLAYER-VOLUME"] = audiovolume;
-				}, 1000);
-
-				return {
-					LOOP_TYPE_NAME_ARRAY,
-					playAudio,
-					playMedia,
-					/*  */
-					stateAudio,
-					methodsMusicPlayer: {
-						setCurrentTime,
-						palyPrevSong,
-						stopSong,
-						togglePlayOrPause,
-						playNextSong,
-						toggleVolumeMute,
-						setVolume(n) {
-							n = n > 100 ? 100 : n;
-							n = n < 0 ? 0 : n;
-							stateAudio.volume = n;
-							const audioVolume = n / 100;
-							stateAudio.audio.volume = audioVolume;
-							cacheAudioVolume(audioVolume);
-						},
-						async togglePlayModel() {
-							stateAudio.loopType =
-								(stateAudio.loopType + 1) % LOOP_TYPE_NAME_ARRAY.length;
-						}
-					}
-				};
-			},
-			provide() {
-				return {
-					inject_explore: this
-				};
-			},
-			data() {
-				// 从localStorage读取排序设置，如果没有则使用默认值
-				const savedSortConfig = _.$lStorage["VIEW_EXPLORE_SORT_CONFIG"];
-				const defaultSortConfig = [
-					{ field: "type", order: "asc" },
-					{ field: "name", order: "asc" }
-				];
-
-				return {
-					resource: _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [],
-					pathStack: _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [],
-					searchKey: "",
-					sortConfig: savedSortConfig || defaultSortConfig, // 排序配置：支持多个字段
-					sortOptions: [
-						{ label: "名称", value: "name" },
-						{ label: "类型", value: "type" },
-						{ label: "大小", value: "size" },
-						{ label: "修改时间", value: "mtime" }
-					],
-					toolbarCollapsed:
-						_.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] === "true" || false,
-					isPathDrawerOpen:
-						_.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] === "true" || false // 路径抽屉的展开状态，使用localStorage持久化
-				};
-			},
-			computed: {
-				cptResource() {
-					let filtered = this.resource;
-					// 搜索过滤
-					if (this.searchKey) {
-						filtered = _.filter(filtered, item =>
-							_.lowerCase(item.name || "").includes(this.searchKey)
-						);
-					}
-					// 组合排序处理
-					return [...filtered].sort((a, b) => {
-						// 按sortConfig中的字段顺序依次比较
-						for (const { field, order } of this.sortConfig) {
-							let compareResult = 0;
-							// 处理名称字段的自然排序
-							if (field === "name") {
-								const aName = String(a.name || "");
-								const bName = String(b.name || "");
-								const aParts = aName.split(/(\d+)/);
-								const bParts = bName.split(/(\d+)/);
-
-								// 比较每一部分
-								for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {
-									const aPart = aParts[i];
-									const bPart = bParts[i];
-
-									// 如果都是数字，按数值比较
-									if (/^\d+$/.test(aPart) && /^\d+$/.test(bPart)) {
-										const aInt = parseInt(aPart);
-										const bInt = parseInt(bPart);
-										if (aInt !== bInt) {
-											compareResult =
-												order === "asc" ? aInt - bInt : bInt - aInt;
-											break;
-										}
-									} else {
-										// 否则按字符串比较
-										const compare = aPart.localeCompare(bPart);
-										if (compare !== 0) {
-											compareResult = order === "asc" ? compare : -compare;
-											break;
-										}
+								// 如果都是数字，按数值比较
+								if (/^\d+$/.test(aPart) && /^\d+$/.test(bPart)) {
+									const aInt = parseInt(aPart);
+									const bInt = parseInt(bPart);
+									if (aInt !== bInt) {
+										compareResult = order === "asc" ? aInt - bInt : bInt - aInt;
+										break;
 									}
-								}
-
-								// 如果一个是另一个的前缀，比较长度
-								if (compareResult === 0) {
-									compareResult =
-										order === "asc"
-											? aParts.length - bParts.length
-											: bParts.length - aParts.length;
-								}
-							} else {
-								// 其他字段（type/size/mtime）直接比较
-								const aValue = a[field] || "";
-								const bValue = b[field] || "";
-								if (aValue !== bValue) {
-									compareResult = aValue > bValue ? 1 : -1;
-									compareResult =
-										order === "asc" ? compareResult : -compareResult;
+								} else {
+									// 否则按字符串比较
+									const compare = aPart.localeCompare(bPart);
+									if (compare !== 0) {
+										compareResult = order === "asc" ? compare : -compare;
+										break;
+									}
 								}
 							}
 
-							// 如果当前字段比较结果不为0，则返回该结果
-							if (compareResult !== 0) return compareResult;
+							// 如果一个是另一个的前缀，比较长度
+							if (compareResult === 0) {
+								compareResult =
+									order === "asc"
+										? aParts.length - bParts.length
+										: bParts.length - aParts.length;
+							}
+						} else {
+							// 其他字段（type/size/mtime）直接比较
+							const aValue = a[field] || "";
+							const bValue = b[field] || "";
+							if (aValue !== bValue) {
+								compareResult = aValue > bValue ? 1 : -1;
+								compareResult = order === "asc" ? compareResult : -compareResult;
+							}
 						}
-						// 所有字段都相同，保持原顺序
-						return 0;
-					});
-				},
-				cptResourceOnlyAudio() {
-					return _.filter(this.cptResource, { type: "audio" });
-				}
+
+						// 如果当前字段比较结果不为0，则返回该结果
+						if (compareResult !== 0) return compareResult;
+					}
+					// 所有字段都相同，保持原顺序
+					return 0;
+				});
 			},
-			mounted() {
-				// 从localStorage获取保存的路径和资源数据
-				const savedPathStack = _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [];
-				const savedResource = _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [];
+			cptResourceOnlyAudio() {
+				return _.filter(this.cptResource, { type: "audio" });
+			}
+		},
+		mounted() {
+			// 从localStorage获取保存的路径和资源数据
+			const savedPathStack = _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [];
+			const savedResource = _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [];
 
 			// 如果不是根目录且有保存的资源数据，则使用保存的数据
 			if (savedPathStack.length > 0 && savedResource.length > 0) {
@@ -843,92 +859,80 @@
 				if (index === -1) {
 					this.getResource({ path: [] });
 				} else {
-					// 根目录或没有保存的数据，重新获取
-					this.getResource();
+					this.getResource({ path: this.pathStack.slice(0, index + 1) });
 				}
 				// 恢复搜索关键词
 				this.searchKey = currentSearchKey;
 			},
-			methods: {
-				back(index) {
-					if (index === -1) {
-						this.getResource({ path: [] });
-					} else {
-						this.getResource({ path: this.pathStack.slice(0, index + 1) });
-					}
-				},
-				// 切换路径抽屉的展开/收起状态
-				togglePathDrawer() {
-					this.isPathDrawerOpen = !this.isPathDrawerOpen;
-					// 保存到localStorage
-					_.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] = this.isPathDrawerOpen;
-				},
-				// 获取排序按钮的CSS类
-				getSortBtnClass(field) {
-					const sortIndex = this.sortConfig.findIndex(item => item.field === field);
-					if (sortIndex === -1) {
-						return {};
-					}
-					return {
-						"sort-btn": true,
-						active: true,
-						[`sort-level-${sortIndex + 1}`]: true
-					};
-				},
-				// 获取排序方向指示器
-				getSortOrderIndicator(field) {
-					const sortItem = this.sortConfig.find(item => item.field === field);
-					if (!sortItem) {
-						return "";
-					}
-					return sortItem.order === "asc" ? "↑" : "↓";
-				},
-				// 获取排序优先级指示器
-				getSortPriorityIndicator(field) {
-					const sortIndex = this.sortConfig.findIndex(item => item.field === field);
-					if (sortIndex === -1) {
-						return "";
-					}
-					return `(${sortIndex + 1})`;
-				},
-				// 获取排序按钮的提示信息
-				getSortBtnTitle(field) {
-					const sortIndex = this.sortConfig.findIndex(item => item.field === field);
-					if (sortIndex === -1) {
-						return `${this.sortOptions.find(opt => opt.value === field).label}排序`;
-					}
-					const orderText = this.sortConfig[sortIndex].order === "asc" ? "升序" : "降序";
-					return `${
-						this.sortOptions.find(opt => opt.value === field).label
-					}${orderText} (优先级${sortIndex + 1})`;
-				},
-				// 切换排序字段
-				toggleSortField(field) {
-					const existingIndex = this.sortConfig.findIndex(item => item.field === field);
+			// 切换路径抽屉的展开/收起状态
+			togglePathDrawer() {
+				this.isPathDrawerOpen = !this.isPathDrawerOpen;
+				// 保存到localStorage
+				_.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] = this.isPathDrawerOpen;
+			},
+			// 获取排序按钮的CSS类
+			getSortBtnClass(field) {
+				const sortIndex = this.sortConfig.findIndex(item => item.field === field);
+				if (sortIndex === -1) {
+					return {};
+				}
+				return {
+					"sort-btn": true,
+					active: true,
+					[`sort-level-${sortIndex + 1}`]: true
+				};
+			},
+			// 获取排序方向指示器
+			getSortOrderIndicator(field) {
+				const sortItem = this.sortConfig.find(item => item.field === field);
+				if (!sortItem) {
+					return "";
+				}
+				return sortItem.order === "asc" ? "↑" : "↓";
+			},
+			// 获取排序优先级指示器
+			getSortPriorityIndicator(field) {
+				const sortIndex = this.sortConfig.findIndex(item => item.field === field);
+				if (sortIndex === -1) {
+					return "";
+				}
+				return `(${sortIndex + 1})`;
+			},
+			// 获取排序按钮的提示信息
+			getSortBtnTitle(field) {
+				const sortIndex = this.sortConfig.findIndex(item => item.field === field);
+				if (sortIndex === -1) {
+					return `${this.sortOptions.find(opt => opt.value === field).label}排序`;
+				}
+				const orderText = this.sortConfig[sortIndex].order === "asc" ? "升序" : "降序";
+				return `${
+					this.sortOptions.find(opt => opt.value === field).label
+				}${orderText} (优先级${sortIndex + 1})`;
+			},
+			// 切换排序字段
+			toggleSortField(field) {
+				const existingIndex = this.sortConfig.findIndex(item => item.field === field);
 
-					if (existingIndex === -1) {
-						// 如果字段不在排序配置中，添加到末尾
-						this.sortConfig.push({ field, order: "asc" });
-					} else {
-						// 如果字段已在排序配置中，切换排序方向
-						this.sortConfig[existingIndex].order =
-							this.sortConfig[existingIndex].order === "asc" ? "desc" : "asc";
+				if (existingIndex === -1) {
+					// 如果字段不在排序配置中，添加到末尾
+					this.sortConfig.push({ field, order: "asc" });
+				} else {
+					// 如果字段已在排序配置中，切换排序方向
+					this.sortConfig[existingIndex].order =
+						this.sortConfig[existingIndex].order === "asc" ? "desc" : "asc";
 
-						// 如果不是唯一的排序字段且不在首位，调整其优先级到首位
-						if (this.sortConfig.length > 1 && existingIndex !== 0) {
-							const [sortItem] = this.sortConfig.splice(existingIndex, 1);
-							this.sortConfig.unshift(sortItem);
-						}
+					// 如果不是唯一的排序字段且不在首位，调整其优先级到首位
+					if (this.sortConfig.length > 1 && existingIndex !== 0) {
+						const [sortItem] = this.sortConfig.splice(existingIndex, 1);
+						this.sortConfig.unshift(sortItem);
 					}
+				}
 
-					// 限制最大排序字段数为2
-					if (this.sortConfig.length > 2) {
-						this.sortConfig.pop();
-					}
+				// 限制最大排序字段数为2
+				if (this.sortConfig.length > 2) {
+					this.sortConfig.pop();
+				}
 
-					// 保存排序配置到localStorage
-					this.saveSortConfig();
-				},
 				// 保存排序配置到localStorage
 				this.saveSortConfig();
 			},
@@ -951,23 +955,19 @@
 					if (!res.errcode) {
 						this.resource = res.data;
 					}
-				},
-				toggleToolbar() {
-					this.toolbarCollapsed = !this.toolbarCollapsed;
-					_.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] = this.toolbarCollapsed;
-				},
-				// 刷新当前路径的资源数据
-				refreshResource() {
-					this.getResource({ path: this.pathStack });
+				} catch (error) {
+					console.error(error);
+				} finally {
+					_.$loading(false);
 				}
 			},
-			watch: {
-				pathStack(val) {
-					_.$lStorage["VIEW_EXPLORE_PATH_STACK"] = val;
-				},
-				resource(val) {
-					_.$lStorage["VIEW_EXPLORE_RESOURCE"] = val;
-				}
+			toggleToolbar() {
+				this.toolbarCollapsed = !this.toolbarCollapsed;
+				_.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] = this.toolbarCollapsed;
+			},
+			// 刷新当前路径的资源数据
+			refreshResource() {
+				this.getResource({ path: this.pathStack });
 			}
 		},
 		watch: {

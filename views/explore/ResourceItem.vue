@@ -59,21 +59,22 @@
 		word-break: break-all;
 	}
 
-.path {
-	flex-grow: 1;
-	margin-right: 10px;
-	word-break: break-all;
-	font-size: 8px;
-	color: #666;
-	margin-top: 2px;
-}
+	.path {
+		flex-grow: 1;
+		margin-right: 10px;
+		word-break: break-all;
+		font-size: 8px;
+		color: #666;
+		margin-top: 2px;
+	}
 
-.type {
-	font-size: 12px;
-	color: #888;
-	min-width: 60px;
-	flex-shrink: 0;
-	padding-top: 2px;
+	.type {
+		font-size: 12px;
+		color: #888;
+		min-width: 60px;
+		flex-shrink: 0;
+		padding-top: 2px;
+	}
 }
 </style>
 <template>

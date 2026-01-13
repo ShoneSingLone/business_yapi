@@ -68,6 +68,26 @@ export default async function ({ item, all_video_array, current_index, current_r
 					onEmitValue(val) {
 						vm.changePlaybackRate();
 					}
+				}
+			};
+		},
+		computed: {
+			uri() {
+				return "";
+			},
+			videoSrc() {
+				if (all_video_array.length === 0) return "";
+				const video = all_video_array[this.currentIndex];
+				return video?.uri || "";
+			},
+			btnPre() {
+				return {
+					label: () =>
+						h("xIcon", {
+							icon: "_prevsong"
+						}),
+					onClick: this.playPrevious,
+					disabled: this.currentIndex === 0
 				};
 			},
 			btnNext() {
@@ -153,106 +173,57 @@ export default async function ({ item, all_video_array, current_index, current_r
 				const video = this.$refs.refVideo;
 				if (!video) return;
 
-					// 确保allVideos数据正确初始化
-					if (all_video_array.length > 0) {
-						video.src = this.videoSrc;
+				if (!this.isFullscreen) {
+					// 进入全屏
+					if (video.requestFullscreen) {
+						video.requestFullscreen();
+					} else if (video.mozRequestFullScreen) {
+						video.mozRequestFullScreen();
+					} else if (video.webkitRequestFullscreen) {
+						video.webkitRequestFullscreen();
+					} else if (video.msRequestFullscreen) {
+						video.msRequestFullscreen();
 					}
-				},
-				updateVideoSrc() {
-					const newSrc = this.videoSrc;
-					const video = this.$refs.refVideo;
-					if (video && newSrc) {
-						console.log("updateVideoSrc - newSrc:", newSrc);
-						// 直接更新视频源并播放，这是更可靠的方式
-						video.src = newSrc;
-						video.play().catch(error => {
-							console.warn("Autoplay failed:", error);
-						});
+				} else {
+					// 退出全屏
+					if (document.exitFullscreen) {
+						document.exitFullscreen();
+					} else if (document.mozCancelFullScreen) {
+						document.mozCancelFullScreen();
+					} else if (document.webkitExitFullscreen) {
+						document.webkitExitFullscreen();
+					} else if (document.msExitFullscreen) {
+						document.msExitFullscreen();
 					}
-				},
-				playVideo(index) {
-					this.currentIndex = index;
-				},
-				playPrevious() {
-					if (this.currentIndex > 0) {
-						this.currentIndex--;
-					}
-				},
-				playNext() {
-					if (this.currentIndex < all_video_array.length - 1) {
-						this.currentIndex++;
-					}
-				},
-				changePlaybackRate() {
-					const video = this.$refs.refVideo;
-					if (video) {
-						video.playbackRate = this.xItemPlaybackRate.value;
-					}
-				},
-				toggleFullscreen() {
-					const video = this.$refs.refVideo;
-					if (!video) return;
-
-					if (!this.isFullscreen) {
-						// 进入全屏
-						if (video.requestFullscreen) {
-							video.requestFullscreen();
-						} else if (video.mozRequestFullScreen) {
-							video.mozRequestFullScreen();
-						} else if (video.webkitRequestFullscreen) {
-							video.webkitRequestFullscreen();
-						} else if (video.msRequestFullscreen) {
-							video.msRequestFullscreen();
-						}
-					} else {
-						// 退出全屏
-						if (document.exitFullscreen) {
-							document.exitFullscreen();
-						} else if (document.mozCancelFullScreen) {
-							document.mozCancelFullScreen();
-						} else if (document.webkitExitFullscreen) {
-							document.webkitExitFullscreen();
-						} else if (document.msExitFullscreen) {
-							document.msExitFullscreen();
-						}
-					}
-					this.isFullscreen = !this.isFullscreen;
-				},
-				setupFullscreenListeners() {
-					// 添加全屏状态变化事件监听器
-					document.addEventListener("fullscreenchange", this.handleFullscreenChange);
-					document.addEventListener(
-						"webkitfullscreenchange",
-						this.handleFullscreenChange
-					);
-					document.addEventListener("mozfullscreenchange", this.handleFullscreenChange);
-					document.addEventListener("MSFullscreenChange", this.handleFullscreenChange);
-				},
-				removeFullscreenListeners() {
-					// 移除全屏状态变化事件监听器
-					document.removeEventListener("fullscreenchange", this.handleFullscreenChange);
-					document.removeEventListener(
-						"webkitfullscreenchange",
-						this.handleFullscreenChange
-					);
-					document.removeEventListener(
-						"mozfullscreenchange",
-						this.handleFullscreenChange
-					);
-					document.removeEventListener("MSFullscreenChange", this.handleFullscreenChange);
-				},
-				handleFullscreenChange() {
-					// 检测当前是否处于全屏状态
-					this.isFullscreen = !!(
-						document.fullscreenElement ||
-						document.webkitFullscreenElement ||
-						document.mozFullScreenElement ||
-						document.msFullscreenElement
-					);
 				}
+				this.isFullscreen = !this.isFullscreen;
+			},
+			setupFullscreenListeners() {
+				// 添加全屏状态变化事件监听器
+				document.addEventListener("fullscreenchange", this.handleFullscreenChange);
+				document.addEventListener("webkitfullscreenchange", this.handleFullscreenChange);
+				document.addEventListener("mozfullscreenchange", this.handleFullscreenChange);
+				document.addEventListener("MSFullscreenChange", this.handleFullscreenChange);
+			},
+			removeFullscreenListeners() {
+				// 移除全屏状态变化事件监听器
+				document.removeEventListener("fullscreenchange", this.handleFullscreenChange);
+				document.removeEventListener("webkitfullscreenchange", this.handleFullscreenChange);
+				document.removeEventListener("mozfullscreenchange", this.handleFullscreenChange);
+				document.removeEventListener("MSFullscreenChange", this.handleFullscreenChange);
+			},
+			handleFullscreenChange() {
+				// 检测当前是否处于全屏状态
+				this.isFullscreen = !!(
+					document.fullscreenElement ||
+					document.webkitFullscreenElement ||
+					document.mozFullScreenElement ||
+					document.msFullscreenElement
+				);
 			}
-		});
-	}
+		}
+	});
+}
 </script>
 <style lang="less">
 .video-player-container {
