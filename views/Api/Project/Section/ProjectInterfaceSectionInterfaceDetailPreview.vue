@@ -1,10 +1,17 @@
 <style lang="less">
-	#ProjectInterfaceSectionInterfaceDetailPreviewForm {
-		.xItemDesc-wrapper {
-			padding: 0;
-		}
-		.backup-response {
-			&.xItemDesc-wrapper {
+#ProjectInterfaceSectionInterfaceDetailPreviewForm {
+	/* 响应数据 */
+	.xItemDesc-wrapper {
+		padding: 0;
+	}
+	.backup-response {
+		&.xItemDesc-wrapper {
+			height: 100%;
+			display: flex;
+			align-items: flex-start;
+			position: relative;
+
+			.xItemDesc-wrapper_content {
 				height: 100%;
 				display: flex;
 				align-items: flex-start;
@@ -74,23 +81,59 @@
 			</xCard>
 		</xCard>
 		<xGap t />
-		<xCard header="描述">
-			<TuiEditor :value="{ md: interfaceInfo.desc }" :asRender="true" style="height: 400px" />
+		<xCard header="描述" v-if="interfaceInfo.desc">
+			<xItem
+				:configs="form.desc"
+				v-model="interfaceInfo.desc || ''"
+				style="--xItem-wrapper-width: 100%"
+				ref="ref_desc" />
 		</xCard>
-		<!-- <xCard header="源数据">
-	<xForm col="1" style="--xItem-label-width: 100px">
-		<xItem :configs="form.source" />
-	</xForm>
-</xCard> -->
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		return defineComponent({
-			inject: ["APP", "inject_interface_section_interface_detail", "inject_project"],
-			props: ["interfaceInfo"],
-			components: {
-				PanelReqBodyJson: () => _.$importVue("@/components/PanelReqBodyJson.vue")
+export default async function () {
+	return defineComponent({
+		inject: ["APP", "inject_interface_section_interface_detail", "inject_project"],
+		props: ["interfaceInfo"],
+		components: {
+			PanelReqBodyJson: () => _.$importVue("@/components/PanelReqBodyJson.vue")
+		},
+		data() {
+			return {
+				req_body_other: "",
+				sourceReqHeaders: [],
+				sourceReqBodyOther: {},
+				form: defItems({
+					desc: {
+						label: i18n(""),
+						readonly: true,
+						itemType: "ProjectInterfaceSectionInterfaceDetailEditorDesc"
+					},
+					source: {
+						label: i18n("源数据"),
+						itemType: "xItemMonaco",
+						readOnly: true,
+						value: ""
+					}
+				})
+			};
+		},
+		computed: {
+			oprBtnArray() {
+				const vm = this;
+				return [
+					{
+						label: i18n("复用接口"),
+						onClick() {
+							_.$openModal({
+								title: i18n("复制接口到所选项目"),
+								url: "@/components/YapiCoypInterface.dialog.vue",
+								parent: vm,
+								selected: [vm.interfaceInfo._id]
+							});
+						}
+					}
+				];
 			},
 			data() {
 				return {

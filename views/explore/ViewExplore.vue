@@ -366,7 +366,7 @@
 				<button
 					class="m3-icon-btn path-toggle"
 					@click="togglePathDrawer"
-					title="{{ isPathDrawerOpen ? '收起路径' : '展开路径' }}">
+					:title="isPathDrawerOpen ? '收起路径' : '展开路径'">
 					<span class="m3-icon"> <xIcon icon="_path" /> </span>
 				</button>
 				<xGap f />
@@ -385,9 +385,9 @@
 						<div class="m3-breadcrumb-item" @click="back(-1)">
 							<span class="m3-breadcrumb-text">root</span>
 						</div>
-						<template v-for="(item, index) in pathStack" :key="index">
-							<span class="m3-breadcrumb-separator">/</span>
-							<div class="m3-breadcrumb-item" @click="back(index)">
+						<template v-for="(item, index) in pathStack">
+							<span class="m3-breadcrumb-separator" :key="item.name"> /</span>
+							<div class="m3-breadcrumb-item" @click="back(index)" :key="item.name">
 								{{ item }}
 							</div>
 						</template>
@@ -423,7 +423,7 @@
 					>
 				</div>
 				<div class="search-box">
-					<input v-model.lazy="searchKey" placeholder="搜索" clearable class="input" />
+					<xItem v-model.lazy="searchKey" :configs="searchKeyConfigs" />
 				</div>
 			</div>
 		</div>
@@ -574,63 +574,44 @@
 					}
 				}
 
-				function playMedia(record) {
-					if (record.type === "audio") {
-						playAudio(record);
-					}
-					if (record.type === "video") {
-						playVideo(record);
-					}
-					if (record.type === "img") {
-						playImg(record);
-					}
-				}
+			let pathStack = [];
+			if (_.$lStorage["VIEW_EXPLORE_PATH_STACK"] === "undefined") {
+				pathStack = [];
+			}
 
-				async function playImg(current_resource) {
-					const { name } = current_resource;
-					const urlList = _.filter(vm.cptResource, { type: "img" });
-					const index = _.findIndex(urlList, { name });
-
-					_.$previewImgs(
-						{
-							urlList: _.map(urlList, resource => {
-								const uri = encodeURIComponent(JSON.stringify(resource.path));
-								return Vue._common_utils.appendToken(
-									_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
-								);
-							}),
-							index
-						},
-						{
-							autoPlay: true
-						}
-					);
-				}
-				async function playVideo(current_resource) {
-					const { name } = current_resource;
-					const all_video_array = _.filter(vm.cptResource, { type: "video" }).map(
-						item => {
-							const uri = encodeURIComponent(JSON.stringify(item.path));
-							return {
-								...item,
-								download_uri: Vue._common_utils.appendToken(
-									_.$ajax.urlWrapper(`/api/resource/get?uri=${uri}`)
-								),
-								uri: Vue._common_utils.appendToken(
-									_.$ajax.urlWrapper(`/api/resource/video?uri=${uri}`)
-								)
-							};
-						}
-					);
-					const current_index = _.findIndex(all_video_array, { name });
-					return _.$openModal({
-						title: "Player",
-						url: "@/views/explore/execTools/video/VideoPlayerFullscreen.dialog.vue",
-						current_index,
-						current_resource,
-						all_video_array
-					});
-				}
+			return {
+				resource: _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [],
+				pathStack,
+				searchKey: "",
+				searchKeyConfigs: defItem({
+					placeholder: "搜索",
+					clearable: true
+				}),
+				sortConfig: savedSortConfig || defaultSortConfig, // 排序配置：支持多个字段
+				sortOptions: [
+					{ label: "名称", value: "name" },
+					{ label: "类型", value: "type" },
+					{ label: "大小", value: "size" },
+					{ label: "修改时间", value: "mtime" }
+				],
+				toolbarCollapsed: _.$lStorage["VIEW_EXPLORE_TOOLBAR_COLLAPSED"] === "true" || false,
+				isPathDrawerOpen: _.$lStorage["VIEW_EXPLORE_PATH_DRAWER_OPEN"] === "true" || false // 路径抽屉的展开状态，使用localStorage持久化
+			};
+		},
+		computed: {
+			cptResource() {
+				let filtered = this.resource;
+				// 组合排序处理
+				return [...filtered].sort((a, b) => {
+					// 按sortConfig中的字段顺序依次比较
+					for (const { field, order } of this.sortConfig) {
+						let compareResult = 0;
+						// 处理名称字段的自然排序
+						if (field === "name") {
+							const aName = String(a.name || "");
+							const bName = String(b.name || "");
+							const aParts = aName.split(/(\d+)/);
+							const bParts = bName.split(/(\d+)/);
 
 				async function playAudio(record) {
 					const { path, name } = record;
@@ -846,14 +827,27 @@
 				const savedPathStack = _.$lStorage["VIEW_EXPLORE_PATH_STACK"] || [];
 				const savedResource = _.$lStorage["VIEW_EXPLORE_RESOURCE"] || [];
 
-				// 如果不是根目录且有保存的资源数据，则使用保存的数据
-				if (savedPathStack.length > 0 && savedResource.length > 0) {
-					this.pathStack = savedPathStack;
-					this.resource = savedResource;
+			// 如果不是根目录且有保存的资源数据，则使用保存的数据
+			if (savedPathStack.length > 0 && savedResource.length > 0) {
+				this.pathStack = savedPathStack;
+				this.resource = savedResource;
+			} else {
+				// 根目录或没有保存的数据，重新获取
+				this.getResource();
+			}
+		},
+		methods: {
+			back(index) {
+				// 保存当前搜索关键词
+				const currentSearchKey = this.searchKey;
+				if (index === -1) {
+					this.getResource({ path: [] });
 				} else {
 					// 根目录或没有保存的数据，重新获取
 					this.getResource();
 				}
+				// 恢复搜索关键词
+				this.searchKey = currentSearchKey;
 			},
 			methods: {
 				back(index) {
@@ -936,21 +930,26 @@
 					this.saveSortConfig();
 				},
 				// 保存排序配置到localStorage
-				saveSortConfig() {
-					_.$lStorage["VIEW_EXPLORE_SORT_CONFIG"] = this.sortConfig;
-				},
-				async getResource(item = {}) {
-					this.pathStack = _.isArray(item?.path) ? item.path : [];
-					_.$loading(true);
-					try {
-						const res = await _api.yapi.resourceLs({ path: this.pathStack });
-						if (!res.errcode) {
-							this.resource = res.data;
-						}
-					} catch (error) {
-						console.error(error);
-					} finally {
-						_.$loading(false);
+				this.saveSortConfig();
+			},
+			// 保存排序配置到localStorage
+			saveSortConfig() {
+				_.$lStorage["VIEW_EXPLORE_SORT_CONFIG"] = this.sortConfig;
+			},
+			async getResource(item = {}) {
+				_.$loading(true);
+				try {
+					this.pathStack = item.path;
+					const is_directory = item.type === "directory";
+					// 检查是否是从搜索结果中点击的文件夹
+					// 如果是通过subdir事件调用（文件夹点击），则不携带搜索参数
+					const res = await _api.yapi.resourceLs({
+						path: this.pathStack,
+						search_key: is_directory ? "" : this.searchKey // 从搜索结果点击文件夹时不携带搜索参数
+					});
+
+					if (!res.errcode) {
+						this.resource = res.data;
 					}
 				},
 				toggleToolbar() {
@@ -970,6 +969,19 @@
 					_.$lStorage["VIEW_EXPLORE_RESOURCE"] = val;
 				}
 			}
-		});
-	}
+		},
+		watch: {
+			pathStack(val) {
+				_.$lStorage["VIEW_EXPLORE_PATH_STACK"] = val;
+			},
+			resource(val) {
+				_.$lStorage["VIEW_EXPLORE_RESOURCE"] = val;
+			},
+			// 监听搜索关键词变化，重新获取资源
+			searchKey: _.debounce(function () {
+				this.getResource({ path: this.pathStack });
+			}, 3000)
+		}
+	});
+}
 </script>

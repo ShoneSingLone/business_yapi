@@ -10,23 +10,25 @@
 			"@/utils/api.vue"
 		);
 
-		_.each(
-			{
-				/* 涉及具体的上传接口，不能做通用的处理 */
-				TuiEditor: "@/components/TuiEditor/TuiEditor.vue",
-				YapiItemInterfaceImportType: "@/components/YapiItemInterfaceImportType.vue",
-				YapiApiRequestBodyPreviewer: "@/components/YapiApiRequestBodyPreviewer.vue",
-				yapiItemReqBodyParams: "@/components/yapiItemReqBodyParams.vue",
-				YapiItemProxyEnv: "@/components/YapiItemProxyEnv.vue",
-				YapiItemAvatar: "@/components/YapiItemAvatar.vue",
-				YapiItemUac: "@/components/YapiItemUac.vue",
-				YapiItemKeyValTable: "@/components/YapiItemKeyValTable.vue",
-				YapiItemPathParams: "@/components/YapiItemPathParams.vue",
-				YapiProjectCard: "@/components/YapiProjectCard.vue",
-				YapiPlaceholderView: "@/components/YapiPlaceholderView.vue"
-			},
-			(componentURL, name) => Vue.component(name, () => _.$importVue(componentURL))
-		);
+	_.each(
+		{
+			/* 涉及具体的上传接口，不能做通用的处理 */
+			TuiEditor: "@/components/TuiEditor/TuiEditor.vue",
+			YapiItemInterfaceImportType: "@/components/YapiItemInterfaceImportType.vue",
+			YapiApiRequestBodyPreviewer: "@/components/YapiApiRequestBodyPreviewer.vue",
+			yapiItemReqBodyParams: "@/components/yapiItemReqBodyParams.vue",
+			YapiItemProxyEnv: "@/components/YapiItemProxyEnv.vue",
+			YapiItemAvatar: "@/components/YapiItemAvatar.vue",
+			YapiItemUac: "@/components/YapiItemUac.vue",
+			YapiItemKeyValTable: "@/components/YapiItemKeyValTable.vue",
+			YapiItemPathParams: "@/components/YapiItemPathParams.vue",
+			YapiProjectCard: "@/components/YapiProjectCard.vue",
+			YapiPlaceholderView: "@/components/YapiPlaceholderView.vue",
+			ProjectInterfaceSectionInterfaceDetailEditorDesc:
+				"@/views/Api/Project/Section/ProjectInterfaceSectionInterfaceDetailEditorDesc.vue"
+		},
+		(componentURL, name) => Vue.component(name, () => _.$importVue(componentURL))
+	);
 
 		const [VueRouter, routes] = await _.$importVue([
 			"/common/libs/VueRouter.vue",

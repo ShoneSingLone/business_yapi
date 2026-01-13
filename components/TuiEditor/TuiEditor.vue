@@ -1108,13 +1108,10 @@
 		background-position: -85px -104px;
 	}
 
-	.toastui-editor-context-menu .remove-column:before {
-		background-position: -111px -104px;
-	}
-
-	.toastui-editor-context-menu .align-column-left:before {
-		background-position: -129px -104px;
-	}
+.toastui-editor-contents .toastui-editor-md-preview-highlight {
+	position: relative;
+	z-index: 0;
+}
 
 	.toastui-editor-context-menu .align-column-center:before {
 		background-position: -151px -104px;
@@ -1992,11 +1989,144 @@
 		}
 	}
 
-	.toastui-editor-contents-placeholder:before {
-		content: attr(data-placeholder);
-		color: gray;
-		line-height: 160%;
-		position: absolute;
+.toastui-editor-contents .image-link {
+	position: relative;
+}
+
+.toastui-editor-contents .image-link:hover:before {
+	content: "";
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	right: 0px;
+	border-radius: 50%;
+	border: 1px solid #c9ccd5;
+	background: #fff
+		url(/common/ui-x/components/other/TuiEditor/imgs/toastui-editor-contents-link.svg) no-repeat;
+	background-position: center;
+	box-shadow: 0 2px 4px #00000014;
+	cursor: pointer;
+}
+
+.toastui-editor-contents .task-list-item {
+	border: 0;
+	list-style: none;
+	padding-left: 24px;
+	margin-left: -24px;
+}
+
+.toastui-editor-contents .task-list-item:before {
+	background-repeat: no-repeat;
+	background-size: 18px 18px;
+	background-position: center;
+	content: "";
+	margin-left: 0;
+	margin-top: 0;
+	border-radius: 2px;
+	height: 18px;
+	width: 18px;
+	position: absolute;
+	left: 0;
+	top: 1px;
+	cursor: pointer;
+	background: transparent url(/common/ui-x/components/other/TuiEditor/imgs/task-list-item.svg);
+}
+
+.toastui-editor-contents .task-list-item.checked:before {
+	background-image: url(/common/ui-x/components/other/TuiEditor/imgs/task-list-item.checked.svg);
+}
+
+.toastui-editor-custom-block .toastui-editor-custom-block-editor {
+	background: #f9f7fd;
+	color: #452d6b;
+	border: solid 1px #dbd4ea;
+}
+
+.toastui-editor-custom-block .toastui-editor-custom-block-view {
+	position: relative;
+	padding: 9px 13px 8px 12px;
+}
+
+.toastui-editor-custom-block.ProseMirror-selectednode .toastui-editor-custom-block-view {
+	border: solid 1px #dbd4ea;
+	border-radius: 2px;
+}
+
+.toastui-editor-custom-block .toastui-editor-custom-block-view .tool {
+	position: absolute;
+	right: 10px;
+	top: 7px;
+	display: none;
+}
+
+.toastui-editor-custom-block.ProseMirror-selectednode .toastui-editor-custom-block-view .tool {
+	display: block;
+}
+
+.toastui-editor-custom-block-view button {
+	vertical-align: middle;
+	width: 15px;
+	height: 15px;
+	margin-left: 8px;
+	padding: 3px;
+	border: solid 1px #cccccc;
+	background: url(/common/ui-x/components/other/TuiEditor/imgs/toastui-editor-custom-block-view-button.svg)
+		no-repeat;
+	background-position: center;
+	background-size: 30px 30px;
+}
+
+.toastui-editor-custom-block-view .info {
+	font-size: 13px;
+	font-weight: 700;
+	color: #5200d0;
+	vertical-align: middle;
+}
+
+.toastui-editor-contents .toastui-editor-ww-code-block {
+	position: relative;
+}
+
+// .toastui-editor-contents .toastui-editor-ww-code-block:after {
+// 	content: attr(data-language);
+// 	position: absolute;
+// 	display: inline-block;
+// 	top: 10px;
+// 	right: 10px;
+// 	height: 24px;
+// 	padding: 3px 35px 0 10px;
+// 	font-weight: 700;
+// 	font-size: 13px;
+// 	color: #333;
+// 	background: #e5e9ea
+// 		url(/common/ui-x/components/other/TuiEditor/imgs/toastui-editor-custom-block-view-button.svg)
+// 		no-repeat;
+// 	background-position: right;
+// 	border-radius: 2px;
+// 	background-size: 30px 30px;
+// 	cursor: pointer;
+// }
+
+.toastui-editor-ww-code-block-language {
+	position: fixed;
+	display: inline-block;
+	width: 100px;
+	height: 27px;
+	right: 35px;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+	background-color: #fff;
+	z-index: 30;
+
+	input {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0 10px;
+		height: 100%;
+		width: 100%;
+		background-color: transparent;
+		border: none;
+		outline: none;
 	}
 
 	.toastui-editor-md-preview {
