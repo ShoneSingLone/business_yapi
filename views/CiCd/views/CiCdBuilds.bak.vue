@@ -1,6 +1,6 @@
 <style lang="less">
-	#CiCdBuilds {
-	}
+#CiCdBuilds {
+}
 </style>
 <template>
 	<!-- 构建历史 -->
@@ -111,12 +111,12 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		const { THIS_FILE_URL } = this;
-		return defineComponent({
-			data() {
-				return { THIS_FILE_URL };
-			}
-		});
-	}
+export default async function () {
+	const { THIS_FILE_URL } = this;
+	return defineComponent({
+		data() {
+			return { THIS_FILE_URL };
+		}
+	});
+}
 </script>

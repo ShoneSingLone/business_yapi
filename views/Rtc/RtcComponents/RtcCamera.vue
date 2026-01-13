@@ -12,40 +12,40 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		const { useGetMediaHander } = await _.$importVue("@/views/Rtc/reuse/reuseRtc.vue");
-		return defineComponent({
-			componentName: "RtcCamera",
-			inject: ["inject_rtc"],
-			components: {},
-			data() {
-				return {};
+export default async function () {
+	const { useGetMediaHander } = await _.$importVue("@/views/Rtc/reuse/reuseRtc.vue");
+	return defineComponent({
+		componentName: "RtcCamera",
+		inject: ["inject_rtc"],
+		components: {},
+		data() {
+			return {};
+		},
+		computed: {},
+		setup() {
+			useGetMediaHander(this);
+		},
+		methods: {
+			handleSuccess(stream) {
+				const video = this.$refs["myVideo"];
+				const videoTracks = stream.getVideoTracks();
+				console.log("通过设置限制条件获取到流:", this.inject_rtc.constraints);
+				console.log(`使用的视频设备: ${videoTracks[0].label}`);
+				//使得浏览器能访问到stream
+				video.srcObject = stream;
 			},
-			computed: {},
-			setup() {
-				useGetMediaHander(this);
-			},
-			methods: {
-				handleSuccess(stream) {
-					const video = this.$refs["myVideo"];
-					const videoTracks = stream.getVideoTracks();
-					console.log("通过设置限制条件获取到流:", this.inject_rtc.constraints);
-					console.log(`使用的视频设备: ${videoTracks[0].label}`);
-					//使得浏览器能访问到stream
-					video.srcObject = stream;
-				},
-				handleError(error) {
-					if (error.name === "ConstraintNotSatisfiedError") {
-						const v = this.inject_rtc.constraints.video;
-						//宽高尺寸错误
-						_.$msgError(`宽:${v.width.exact} 高:${v.height.exact} 设备不支持`);
-					} else if (error.name === "PermissionDeniedError") {
-						_.$msgError("没有摄像头和麦克风使用权限，请点击允许按钮");
-					}
-					_.$msgError(`getUserMedia错误: ${error.name}`, error);
+			handleError(error) {
+				if (error.name === "ConstraintNotSatisfiedError") {
+					const v = this.inject_rtc.constraints.video;
+					//宽高尺寸错误
+					_.$msgError(`宽:${v.width.exact} 高:${v.height.exact} 设备不支持`);
+				} else if (error.name === "PermissionDeniedError") {
+					_.$msgError("没有摄像头和麦克风使用权限，请点击允许按钮");
 				}
-			},
-			watch: {}
-		});
-	}
+				_.$msgError(`getUserMedia错误: ${error.name}`, error);
+			}
+		},
+		watch: {}
+	});
+}
 </script>

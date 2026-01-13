@@ -73,84 +73,83 @@
 </template>
 
 <script lang="ts">
-	export default async function () {
-		return {
-			inject: ["APP"],
-			name: "AppLayoutHeader",
-			components: {
-				CollabUserContainer: () =>
-					_.$importVue("@/views/Api/Header/CollabUserContainer.vue"),
-				YapiToolUserBar: () => _.$importVue("@/components/YapiToolUserBar.vue"),
-				YapiBreadcrumbNavigation: () =>
-					_.$importVue("@/components/YapiBreadcrumbNavigation.vue")
+export default async function () {
+	return {
+		inject: ["APP"],
+		name: "AppLayoutHeader",
+		components: {
+			CollabUserContainer: () => _.$importVue("@/views/Api/Header/CollabUserContainer.vue"),
+			YapiToolUserBar: () => _.$importVue("@/components/YapiToolUserBar.vue"),
+			YapiBreadcrumbNavigation: () =>
+				_.$importVue("@/components/YapiBreadcrumbNavigation.vue")
+		},
+		data() {
+			return {};
+		},
+		computed: {
+			cptIsAdmin() {
+				return this.APP.user.role === "admin";
 			},
-			data() {
-				return {};
+			hoppscotchHref() {
+				return _.$aHashLink("/hoppscotch", {});
 			},
-			computed: {
-				cptIsAdmin() {
-					return this.APP.user.role === "admin";
-				},
-				hoppscotchHref() {
-					return _.$aHashLink("/hoppscotch", {});
-				},
-				i18nHref() {
-					return _.$aHashLink("/i18n", {});
-				},
-				publicNoteHref() {
-					return _.$aHashLink("/note", {});
-				},
-				publicRtcHref() {
-					return _.$aHashLink("/rtc", {});
-				},
-				privateExploreHref() {
-					return _.$aHashLink("/explore", {});
-				},
-				icon() {
-					if (["/api/group", "/wiki", "/xI"].includes(this.$route.path)) {
-						return "_yapi_logo";
-					}
+			i18nHref() {
+				return _.$aHashLink("/i18n", {});
+			},
+			publicNoteHref() {
+				return _.$aHashLink("/note", {});
+			},
+			publicRtcHref() {
+				return _.$aHashLink("/rtc", {});
+			},
+			privateExploreHref() {
+				return _.$aHashLink("/explore", {});
+			},
+			icon() {
+				if (["/api/group", "/wiki", "/xI"].includes(this.$route.path)) {
 					return "_yapi_logo";
-				},
-				logoStyle() {
-					return { width: "48px", height: "48px" };
 				}
+				return "_yapi_logo";
 			},
-			methods: {
-				onClickUserManager() {
-					this.$router.push("/user");
-				},
-				async deploy() {
-					_.$openModal({
-						title: "Deploy Project",
-						url: "@/components/deploy/deploy.dialog.vue",
-						isHideHeader: true
-					});
-				},
-				goToGroup() {
-					this.$router.push("/api/group");
-				}
+			logoStyle() {
+				return { width: "48px", height: "48px" };
 			}
-		};
-	}
+		},
+		methods: {
+			onClickUserManager() {
+				this.$router.push("/user");
+			},
+			async deploy() {
+				_.$openModal({
+					title: "Deploy Project",
+					url: "@/components/deploy/deploy.dialog.vue",
+					isHideHeader: true
+				});
+			},
+			goToGroup() {
+				this.$router.push("/api/group");
+			}
+		}
+	};
+}
 </script>
 
 <style lang="less">
-	.AppLayoutHeader {
-		display: flex;
-		align-items: center;
-		height: 64px;
-		padding-left: 20px;
-		line-height: 44px;
-		background-color: var(--el-color-white);
-		box-shadow: var(--el-box-shadow-lighter);
-		z-index: 1;
+.AppLayoutHeader {
+	display: flex;
+	align-items: center;
+	height: 64px;
+	padding-left: 20px;
+	line-height: 44px;
+	background-color: var(--el-color-white);
+	box-shadow: var(--el-box-shadow-lighter);
+	z-index: 1;
 
-		.YapiLogo {
-			box-shadow: var(--el-box-shadow-lighter);
-			// border: 1px solid gray;
-			border-radius: 50%;
-			margin-right: var(--ui-one);
-		}
+	.YapiLogo {
+		box-shadow: var(--el-box-shadow-lighter);
+		// border: 1px solid gray;
+		border-radius: 50%;
+		margin-right: var(--ui-one);
 	}
+}
 </style>

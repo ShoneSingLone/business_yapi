@@ -35,40 +35,40 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		return defineComponent({
-			inject: ["APP"],
-			computed: {
-				cptImHref() {
-					return _.$aHashLink("/im", { privateId: this.APP.user._id });
-				},
-				privateNoteHref() {
-					return _.$aHashLink("/note", { privateId: this.APP.user._id });
-				},
-				cptAvatar() {
-					return {
-						itemType: "YapiItemAvatar",
-						value: this.APP.user._id || "",
-						disabled: true
-					};
-				}
+export default async function () {
+	return defineComponent({
+		inject: ["APP"],
+		computed: {
+			cptImHref() {
+				return _.$aHashLink("/im", { privateId: this.APP.user._id });
 			},
-			methods: {
-				async showUserProfileDialog() {
-					const vm = this;
-					_.$openModal({
-						title: i18n("个人中心"),
-						url: "@/views/User/UserProfile.Dialog.vue",
-						parent: vm,
-						userId: vm.APP.user._id,
-						canModifyAvatar: true,
-						onOk() {
-							vm.APP.updateGroupMemberList();
-						}
-					});
-				}
+			privateNoteHref() {
+				return _.$aHashLink("/note", { privateId: this.APP.user._id });
+			},
+			cptAvatar() {
+				return {
+					itemType: "YapiItemAvatar",
+					value: this.APP.user._id || "",
+					disabled: true
+				};
 			}
-		});
-	}
+		},
+		methods: {
+			async showUserProfileDialog() {
+				const vm = this;
+				_.$openModal({
+					title: i18n("个人中心"),
+					url: "@/views/User/UserProfile.Dialog.vue",
+					parent: vm,
+					userId: vm.APP.user._id,
+					canModifyAvatar: true,
+					onOk() {
+						vm.APP.updateGroupMemberList();
+					}
+				});
+			}
+		}
+	});
+}
 </script>
 <style lang="less"></style>

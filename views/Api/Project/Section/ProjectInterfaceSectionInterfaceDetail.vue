@@ -169,9 +169,9 @@ export default async function () {
 </script>
 
 <style scoped lang="scss">
-	#ProjectInterfaceSectionInterfaceDetail {
-		background: var(--page-body-bg, var(--el-color-white));
-		padding: var(--ui-one);
-		box-shadow: var(--el-box-shadow);
-	}
+#ProjectInterfaceSectionInterfaceDetail {
+	background: var(--page-body-bg, var(--el-color-white));
+	padding: var(--ui-one);
+	box-shadow: var(--el-box-shadow);
+}
 </style>

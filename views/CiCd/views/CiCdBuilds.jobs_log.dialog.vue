@@ -9,16 +9,16 @@
 	</xDialog>
 </template>
 <script lang="ts">
-	export default async function ({ logString }) {
-		const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
+export default async function ({ logString }) {
+	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
 
-		return defineComponent({
-			props: useDialogProps(),
-			inject: ["APP"],
+	return defineComponent({
+		props: useDialogProps(),
+		inject: ["APP"],
 
-			setup() {
-				return { logString };
-			}
-		});
-	}
+		setup() {
+			return { logString };
+		}
+	});
+}
 </script>

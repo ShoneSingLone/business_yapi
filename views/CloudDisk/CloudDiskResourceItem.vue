@@ -1,37 +1,37 @@
 <style lang="less">
-	.resource-wrapper {
-		background-color: white;
-		width: 100%;
+.resource-wrapper {
+	background-color: white;
+	width: 100%;
 
-		.resource-icon {
-			font-size: 32px;
-			padding: 8px;
-			svg {
-				height: 32px;
-				width: 32px;
-			}
-		}
-
-		.resource-name-wrapper {
-			width: 1px;
-		}
-
-		.resource-name {
-			font-size: 16px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			padding-right: 16px;
-		}
-
-		.resource-update-date {
-			font-size: 12px;
-		}
-
-		.resource-opr {
-			transform: scale(0.99);
+	.resource-icon {
+		font-size: 32px;
+		padding: 8px;
+		svg {
+			height: 32px;
+			width: 32px;
 		}
 	}
+
+	.resource-name-wrapper {
+		width: 1px;
+	}
+
+	.resource-name {
+		font-size: 16px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		padding-right: 16px;
+	}
+
+	.resource-update-date {
+		font-size: 12px;
+	}
+
+	.resource-opr {
+		transform: scale(0.99);
+	}
+}
 </style>
 <template>
 	<div
@@ -60,46 +60,46 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		return defineComponent({
-			props: ["item", "checked"],
-			data() {
-				return {};
+export default async function () {
+	return defineComponent({
+		props: ["item", "checked"],
+		data() {
+			return {};
+		},
+		computed: {
+			cptIsDir() {
+				return this.item.type === "dir";
 			},
-			computed: {
-				cptIsDir() {
-					return this.item.type === "dir";
-				},
-				cptIcon() {
-					if (this.cptIsDir) {
-						return "_cloud_item_dir";
-					}
-					if (this.item.type === "image") {
-						return "_cloud_item_image";
-					}
-					if (this.item.type === "video") {
-						return "_cloud_item_video";
-					}
-					if (this.item.type === "audio") {
-						return "_cloud_item_audio";
-					}
-					return "_cloud_item_unknow";
-				},
-				cptDate() {
-					return _.$dateFormat(this.item.add_time);
-				},
-				cptSize() {
-					return _.$bytesToSize(this.item.size);
+			cptIcon() {
+				if (this.cptIsDir) {
+					return "_cloud_item_dir";
 				}
+				if (this.item.type === "image") {
+					return "_cloud_item_image";
+				}
+				if (this.item.type === "video") {
+					return "_cloud_item_video";
+				}
+				if (this.item.type === "audio") {
+					return "_cloud_item_audio";
+				}
+				return "_cloud_item_unknow";
 			},
-			methods: {
-				preview() {
-					this.$emit("preview", this.item);
-				},
-				toggle() {
-					this.$emit("toggle", this.item);
-				}
+			cptDate() {
+				return _.$dateFormat(this.item.add_time);
+			},
+			cptSize() {
+				return _.$bytesToSize(this.item.size);
 			}
-		});
-	}
+		},
+		methods: {
+			preview() {
+				this.$emit("preview", this.item);
+			},
+			toggle() {
+				this.$emit("toggle", this.item);
+			}
+		}
+	});
+}
 </script>

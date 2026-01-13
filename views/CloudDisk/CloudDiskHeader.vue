@@ -17,35 +17,35 @@
 </template>
 
 <script lang="ts">
-	export default async function () {
-		return {
-			inject: ["APP"],
-			name: "AppLayoutHeader",
-			components: {},
-			data() {
-				return {};
-			},
-			computed: {},
-			methods: {}
-		};
-	}
+export default async function () {
+	return {
+		inject: ["APP"],
+		name: "AppLayoutHeader",
+		components: {},
+		data() {
+			return {};
+		},
+		computed: {},
+		methods: {}
+	};
+}
 </script>
 
 <style lang="less">
-	.AppLayoutHeader {
-		display: flex;
-		align-items: center;
-		height: 64px;
-		padding-left: 20px;
-		line-height: 44px;
-		background-color: var(--el-color-white);
+.AppLayoutHeader {
+	display: flex;
+	align-items: center;
+	height: 64px;
+	padding-left: 20px;
+	line-height: 44px;
+	background-color: var(--el-color-white);
+	box-shadow: var(--el-box-shadow-lighter);
+	z-index: 1;
+	.YapiLogo {
 		box-shadow: var(--el-box-shadow-lighter);
-		z-index: 1;
-		.YapiLogo {
-			box-shadow: var(--el-box-shadow-lighter);
-			// border: 1px solid gray;
-			border-radius: 50%;
-			margin-right: var(--ui-one);
-		}
+		// border: 1px solid gray;
+		border-radius: 50%;
+		margin-right: var(--ui-one);
 	}
+}
 </style>

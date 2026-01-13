@@ -1,6 +1,6 @@
 <style lang="less">
-	#CiCdSettings {
-	}
+#CiCdSettings {
+}
 </style>
 <template>
 	<!-- 系统设置 -->
@@ -42,12 +42,12 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		const { THIS_FILE_URL } = this;
-		return defineComponent({
-			data() {
-				return { THIS_FILE_URL };
-			}
-		});
-	}
+export default async function () {
+	const { THIS_FILE_URL } = this;
+	return defineComponent({
+		data() {
+			return { THIS_FILE_URL };
+		}
+	});
+}
 </script>

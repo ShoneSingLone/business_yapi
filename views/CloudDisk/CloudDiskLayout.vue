@@ -17,30 +17,30 @@
 </template>
 
 <script lang="ts">
-	export default async function () {
-		return {
-			inject: ["APP"],
-			mounted() {
-				document.title = "网盘+";
-			},
-			components: {
-				AppHeader: () => _.$importVue("@/views/CloudDisk/CloudDiskHeader.vue")
-			},
-			data() {
-				return {
-					isMobile: true
-				};
-			},
-			computed: {
-				isShowLoading() {
-					return;
-				}
-			},
-			methods: {
-				mTabChange(label) {
-					this.APP.cptNavBarName = label;
-				}
+export default async function () {
+	return {
+		inject: ["APP"],
+		mounted() {
+			document.title = "网盘+";
+		},
+		components: {
+			AppHeader: () => _.$importVue("@/views/CloudDisk/CloudDiskHeader.vue")
+		},
+		data() {
+			return {
+				isMobile: true
+			};
+		},
+		computed: {
+			isShowLoading() {
+				return;
 			}
-		};
-	}
+		},
+		methods: {
+			mTabChange(label) {
+				this.APP.cptNavBarName = label;
+			}
+		}
+	};
+}
 </script>

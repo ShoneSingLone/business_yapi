@@ -1,355 +1,355 @@
 <style lang="less">
-	#ViewExplore {
-		--card-bg: #f5f5f5;
-		--hover-bg: #e8e8e8;
-		--shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-		--border-radius: 8px;
-		background-color: var(--el-color-white);
+#ViewExplore {
+	--card-bg: #f5f5f5;
+	--hover-bg: #e8e8e8;
+	--shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+	--border-radius: 8px;
+	background-color: var(--el-color-white);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.path-bar {
+		width: 100%;
+	}
+
+	/* M3 折叠式路径栏容器 */
+	.m3-path-bar-container {
+		position: relative;
+		width: 100%;
+		background-color: #ffffff;
+		border-bottom: 1px solid #e0e0e0;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		z-index: 100;
+	}
+
+	/* 外部操作按钮组 */
+	.m3-path-bar-actions {
 		display: flex;
-		flex-direction: column;
-		height: 100%;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 8px 16px;
+		gap: 8px;
+		background-color: #f8f9fa;
+	}
 
-		.path-bar {
-			width: 100%;
-		}
+	/* M3 图标按钮 */
+	.m3-icon-btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border: none;
+		border-radius: 50%;
+		background-color: transparent;
+		color: #5f6368;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		font-size: 16px;
+		padding: 0;
+	}
 
-		/* M3 折叠式路径栏容器 */
-		.m3-path-bar-container {
-			position: relative;
-			width: 100%;
-			background-color: #ffffff;
-			border-bottom: 1px solid #e0e0e0;
-			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-			z-index: 100;
-		}
+	.m3-icon-btn:hover {
+		background-color: rgba(66, 133, 244, 0.08);
+	}
 
-		/* 外部操作按钮组 */
+	.m3-icon-btn:focus {
+		outline: none;
+		background-color: rgba(66, 133, 244, 0.12);
+	}
+
+	/* 折叠式路径抽屉 */
+	.m3-path-drawer {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease;
+		background-color: #ffffff;
+		border-bottom: 1px solid #e0e0e0;
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+	}
+
+	.m3-path-drawer.is-open {
+		max-height: 200px;
+		overflow: auto;
+	}
+
+	/* 路径抽屉头部 */
+	.m3-path-drawer-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 12px 16px;
+		background-color: #f1f3f4;
+		border-bottom: 1px solid #e0e0e0;
+	}
+
+	.m3-path-drawer-title {
+		font-size: 14px;
+		font-weight: 600;
+		color: #202124;
+		text-transform: uppercase;
+		letter-spacing: 0.0125em;
+	}
+
+	/* 路径抽屉内容 */
+	.m3-path-drawer-content {
+		padding: 16px;
+	}
+
+	/* 面包屑样式 */
+	.m3-breadcrumb {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 4px;
+		font-size: 14px;
+	}
+
+	.m3-breadcrumb-item {
+		display: flex;
+		align-items: center;
+		padding: 6px 12px;
+		background-color: #e8f0fe;
+		color: #1967d2;
+		border-radius: 16px;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		font-weight: 500;
+		gap: 6px;
+	}
+
+	.m3-breadcrumb-item:hover {
+		background-color: #d0e3ff;
+	}
+
+	.m3-breadcrumb-separator {
+		color: #5f6368;
+		font-weight: 600;
+		margin: 0 4px;
+	}
+
+	/* 响应式设计 */
+	@media (max-width: 768px) {
 		.m3-path-bar-actions {
-			display: flex;
-			align-items: center;
-			justify-content: flex-start;
-			padding: 8px 16px;
-			gap: 8px;
-			background-color: #f8f9fa;
-		}
-
-		/* M3 图标按钮 */
-		.m3-icon-btn {
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			width: 36px;
-			height: 36px;
-			border: none;
-			border-radius: 50%;
-			background-color: transparent;
-			color: #5f6368;
-			cursor: pointer;
-			transition: all 0.2s ease;
-			font-size: 16px;
-			padding: 0;
-		}
-
-		.m3-icon-btn:hover {
-			background-color: rgba(66, 133, 244, 0.08);
-		}
-
-		.m3-icon-btn:focus {
-			outline: none;
-			background-color: rgba(66, 133, 244, 0.12);
-		}
-
-		/* 折叠式路径抽屉 */
-		.m3-path-drawer {
-			max-height: 0;
-			overflow: hidden;
-			transition: max-height 0.3s ease;
-			background-color: #ffffff;
-			border-bottom: 1px solid #e0e0e0;
-			box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-		}
-
-		.m3-path-drawer.is-open {
-			max-height: 200px;
-			overflow: auto;
-		}
-
-		/* 路径抽屉头部 */
-		.m3-path-drawer-header {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 12px 16px;
-			background-color: #f1f3f4;
-			border-bottom: 1px solid #e0e0e0;
-		}
-
-		.m3-path-drawer-title {
-			font-size: 14px;
-			font-weight: 600;
-			color: #202124;
-			text-transform: uppercase;
-			letter-spacing: 0.0125em;
-		}
-
-		/* 路径抽屉内容 */
-		.m3-path-drawer-content {
-			padding: 16px;
-		}
-
-		/* 面包屑样式 */
-		.m3-breadcrumb {
-			display: flex;
-			align-items: center;
-			flex-wrap: wrap;
-			gap: 4px;
-			font-size: 14px;
-		}
-
-		.m3-breadcrumb-item {
-			display: flex;
-			align-items: center;
 			padding: 6px 12px;
-			background-color: #e8f0fe;
-			color: #1967d2;
-			border-radius: 16px;
-			cursor: pointer;
-			transition: all 0.2s ease;
-			font-weight: 500;
-			gap: 6px;
 		}
 
-		.m3-breadcrumb-item:hover {
-			background-color: #d0e3ff;
+		.m3-icon-btn {
+			width: 32px;
+			height: 32px;
+			font-size: 14px;
 		}
 
-		.m3-breadcrumb-separator {
-			color: #5f6368;
-			font-weight: 600;
-			margin: 0 4px;
+		.m3-path-drawer-header,
+		.m3-path-drawer-content {
+			padding: 10px 12px;
 		}
+	}
 
-		/* 响应式设计 */
-		@media (max-width: 768px) {
-			.m3-path-bar-actions {
-				padding: 6px 12px;
-			}
+	.toolbar {
+		height: auto;
+		width: 100%;
+		display: flex;
+		padding: 0 10px 5px 10px;
+		margin-top: 3px;
+		align-items: center;
+		border-bottom: 1px solid #e0e0e0;
+		transition: all 0.2s ease;
 
-			.m3-icon-btn {
-				width: 32px;
-				height: 32px;
-				font-size: 14px;
-			}
-
-			.m3-path-drawer-header,
-			.m3-path-drawer-content {
-				padding: 10px 12px;
-			}
-		}
-
-		.toolbar {
-			height: auto;
+		.toolbar-content {
+			display: flex;
+			align-items: center;
 			width: 100%;
-			display: flex;
-			padding: 0 10px 5px 10px;
-			margin-top: 3px;
-			align-items: center;
-			border-bottom: 1px solid #e0e0e0;
 			transition: all 0.2s ease;
 
-			.toolbar-content {
-				display: flex;
-				align-items: center;
-				width: 100%;
-				transition: all 0.2s ease;
-
-				&.collapsed {
-					display: none;
-				}
-
-				.sort-controls {
-					display: flex;
-					align-items: center;
-					margin-right: 15px;
-					gap: 5px;
-
-					.sort-description {
-						font-size: 13px;
-						color: #666;
-					}
-
-					.sort-btn {
-						border-radius: 4px;
-						border: 1px solid transparent;
-						padding: 5px 8px;
-						font-size: 13px;
-						background-color: transparent;
-						color: #333;
-						cursor: pointer;
-						transition: all 100ms ease;
-						font-weight: 500;
-						display: inline-flex;
-						align-items: center;
-						gap: 3px;
-
-						&:hover {
-							background-color: rgba(0, 0, 0, 0.05);
-							border-color: rgba(0, 0, 0, 0.1);
-						}
-
-						&:focus {
-							outline: none;
-							background-color: rgba(74, 144, 226, 0.1);
-							border-color: rgba(74, 144, 226, 0.3);
-						}
-
-						&.active {
-							background-color: rgba(74, 144, 226, 0.15);
-							border-color: rgba(74, 144, 226, 0.4);
-							color: #4a90e2;
-						}
-
-						&.sort-level-1 {
-							box-shadow: 0 0 0 2px #4a90e2;
-							border-color: #4a90e2;
-							background-color: rgba(74, 144, 226, 0.2);
-						}
-
-						&.sort-level-2 {
-							box-shadow: 0 0 0 2px #5cb85c;
-							border-color: #5cb85c;
-							background-color: rgba(92, 184, 92, 0.2);
-						}
-
-						.sort-order-indicator {
-							font-size: 11px;
-						}
-						.sort-priority-indicator {
-							font-size: 10px;
-							background-color: #4a90e2;
-							color: white;
-							border-radius: 10px;
-							padding: 1px 4px;
-							margin-left: 3px;
-							font-weight: bold;
-						}
-					}
-				}
-
-				.sort-help {
-					margin-right: 15px;
-					color: #666;
-					font-size: 12px;
-				}
-
-				.search-box {
-					margin-left: auto;
-					min-width: 170px;
-					width: 26%;
-					max-width: 400px;
-
-					.input {
-						border-radius: var(--border-radius);
-						border: 1px solid #ddd;
-						padding: 6px 10px;
-						width: 100%;
-						font-size: 14px;
-
-						&:focus {
-							outline: none;
-							border-color: #4a90e2;
-							box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-						}
-					}
-				}
-			}
-		}
-
-		/* 响应式设计 */
-		@media (max-width: 768px) {
-			.toolbar {
-				flex-wrap: wrap;
-				padding-bottom: 10px;
-				height: auto;
-
-				.toolbar-content {
-					flex-wrap: wrap;
-					gap: 10px;
-					margin-top: 5px;
-
-					.sort-controls {
-						width: 100%;
-						margin-right: 0;
-						flex-wrap: wrap;
-						justify-content: space-between;
-
-						.sort-btn {
-							flex: 1;
-							min-width: 70px;
-							text-align: center;
-						}
-					}
-
-					.search-box {
-						width: 100%;
-						min-width: auto;
-						max-width: none;
-					}
-				}
-			}
-		}
-
-		.resource-list {
-			flex-grow: 1;
-			overflow: auto;
-			padding: 10px;
-		}
-
-		.player-opr {
-			background-color: var(--card-bg);
-			padding: 10px;
-			border-top: 1px solid #e0e0e0;
-			display: flex;
-			align-items: center;
-
-			&.hidden {
+			&.collapsed {
 				display: none;
 			}
 
-			.player-info {
+			.sort-controls {
 				display: flex;
 				align-items: center;
 				margin-right: 15px;
+				gap: 5px;
 
-				.song-name {
-					font-size: 14px;
+				.sort-description {
+					font-size: 13px;
+					color: #666;
+				}
+
+				.sort-btn {
+					border-radius: 4px;
+					border: 1px solid transparent;
+					padding: 5px 8px;
+					font-size: 13px;
+					background-color: transparent;
+					color: #333;
+					cursor: pointer;
+					transition: all 100ms ease;
 					font-weight: 500;
-					margin-right: 5px;
+					display: inline-flex;
+					align-items: center;
+					gap: 3px;
+
+					&:hover {
+						background-color: rgba(0, 0, 0, 0.05);
+						border-color: rgba(0, 0, 0, 0.1);
+					}
+
+					&:focus {
+						outline: none;
+						background-color: rgba(74, 144, 226, 0.1);
+						border-color: rgba(74, 144, 226, 0.3);
+					}
+
+					&.active {
+						background-color: rgba(74, 144, 226, 0.15);
+						border-color: rgba(74, 144, 226, 0.4);
+						color: #4a90e2;
+					}
+
+					&.sort-level-1 {
+						box-shadow: 0 0 0 2px #4a90e2;
+						border-color: #4a90e2;
+						background-color: rgba(74, 144, 226, 0.2);
+					}
+
+					&.sort-level-2 {
+						box-shadow: 0 0 0 2px #5cb85c;
+						border-color: #5cb85c;
+						background-color: rgba(92, 184, 92, 0.2);
+					}
+
+					.sort-order-indicator {
+						font-size: 11px;
+					}
+					.sort-priority-indicator {
+						font-size: 10px;
+						background-color: #4a90e2;
+						color: white;
+						border-radius: 10px;
+						padding: 1px 4px;
+						margin-left: 3px;
+						font-weight: bold;
+					}
 				}
 			}
 
-			.player-controls {
-				display: flex;
-				align-items: center;
-				flex-grow: 1;
+			.sort-help {
+				margin-right: 15px;
+				color: #666;
+				font-size: 12px;
+			}
 
-				.volume-control {
-					display: flex;
-					align-items: center;
-					margin-right: 15px;
-				}
+			.search-box {
+				margin-left: auto;
+				min-width: 170px;
+				width: 26%;
+				max-width: 400px;
 
-				.play-model {
-					margin-right: 15px;
-				}
+				.input {
+					border-radius: var(--border-radius);
+					border: 1px solid #ddd;
+					padding: 6px 10px;
+					width: 100%;
+					font-size: 14px;
 
-				.operation {
-					display: flex;
-					align-items: center;
+					&:focus {
+						outline: none;
+						border-color: #4a90e2;
+						box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+					}
 				}
 			}
 		}
 	}
+
+	/* 响应式设计 */
+	@media (max-width: 768px) {
+		.toolbar {
+			flex-wrap: wrap;
+			padding-bottom: 10px;
+			height: auto;
+
+			.toolbar-content {
+				flex-wrap: wrap;
+				gap: 10px;
+				margin-top: 5px;
+
+				.sort-controls {
+					width: 100%;
+					margin-right: 0;
+					flex-wrap: wrap;
+					justify-content: space-between;
+
+					.sort-btn {
+						flex: 1;
+						min-width: 70px;
+						text-align: center;
+					}
+				}
+
+				.search-box {
+					width: 100%;
+					min-width: auto;
+					max-width: none;
+				}
+			}
+		}
+	}
+
+	.resource-list {
+		flex-grow: 1;
+		overflow: auto;
+		padding: 10px;
+	}
+
+	.player-opr {
+		background-color: var(--card-bg);
+		padding: 10px;
+		border-top: 1px solid #e0e0e0;
+		display: flex;
+		align-items: center;
+
+		&.hidden {
+			display: none;
+		}
+
+		.player-info {
+			display: flex;
+			align-items: center;
+			margin-right: 15px;
+
+			.song-name {
+				font-size: 14px;
+				font-weight: 500;
+				margin-right: 5px;
+			}
+		}
+
+		.player-controls {
+			display: flex;
+			align-items: center;
+			flex-grow: 1;
+
+			.volume-control {
+				display: flex;
+				align-items: center;
+				margin-right: 15px;
+			}
+
+			.play-model {
+				margin-right: 15px;
+			}
+
+			.operation {
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
+}
 </style>
 <template>
 	<div id="ViewExplore">

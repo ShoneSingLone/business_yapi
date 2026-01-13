@@ -1,88 +1,88 @@
 <style lang="less">
-	.office-section {
-		display: flex;
-		height: 100vh;
+.office-section {
+	display: flex;
+	height: 100vh;
 
-		.sidebar {
-			width: 250px;
-			border-right: 1px solid #eee;
-			padding: 20px;
+	.sidebar {
+		width: 250px;
+		border-right: 1px solid #eee;
+		padding: 20px;
 
-			.file-manager {
-				.search-box {
-					margin-bottom: 20px;
-				}
+		.file-manager {
+			.search-box {
+				margin-bottom: 20px;
+			}
 
-				.file-list {
-					.file-item {
-						display: flex;
-						align-items: center;
-						padding: 8px;
-						cursor: pointer;
+			.file-list {
+				.file-item {
+					display: flex;
+					align-items: center;
+					padding: 8px;
+					cursor: pointer;
 
-						&:hover {
-							background: #f5f5f5;
-						}
+					&:hover {
+						background: #f5f5f5;
+					}
 
-						.file-icon {
-							margin-right: 10px;
-						}
+					.file-icon {
+						margin-right: 10px;
 					}
 				}
 			}
 		}
+	}
 
-		.main-content {
-			flex: 1;
+	.main-content {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+
+		.toolbar {
+			padding: 10px;
+			border-bottom: 1px solid #eee;
 			display: flex;
-			flex-direction: column;
-
-			.toolbar {
-				padding: 10px;
-				border-bottom: 1px solid #eee;
-				display: flex;
-				align-items: center;
-				gap: 10px;
-			}
-
-			.editor-container {
-				flex: 1;
-				padding: 20px;
-				position: relative;
-			}
-
-			.status-bar {
-				padding: 8px;
-				border-top: 1px solid #eee;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-			}
+			align-items: center;
+			gap: 10px;
 		}
 
-		.collaborators {
-			position: fixed;
-			top: 20px;
-			right: 20px;
+		.editor-container {
+			flex: 1;
+			padding: 20px;
+			position: relative;
+		}
+
+		.status-bar {
+			padding: 8px;
+			border-top: 1px solid #eee;
 			display: flex;
-			gap: 8px;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
 
-			.avatar {
-				position: relative;
+	.collaborators {
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		display: flex;
+		gap: 8px;
 
-				&::after {
-					content: "";
-					position: absolute;
-					bottom: 0;
-					right: 0;
-					width: 8px;
-					height: 8px;
-					border-radius: 50%;
-					background: #52c41a;
-				}
+		.avatar {
+			position: relative;
+
+			&::after {
+				content: "";
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background: #52c41a;
 			}
 		}
 	}
+}
 </style>
 <template>
 	<div class="office-section">
@@ -156,12 +156,12 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		const { THIS_FILE_URL } = this;
-		return defineComponent({
-			data() {
-				return { THIS_FILE_URL };
-			}
-		});
-	}
+export default async function () {
+	const { THIS_FILE_URL } = this;
+	return defineComponent({
+		data() {
+			return { THIS_FILE_URL };
+		}
+	});
+}
 </script>

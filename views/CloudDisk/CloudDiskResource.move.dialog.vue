@@ -1,7 +1,7 @@
 <style lang="less">
-	.CloudDiskResource-NewDir-dialog {
-		--xItem-label-width: 80px;
-	}
+.CloudDiskResource-NewDir-dialog {
+	--xItem-label-width: 80px;
+}
 </style>
 <template>
 	<xDialog class="CloudDiskResource-NewDir-dialog">
@@ -21,67 +21,67 @@
 	</xDialog>
 </template>
 <script lang="ts">
-	export default async function ({ selected, refreshList }) {
-		const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
-		return defineComponent({
-			inject: ["APP"],
-			props: useDialogProps(),
-			async mounted() {
-				this.loadDirs();
-			},
-			data() {
-				return {
-					props: {
-						value: "value",
-						label: "label",
-						children: "children"
-					},
-					currentNode: {},
-					expandedKeys: ["0"]
-				};
-			},
-			computed: {
-				btnOk() {
-					const vm = this;
-					return {
-						label: i18n("ok"),
-						preset: "blue",
-						async onClick() {
-							_.$loading(true);
-							try {
-								await _api.yapi.resourceCloudDiskMoveDir({
-									ids: selected,
-									targetDirId: vm.currentNode.value
-								});
-								vm.closeModal();
-								refreshList();
-							} catch (error) {
-								_.$msgError(error);
-								console.error(error);
-							} finally {
-								_.$loading(false);
-							}
-						}
-					};
-				}
-			},
-			methods: {
-				nodeClick(node) {
-					this.currentNode = node;
+export default async function ({ selected, refreshList }) {
+	const { useDialogProps } = await _.$importVue("/common/utils/hooks.vue");
+	return defineComponent({
+		inject: ["APP"],
+		props: useDialogProps(),
+		async mounted() {
+			this.loadDirs();
+		},
+		data() {
+			return {
+				props: {
+					value: "value",
+					label: "label",
+					children: "children"
 				},
-				async loadDirs() {
-					await this.APP.loadDirs();
-					_.$traverse(this.APP.dirTree, node => {
-						if (_.$isSame(node.value, this.APP.fileId)) {
-							this.currentNode = node;
-							this.$refs.refDirTree.setCurrentKey(node.value);
+				currentNode: {},
+				expandedKeys: ["0"]
+			};
+		},
+		computed: {
+			btnOk() {
+				const vm = this;
+				return {
+					label: i18n("ok"),
+					preset: "blue",
+					async onClick() {
+						_.$loading(true);
+						try {
+							await _api.yapi.resourceCloudDiskMoveDir({
+								ids: selected,
+								targetDirId: vm.currentNode.value
+							});
+							vm.closeModal();
+							refreshList();
+						} catch (error) {
+							_.$msgError(error);
+							console.error(error);
+						} finally {
+							_.$loading(false);
 						}
-						if (node.children) {
-							this.expandedKeys.push(node.value);
-						}
-					});
-				}
+					}
+				};
 			}
-		});
-	}
+		},
+		methods: {
+			nodeClick(node) {
+				this.currentNode = node;
+			},
+			async loadDirs() {
+				await this.APP.loadDirs();
+				_.$traverse(this.APP.dirTree, node => {
+					if (_.$isSame(node.value, this.APP.fileId)) {
+						this.currentNode = node;
+						this.$refs.refDirTree.setCurrentKey(node.value);
+					}
+					if (node.children) {
+						this.expandedKeys.push(node.value);
+					}
+				});
+			}
+		}
+	});
+}
 </script>

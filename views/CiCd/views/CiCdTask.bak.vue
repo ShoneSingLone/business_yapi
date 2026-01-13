@@ -1,6 +1,6 @@
 <style lang="less">
-	#CiCdProjects {
-	}
+#CiCdProjects {
+}
 </style>
 <template>
 	<!-- 项目配置 -->
@@ -103,12 +103,12 @@ BUILD_VERSION=1.0.0</textarea
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		const { THIS_FILE_URL } = this;
-		return defineComponent({
-			data() {
-				return { THIS_FILE_URL };
-			}
-		});
-	}
+export default async function () {
+	const { THIS_FILE_URL } = this;
+	return defineComponent({
+		data() {
+			return { THIS_FILE_URL };
+		}
+	});
+}
 </script>

@@ -1,30 +1,30 @@
 <style lang="less">
-	.headers-panel {
-		padding: 16px;
+.headers-panel {
+	padding: 16px;
 
-		.header-row {
-			display: flex;
-			gap: 8px;
-			margin-bottom: 8px;
-			align-items: center;
+	.header-row {
+		display: flex;
+		gap: 8px;
+		margin-bottom: 8px;
+		align-items: center;
 
-			.header-checkbox {
-				width: 20px;
-			}
-
-			.header-input {
-				flex: 1;
-			}
-
-			.header-actions {
-				width: 40px;
-			}
+		.header-checkbox {
+			width: 20px;
 		}
 
-		.add-header {
-			margin-top: 16px;
+		.header-input {
+			flex: 1;
+		}
+
+		.header-actions {
+			width: 40px;
 		}
 	}
+
+	.add-header {
+		margin-top: 16px;
+	}
+}
 </style>
 <template>
 	<div class="headers-panel">
@@ -59,43 +59,43 @@
 	</div>
 </template>
 <script lang="ts">
-	export default async function () {
-		return defineComponent({
-			name: "PanelReqBodyJsonHeaders",
-			props: ["value"],
-			model: {
-				prop: "value",
-				event: "change"
+export default async function () {
+	return defineComponent({
+		name: "PanelReqBodyJsonHeaders",
+		props: ["value"],
+		model: {
+			prop: "value",
+			event: "change"
+		},
+		data() {
+			return {
+				headers: []
+			};
+		},
+
+		methods: {
+			addHeader() {
+				this.headers.push({
+					key: "",
+					value: "",
+					enabled: true
+				});
 			},
-			data() {
-				return {
-					headers: []
-				};
+
+			removeHeader(index) {
+				this.headers.splice(index, 1);
 			},
 
-			methods: {
-				addHeader() {
-					this.headers.push({
-						key: "",
-						value: "",
-						enabled: true
-					});
-				},
-
-				removeHeader(index) {
-					this.headers.splice(index, 1);
-				},
-
-				// Get all enabled headers as an object
-				getHeaders() {
-					return this.headers
-						.filter(h => h.enabled && h.key)
-						.reduce((acc, h) => {
-							acc[h.key] = h.value;
-							return acc;
-						}, {});
-				}
+			// Get all enabled headers as an object
+			getHeaders() {
+				return this.headers
+					.filter(h => h.enabled && h.key)
+					.reduce((acc, h) => {
+						acc[h.key] = h.value;
+						return acc;
+					}, {});
 			}
-		});
-	}
+		}
+	});
+}
 </script>
